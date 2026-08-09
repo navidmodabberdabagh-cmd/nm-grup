@@ -1,1 +1,2166 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050608">
+<meta name="description" content="NM GRUP — İstanbul'da aradığınız gayrimenkulü siz tarif edin, biz bulalım.">
+<title>NM GRUP — Gayrimenkul Talep Platformu</title>
 
+<style>
+:root{
+  --bg:#030406;
+  --bg2:#080b10;
+  --panel:rgba(15,18,24,.72);
+  --panel2:rgba(255,255,255,.055);
+  --gold:#d8b46a;
+  --gold2:#f2d38b;
+  --white:#f5f5f2;
+  --muted:#9298a5;
+  --line:rgba(216,180,106,.25);
+  --green:#42d69b;
+  --danger:#ff6b6b;
+  --shadow:0 30px 90px rgba(0,0,0,.55);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 15%,rgba(216,180,106,.09),transparent 28%),
+    radial-gradient(circle at 10% 80%,rgba(55,90,160,.08),transparent 25%),
+    var(--bg);
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+  outline:2px solid var(--gold2);
+  outline-offset:2px;
+}
+
+/* ---------- BACKGROUND ---------- */
+
+.space{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:0;
+}
+
+.space::before,
+.space::after{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  background:
+    linear-gradient(115deg,transparent 0 48%,rgba(216,180,106,.055) 49%,transparent 50%),
+    linear-gradient(65deg,transparent 0 48%,rgba(255,255,255,.025) 49%,transparent 50%);
+  transform:rotate(8deg);
+  animation:spaceMove 24s linear infinite;
+}
+
+.space::after{
+  transform:rotate(-12deg) scale(1.3);
+  animation-duration:31s;
+  opacity:.5;
+}
+
+@keyframes spaceMove{
+  from{transform:translate3d(-3%,0,0) rotate(8deg)}
+  to{transform:translate3d(3%,2%,0) rotate(8deg)}
+}
+
+.grid{
+  position:absolute;
+  width:900px;
+  height:900px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-35%) perspective(800px) rotateX(67deg);
+  background:
+    linear-gradient(rgba(216,180,106,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(216,180,106,.08) 1px,transparent 1px);
+  background-size:70px 70px;
+  mask-image:radial-gradient(circle,black 10%,transparent 70%);
+  animation:gridFloat 9s ease-in-out infinite alternate;
+}
+
+@keyframes gridFloat{
+  from{transform:translate(-50%,-34%) perspective(800px) rotateX(67deg) scale(1)}
+  to{transform:translate(-50%,-30%) perspective(800px) rotateX(67deg) scale(1.06)}
+}
+
+.orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(1px);
+  border:1px solid rgba(216,180,106,.22);
+  box-shadow:
+    0 0 60px rgba(216,180,106,.08),
+    inset 0 0 40px rgba(216,180,106,.05);
+  animation:orbFloat 10s ease-in-out infinite;
+}
+
+.orb.one{
+  width:420px;
+  height:420px;
+  left:-160px;
+  top:20%;
+}
+
+.orb.two{
+  width:520px;
+  height:520px;
+  right:-220px;
+  top:8%;
+  animation-delay:-4s;
+}
+
+.orb.three{
+  width:260px;
+  height:260px;
+  right:20%;
+  bottom:-130px;
+  animation-delay:-7s;
+}
+
+@keyframes orbFloat{
+  0%,100%{transform:translate3d(0,0,0) rotate(0)}
+  50%{transform:translate3d(18px,-25px,0) rotate(8deg)}
+}
+
+/* ---------- GLOBAL ---------- */
+
+.app{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+}
+
+.screen{
+  min-height:100vh;
+  display:none;
+  position:relative;
+}
+
+.screen.active{
+  display:flex;
+}
+
+.container{
+  width:min(1180px,calc(100% - 36px));
+  margin:auto;
+}
+
+.gold{
+  color:var(--gold2);
+}
+
+/* ---------- LANGUAGE ---------- */
+
+#languageScreen{
+  align-items:center;
+  justify-content:center;
+  padding:30px 0;
+}
+
+.language-wrap{
+  width:min(1050px,calc(100% - 34px));
+  text-align:center;
+  position:relative;
+}
+
+.brand-mark{
+  margin-bottom:30px;
+}
+
+.brand-mark .nm{
+  font-size:clamp(42px,8vw,82px);
+  font-weight:800;
+  letter-spacing:.18em;
+  color:var(--white);
+  text-shadow:
+    0 0 25px rgba(216,180,106,.13),
+    0 0 70px rgba(216,180,106,.08);
+}
+
+.brand-mark .sub{
+  margin-top:10px;
+  color:var(--gold2);
+  letter-spacing:.42em;
+  font-size:12px;
+}
+
+.language-title{
+  color:var(--muted);
+  font-size:14px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  margin-bottom:32px;
+}
+
+.languages{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+}
+
+.lang-card{
+  min-height:125px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:24px;
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,.075),
+    rgba(255,255,255,.025)
+  );
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  color:var(--white);
+  transition:
+    transform .45s cubic-bezier(.2,.8,.2,1),
+    border-color .35s,
+    box-shadow .35s,
+    background .35s;
+  box-shadow:0 18px 50px rgba(0,0,0,.22);
+}
+
+.lang-card:hover{
+  transform:translateY(-10px) rotateX(5deg);
+  border-color:var(--gold);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.45),
+    0 0 45px rgba(216,180,106,.10);
+  background:linear-gradient(
+    145deg,
+    rgba(216,180,106,.13),
+    rgba(255,255,255,.035)
+  );
+}
+
+.lang-card .code{
+  display:block;
+  font-size:12px;
+  color:var(--gold2);
+  letter-spacing:.25em;
+  margin-bottom:14px;
+}
+
+.lang-card .name{
+  font-size:17px;
+  font-weight:600;
+}
+
+/* ---------- WELCOME ---------- */
+
+#welcomeScreen{
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:30px 0;
+}
+
+.welcome-box{
+  width:min(850px,100%);
+  padding:70px 30px;
+  border:1px solid rgba(216,180,106,.16);
+  border-radius:38px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));
+  backdrop-filter:blur(25px);
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+
+.welcome-box::before{
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  border:1px solid rgba(216,180,106,.15);
+  left:-120px;
+  top:-120px;
+}
+
+.welcome-box::after{
+  content:"";
+  position:absolute;
+  width:350px;
+  height:350px;
+  border-radius:50%;
+  border:1px solid rgba(216,180,106,.08);
+  right:-180px;
+  bottom:-180px;
+}
+
+.welcome-small{
+  color:var(--gold2);
+  letter-spacing:.32em;
+  font-size:12px;
+  margin-bottom:22px;
+}
+
+.welcome-title{
+  font-size:clamp(42px,8vw,82px);
+  line-height:1;
+  font-weight:800;
+  margin-bottom:24px;
+}
+
+.welcome-text{
+  color:var(--muted);
+  max-width:600px;
+  margin:0 auto 40px;
+  line-height:1.8;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:1px solid rgba(216,180,106,.35);
+  border-radius:16px;
+  padding:16px 30px;
+  min-width:180px;
+  transition:.35s;
+}
+
+.btn-primary{
+  color:#090909;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  box-shadow:0 12px 40px rgba(216,180,106,.18);
+}
+
+.btn-primary:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 50px rgba(216,180,106,.28);
+}
+
+.btn-secondary{
+  color:var(--white);
+  background:rgba(255,255,255,.045);
+}
+
+.btn-secondary:hover{
+  transform:translateY(-3px);
+  border-color:var(--gold);
+}
+
+/* ---------- HOME ---------- */
+
+#homeScreen{
+  padding:35px 0 80px;
+}
+
+.navbar{
+  width:min(1200px,calc(100% - 36px));
+  margin:0 auto 60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.nav-brand{
+  font-size:21px;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+
+.nav-brand span{
+  color:var(--gold2);
+}
+
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.language-pill,
+.login-pill{
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.045);
+  color:var(--white);
+  padding:10px 14px;
+  border-radius:12px;
+}
+
+.hero{
+  min-height:560px;
+  display:flex;
+  align-items:center;
+  position:relative;
+}
+
+.hero-content{
+  max-width:800px;
+}
+
+.eyebrow{
+  color:var(--gold2);
+  font-size:12px;
+  letter-spacing:.3em;
+  margin-bottom:22px;
+}
+
+.hero h1{
+  font-size:clamp(48px,8vw,100px);
+  line-height:.95;
+  letter-spacing:-.045em;
+  margin-bottom:28px;
+}
+
+.hero h1 span{
+  display:block;
+  background:linear-gradient(110deg,#fff,var(--gold2),#fff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  color:var(--muted);
+  max-width:620px;
+  font-size:17px;
+  line-height:1.8;
+  margin-bottom:34px;
+}
+
+.hero-orbit{
+  position:absolute;
+  right:4%;
+  width:360px;
+  height:360px;
+  border-radius:50%;
+  border:1px solid rgba(216,180,106,.18);
+  box-shadow:
+    0 0 100px rgba(216,180,106,.06),
+    inset 0 0 80px rgba(216,180,106,.04);
+  animation:spin 22s linear infinite;
+}
+
+.hero-orbit::before,
+.hero-orbit::after{
+  content:"";
+  position:absolute;
+  inset:35px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.hero-orbit::after{
+  inset:80px;
+  border-color:rgba(216,180,106,.15);
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.type-section{
+  margin-top:50px;
+}
+
+.section-label{
+  color:var(--muted);
+  margin-bottom:20px;
+  font-size:13px;
+  letter-spacing:.15em;
+}
+
+.type-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.type-card{
+  position:relative;
+  overflow:hidden;
+  min-height:230px;
+  padding:30px;
+  text-align:left;
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,.075),
+    rgba(255,255,255,.025)
+  );
+  color:var(--white);
+  transition:.45s;
+}
+
+.type-card:hover{
+  transform:translateY(-10px) scale(1.01);
+  border-color:rgba(216,180,106,.45);
+  box-shadow:var(--shadow);
+}
+
+.type-number{
+  color:var(--gold2);
+  font-size:12px;
+  letter-spacing:.2em;
+}
+
+.type-card h3{
+  font-size:28px;
+  margin:55px 0 10px;
+}
+
+.type-card p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.type-arrow{
+  position:absolute;
+  right:28px;
+  bottom:25px;
+  font-size:26px;
+  color:var(--gold2);
+}
+
+/* ---------- FORM ---------- */
+
+#formScreen{
+  padding:30px 0 70px;
+}
+
+.form-shell{
+  width:min(1180px,calc(100% - 30px));
+  margin:auto;
+}
+
+.form-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:24px;
+}
+
+.back-btn{
+  color:var(--muted);
+  border:0;
+  background:none;
+}
+
+.form-title{
+  font-size:clamp(28px,5vw,48px);
+  margin-bottom:8px;
+}
+
+.form-subtitle{
+  color:var(--muted);
+  margin-bottom:28px;
+}
+
+.form-panel{
+  padding:26px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(10,13,18,.76);
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.045);
+  color:var(--white);
+  border-radius:13px;
+  padding:14px;
+  min-height:50px;
+}
+
+.field select option{
+  background:#10131a;
+  color:#fff;
+}
+
+.field textarea{
+  min-height:130px;
+  resize:vertical;
+}
+
+.required{
+  color:var(--gold2);
+}
+
+.form-footer{
+  margin-top:22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.privacy{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+  max-width:600px;
+}
+
+/* ---------- SUCCESS ---------- */
+
+#successScreen{
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:30px;
+}
+
+.success-card{
+  width:min(700px,100%);
+  padding:60px 30px;
+  border-radius:35px;
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,.07),
+    rgba(255,255,255,.02)
+  );
+  border:1px solid rgba(66,214,155,.22);
+  box-shadow:var(--shadow);
+}
+
+.success-icon{
+  width:76px;
+  height:76px;
+  margin:0 auto 25px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(66,214,155,.4);
+  color:var(--green);
+  font-size:34px;
+}
+
+.request-id{
+  margin:25px auto;
+  padding:15px;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  color:var(--gold2);
+  letter-spacing:.12em;
+  font-weight:bold;
+}
+
+.success-text{
+  color:var(--muted);
+  line-height:1.9;
+}
+
+/* ---------- FOOTER ---------- */
+
+.footer{
+  margin-top:70px;
+  padding:35px 0;
+  border-top:1px solid rgba(255,255,255,.07);
+  color:var(--muted);
+  font-size:11px;
+  text-align:center;
+}
+
+.footer strong{
+  color:var(--gold2);
+}
+
+/* ---------- MOBILE ---------- */
+
+@media(max-width:900px){
+  .languages{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .lang-card:last-child{
+    grid-column:1/-1;
+  }
+
+  .hero-orbit{
+    opacity:.25;
+    right:-120px;
+  }
+
+  .type-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:650px){
+  .container{
+    width:min(100% - 24px,1180px);
+  }
+
+  .languages{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .lang-card{
+    min-height:105px;
+    border-radius:18px;
+  }
+
+  .navbar{
+    width:calc(100% - 24px);
+    margin-bottom:35px;
+  }
+
+  .login-pill{
+    display:none;
+  }
+
+  .hero{
+    min-height:480px;
+  }
+
+  .hero h1{
+    font-size:clamp(46px,15vw,76px);
+  }
+
+  .hero p{
+    font-size:15px;
+  }
+
+  .hero-orbit{
+    width:270px;
+    height:270px;
+    right:-150px;
+    top:100px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .form-panel{
+    padding:18px;
+    border-radius:22px;
+  }
+
+  .form-footer{
+    align-items:stretch;
+  }
+
+  .form-footer .btn{
+    width:100%;
+  }
+}
+
+@media(max-width:420px){
+  .languages{
+    grid-template-columns:1fr;
+  }
+
+  .lang-card:last-child{
+    grid-column:auto;
+  }
+
+  .brand-mark .sub{
+    letter-spacing:.25em;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+  .btn{
+    width:100%;
+  }
+}
+
+/* ---------- MOTION ---------- */
+
+.fade-in{
+  animation:fadeIn .7s ease both;
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(18px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.slide-left{
+  animation:slideLeft .7s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes slideLeft{
+  from{
+    opacity:0;
+    transform:translateX(80px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="space">
+  <div class="grid"></div>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+</div>
+
+<div class="app">
+
+<!-- =========================================================
+     LANGUAGE
+========================================================= -->
+
+<section id="languageScreen" class="screen active">
+  <div class="language-wrap fade-in">
+
+    <div class="brand-mark">
+      <div class="nm">NM</div>
+      <div class="sub">GRUP</div>
+    </div>
+
+    <div class="language-title" data-i18n="chooseLanguage">
+      CHOOSE LANGUAGE
+    </div>
+
+    <div class="languages">
+
+      <button class="lang-card" data-lang="tr">
+        <span class="code">TR</span>
+        <span class="name">Türkçe</span>
+      </button>
+
+      <button class="lang-card" data-lang="en">
+        <span class="code">EN</span>
+        <span class="name">English</span>
+      </button>
+
+      <button class="lang-card" data-lang="fa">
+        <span class="code">FA</span>
+        <span class="name">فارسی</span>
+      </button>
+
+      <button class="lang-card" data-lang="ar">
+        <span class="code">AR</span>
+        <span class="name">العربية</span>
+      </button>
+
+      <button class="lang-card" data-lang="ru">
+        <span class="code">RU</span>
+        <span class="name">Русский</span>
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     WELCOME
+========================================================= -->
+
+<section id="welcomeScreen" class="screen">
+  <div class="container">
+    <div class="welcome-box slide-left">
+
+      <div class="welcome-small" id="welcomeSmall">
+        NM GRUP
+      </div>
+
+      <h1 class="welcome-title" id="welcomeTitle">
+        Hoş Geldiniz
+      </h1>
+
+      <p class="welcome-text" id="welcomeText">
+        Aradığınız gayrimenkulü siz tarif edin.
+        Biz sizin için bulalım.
+      </p>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="registerBtn">
+          Kayıt Ol
+        </button>
+
+        <button class="btn btn-secondary" id="enterBtn">
+          Siteye Gir
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     HOME
+========================================================= -->
+
+<section id="homeScreen" class="screen">
+
+  <nav class="navbar">
+    <div class="nav-brand">
+      NM <span>GRUP</span>
+    </div>
+
+    <div class="nav-actions">
+      <button class="language-pill" id="changeLanguage">
+        Türkçe
+      </button>
+
+      <button class="login-pill" id="navLogin">
+        Giriş Yap
+      </button>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="hero">
+
+      <div class="hero-content fade-in">
+
+        <div class="eyebrow" id="heroEyebrow">
+          İSTANBUL GAYRİMENKUL TALEP PLATFORMU
+        </div>
+
+        <h1 id="heroTitle">
+          Siz isteyin.
+          <span>Biz bulalım.</span>
+        </h1>
+
+        <p id="heroText">
+          Satılık veya kiralık gayrimenkul aramanızı
+          tek bir talep ile bize iletin.
+          Bütçenizi ve istediğiniz özellikleri belirtin;
+          uygun seçenekleri sizin için araştıralım.
+        </p>
+
+        <button class="btn btn-primary" id="startRequest">
+          Talep Oluştur
+        </button>
+
+      </div>
+
+      <div class="hero-orbit"></div>
+
+    </div>
+
+
+    <div class="type-section">
+
+      <div class="section-label" id="typeLabel">
+        GAYRİMENKUL TÜRÜNÜ SEÇİN
+      </div>
+
+      <div class="type-grid">
+
+        <button class="type-card" data-property="konut">
+
+          <div class="type-number">01</div>
+
+          <h3 id="konutTitle">
+            Konut
+          </h3>
+
+          <p id="konutText">
+            Daire, villa, rezidans ve diğer konut seçenekleri.
+          </p>
+
+          <div class="type-arrow">↗</div>
+
+        </button>
+
+
+        <button class="type-card" data-property="isyeri">
+
+          <div class="type-number">02</div>
+
+          <h3 id="isyeriTitle">
+            İş Yeri
+          </h3>
+
+          <p id="isyeriText">
+            Dükkan, mağaza, ofis, depo ve ticari gayrimenkuller.
+          </p>
+
+          <div class="type-arrow">↗</div>
+
+        </button>
+
+
+        <button class="type-card" data-property="arsa">
+
+          <div class="type-number">03</div>
+
+          <h3 id="arsaTitle">
+            Arsa
+          </h3>
+
+          <p id="arsaText">
+            Arsa ve arazi talepleriniz için özel seçenekler.
+          </p>
+
+          <div class="type-arrow">↗</div>
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <div>
+        <strong>NM GRUP</strong> ·
+        İstanbul Gayrimenkul
+      </div>
+      <div style="margin-top:8px">
+        Site tasarımı ve geliştirme hizmetleri:
+        <strong>NM GRUP</strong>
+      </div>
+    </footer>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     FORM
+========================================================= -->
+
+<section id="formScreen" class="screen">
+
+  <div class="form-shell">
+
+    <div class="form-top">
+
+      <button class="back-btn" id="backHome">
+        ← Geri
+      </button>
+
+      <div id="formTypeBadge" class="gold">
+        KONUT
+      </div>
+
+    </div>
+
+    <h1 class="form-title" id="formTitle">
+      Konut Talebi
+    </h1>
+
+    <p class="form-subtitle" id="formSubtitle">
+      Aradığınız özellikleri tek sayfada belirtin.
+    </p>
+
+
+    <form id="requestForm" class="form-panel">
+
+      <div class="form-grid">
+
+        <!-- CONTACT -->
+
+        <div class="field">
+          <label>
+            Ad Soyad <span class="required">*</span>
+          </label>
+
+          <input
+            id="fullName"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="Ad Soyad">
+        </div>
+
+
+        <div class="field">
+          <label>
+            Telefon <span class="required">*</span>
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            required
+            autocomplete="tel"
+            placeholder="+90 5XX XXX XX XX">
+        </div>
+
+
+        <!-- LOCATION -->
+
+        <div class="field">
+          <label>Yakası</label>
+
+          <select id="side">
+            <option value="">Seçiniz</option>
+            <option>Avrupa Yakası</option>
+            <option>Anadolu Yakası</option>
+            <option>Fark etmez</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>İlçe</label>
+
+          <select id="district">
+            <option value="">Seçiniz</option>
+            <option>Beylikdüzü</option>
+            <option>Esenyurt</option>
+            <option disabled>Bahçeşehir — Yakında Açılacak</option>
+            <option disabled>Avcılar — Yakında Açılacak</option>
+            <option disabled>Büyükçekmece — Yakında Açılacak</option>
+            <option disabled>Küçükçekmece — Yakında Açılacak</option>
+          </select>
+        </div>
+
+
+        <div class="field full">
+          <label>Mahalle</label>
+
+          <select id="neighborhood">
+            <option value="">Önce ilçe seçiniz</option>
+          </select>
+        </div>
+
+
+        <!-- PRICE -->
+
+        <div class="field">
+          <label>Min. Fiyat (TL)</label>
+
+          <input
+            id="minPrice"
+            type="number"
+            min="650000"
+            placeholder="650000">
+        </div>
+
+
+        <div class="field">
+          <label>Max. Fiyat (TL)</label>
+
+          <input
+            id="maxPrice"
+            type="number"
+            placeholder="3500000">
+        </div>
+
+
+        <!-- AREA -->
+
+        <div class="field">
+          <label>Min. m²</label>
+
+          <input
+            id="minM2"
+            type="number"
+            min="1"
+            placeholder="60">
+        </div>
+
+
+        <div class="field">
+          <label>Max. m²</label>
+
+          <input
+            id="maxM2"
+            type="number"
+            placeholder="180">
+        </div>
+
+
+        <!-- ROOMS ONLY FOR HOUSING -->
+
+        <div class="field housing-only">
+          <label>Minimum Oda</label>
+
+          <select id="rooms">
+            <option value="">Fark etmez</option>
+            <option>1+0</option>
+            <option>1+1</option>
+            <option>2+1</option>
+            <option>3+1</option>
+            <option>4+1</option>
+            <option>5+1</option>
+            <option>6+1 ve üzeri</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Banyo / WC</label>
+
+          <select id="bathroom">
+            <option value="">Fark etmez</option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3+</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Kat</label>
+
+          <select id="floor">
+            <option value="">Fark etmez</option>
+            <option>Bodrum</option>
+            <option>Giriş Katı</option>
+            <option>Ara Kat</option>
+            <option>Yüksek Kat</option>
+            <option>Çatı Katı</option>
+            <option>Fark etmez</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Bina Yaşı</label>
+
+          <select id="buildingAge">
+            <option value="">Fark etmez</option>
+            <option>1–2</option>
+            <option>3–5</option>
+            <option>6–10</option>
+            <option>11–15</option>
+            <option>16–20</option>
+            <option>21–25</option>
+            <option>25+</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Balkon</label>
+
+          <select id="balcony">
+            <option value="">Fark etmez</option>
+            <option>Var</option>
+            <option>Yok</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Mutfak</label>
+
+          <select id="kitchen">
+            <option value="">Fark etmez</option>
+            <option>Açık Mutfak</option>
+            <option>Kapalı Mutfak</option>
+            <option>Yok</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Tapu</label>
+
+          <select id="tapu">
+            <option value="">Fark etmez</option>
+            <option>Kat Mülkiyeti</option>
+            <option>Kat İrtifakı</option>
+            <option>Arsa Tapusu</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Kredi</label>
+
+          <select id="credit">
+            <option value="">Fark etmez</option>
+            <option>Kullanacağım</option>
+            <option>Kullanmayacağım</option>
+            <option>Kararsızım</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Kiracı</label>
+
+          <select id="tenant">
+            <option value="">Fark etmez</option>
+            <option>Olabilir</option>
+            <option>Olmasın</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label>Durum</label>
+
+          <select id="condition">
+            <option value="">Fark etmez</option>
+            <option>Boş</option>
+            <option>Eşyalı</option>
+            <option>Fark etmez</option>
+          </select>
+        </div>
+
+
+        <!-- BUSINESS -->
+
+        <div class="field business-only">
+          <label>İş Yeri Türü</label>
+
+          <select id="businessType">
+            <option value="">Fark etmez</option>
+            <option>Dükkan</option>
+            <option>Mağaza</option>
+            <option>Ofis</option>
+            <option>Depo</option>
+            <option>Plaza</option>
+            <option>Atölye</option>
+            <option>Restaurant</option>
+            <option>Diğer</option>
+          </select>
+        </div>
+
+
+        <div class="field business-only">
+          <label>Ruhsat / Kullanım</label>
+
+          <select id="permit">
+            <option value="">Fark etmez</option>
+            <option>Uygun olmalı</option>
+            <option>Fark etmez</option>
+          </select>
+        </div>
+
+
+        <!-- LAND -->
+
+        <div class="field land-only">
+          <label>Arsa / Arazi Türü</label>
+
+          <select id="landType">
+            <option value="">Fark etmez</option>
+            <option>Arsa</option>
+            <option>Arazi</option>
+            <option>Tarla</option>
+            <option>Villa İmarlı</option>
+            <option>Ticari İmarlı</option>
+            <option>Konut İmarlı</option>
+          </select>
+        </div>
+
+
+        <!-- NOTES -->
+
+        <div class="field full">
+          <label id="notesLabel">
+            Özel Açıklama
+          </label>
+
+          <textarea
+            id="notes"
+            placeholder="Özel isteklerinizi ve önemli detayları yazabilirsiniz."></textarea>
+        </div>
+
+
+        <div class="field">
+          <label>Uygun İletişim Saati</label>
+
+          <input
+            id="contactTime"
+            type="time"
+            value="18:00">
+        </div>
+
+      </div>
+
+
+      <div class="form-footer">
+
+        <div class="privacy">
+          <span id="privacyText">
+            Bilgileriniz yalnızca talebinizi değerlendirmek ve sizinle iletişime geçmek amacıyla kullanılacaktır.
+          </span>
+        </div>
+
+        <button class="btn btn-primary" type="submit" id="submitBtn">
+          Talebi Gönder
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     SUCCESS
+========================================================= -->
+
+<section id="successScreen" class="screen">
+
+  <div class="success-card fade-in">
+
+    <div class="success-icon">
+      ✓
+    </div>
+
+    <h1 id="successTitle">
+      Talebiniz Kaydedildi
+    </h1>
+
+    <div class="request-id" id="requestId">
+      NM_000.000.001
+    </div>
+
+    <p class="success-text" id="successText">
+      Talebiniz başarıyla alınmıştır.
+      Uygun bir seçenek bulunduğunda,
+      belirttiğiniz iletişim saatine göre
+      sizinle WhatsApp, Telegram veya doğrudan telefon ile iletişime geçilecektir.
+    </p>
+
+    <br>
+
+    <button class="btn btn-secondary" id="newRequest">
+      Yeni Talep Oluştur
+    </button>
+
+  </div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   NM GRUP — FRONTEND ENGINE
+========================================================= */
+
+const state = {
+  lang: "tr",
+  property: "konut"
+};
+
+
+/* ---------- TRANSLATIONS ---------- */
+
+const translations = {
+
+  tr: {
+    chooseLanguage:"DİL SEÇİN",
+
+    welcome:"Hoş Geldiniz",
+
+    welcomeText:
+      "Aradığınız gayrimenkulü siz tarif edin. Biz sizin için bulalım.",
+
+    register:"Kayıt Ol",
+    enter:"Siteye Gir",
+
+    heroEyebrow:"İSTANBUL GAYRİMENKUL TALEP PLATFORMU",
+
+    heroTitle:"Siz isteyin.<span>Biz bulalım.</span>",
+
+    heroText:
+      "Satılık veya kiralık gayrimenkul aramanızı tek bir talep ile bize iletin. Bütçenizi ve istediğiniz özellikleri belirtin; uygun seçenekleri sizin için araştıralım.",
+
+    request:"Talep Oluştur",
+
+    typeLabel:"GAYRİMENKUL TÜRÜNÜ SEÇİN",
+
+    konut:"Konut",
+    konutText:"Daire, villa, rezidans ve diğer konut seçenekleri.",
+
+    isyeri:"İş Yeri",
+    isyeriText:"Dükkan, mağaza, ofis, depo ve ticari gayrimenkuller.",
+
+    arsa:"Arsa",
+    arsaText:"Arsa ve arazi talepleriniz için özel seçenekler.",
+
+    login:"Giriş Yap",
+
+    form:{
+      konut:"Konut Talebi",
+      isyeri:"İş Yeri Talebi",
+      arsa:"Arsa Talebi"
+    },
+
+    formSubtitle:"Aradığınız özellikleri tek sayfada belirtin.",
+
+    back:"← Geri",
+
+    notes:"Özel Açıklama",
+    notesPlaceholder:"Özel isteklerinizi ve önemli detayları yazabilirsiniz.",
+
+    privacy:"Bilgileriniz yalnızca talebinizi değerlendirmek ve sizinle iletişime geçmek amacıyla kullanılacaktır.",
+
+    submit:"Talebi Gönder",
+
+    success:"Talebiniz Kaydedildi",
+
+    successText:
+      "Talebiniz başarıyla alınmıştır. Uygun bir seçenek bulunduğunda, belirttiğiniz iletişim saatine göre sizinle WhatsApp, Telegram veya doğrudan telefon ile iletişime geçilecektir.",
+
+    newRequest:"Yeni Talep Oluştur"
+  },
+
+  en:{
+    chooseLanguage:"CHOOSE LANGUAGE",
+    welcome:"Welcome",
+    welcomeText:"Describe the property you are looking for. We will find it for you.",
+    register:"Register",
+    enter:"Enter Site",
+    heroEyebrow:"ISTANBUL REAL ESTATE REQUEST PLATFORM",
+    heroTitle:"You describe it.<span>We find it.</span>",
+    heroText:"Tell us what you are looking for, your budget and your requirements. We will search for suitable properties for you.",
+    request:"Create Request",
+    typeLabel:"SELECT PROPERTY TYPE",
+    konut:"Property",
+    konutText:"Apartments, villas, residences and other homes.",
+    isyeri:"Commercial",
+    isyeriText:"Shops, stores, offices, warehouses and commercial properties.",
+    arsa:"Land",
+    arsaText:"Land and plot requests.",
+    login:"Login",
+    form:{konut:"Property Request",isyeri:"Commercial Property Request",arsa:"Land Request"},
+    formSubtitle:"Enter all your requirements on one page.",
+    back:"← Back",
+    notes:"Additional Requirements",
+    notesPlaceholder:"Write any special requirements or important details.",
+    privacy:"Your information will only be used to evaluate your request and contact you.",
+    submit:"Send Request",
+    success:"Your Request Has Been Saved",
+    successText:"Your request has been received. When a suitable option is found, we will contact you at your selected time by WhatsApp, Telegram or phone.",
+    newRequest:"Create New Request"
+  },
+
+  fa:{
+    chooseLanguage:"انتخاب زبان",
+    welcome:"خوش آمدید",
+    welcomeText:"خانه‌ای که می‌خواهید را برای ما توضیح دهید؛ ما برای شما پیدا می‌کنیم.",
+    register:"ثبت نام",
+    enter:"ورود به سایت",
+    heroEyebrow:"پلتفرم درخواست املاک استانبول",
+    heroTitle:"شما بخواهید.<span>ما پیدا می‌کنیم.</span>",
+    heroText:"مشخصات ملک، بودجه و خواسته‌های خود را ثبت کنید تا گزینه‌های مناسب را برای شما پیدا کنیم.",
+    request:"ثبت درخواست",
+    typeLabel:"نوع ملک را انتخاب کنید",
+    konut:"مسکونی",
+    konutText:"آپارتمان، ویلا، رزیدانس و سایر املاک مسکونی.",
+    isyeri:"تجاری",
+    isyeriText:"مغازه، فروشگاه، دفتر، انبار و املاک تجاری.",
+    arsa:"زمین",
+    arsaText:"درخواست خرید زمین و اراضی.",
+    login:"ورود",
+    form:{konut:"درخواست ملک مسکونی",isyeri:"درخواست ملک تجاری",arsa:"درخواست زمین"},
+    formSubtitle:"تمام مشخصات موردنظر خود را در یک صفحه وارد کنید.",
+    back:"← بازگشت",
+    notes:"توضیحات و درخواست‌های خاص",
+    notesPlaceholder:"توضیحات یا خواسته‌های مهم خود را بنویسید.",
+    privacy:"اطلاعات شما فقط برای بررسی درخواست و تماس با شما استفاده خواهد شد.",
+    submit:"ارسال درخواست",
+    success:"درخواست شما ثبت شد",
+    successText:"درخواست شما با موفقیت دریافت شد. در صورت پیدا شدن گزینه مناسب، در زمان انتخابی شما از طریق واتساپ، تلگرام یا تماس تلفنی با شما ارتباط می‌گیریم.",
+    newRequest:"ثبت درخواست جدید"
+  },
+
+  ar:{
+    chooseLanguage:"اختر اللغة",
+    welcome:"مرحباً بكم",
+    welcomeText:"صف لنا العقار الذي تبحث عنه وسنبحث عنه من أجلك.",
+    register:"تسجيل",
+    enter:"دخول",
+    heroEyebrow:"منصة طلبات العقارات في إسطنبول",
+    heroTitle:"أنتم تطلبون.<span>ونحن نجد.</span>",
+    heroText:"أدخل مواصفات العقار والميزانية والمتطلبات وسنبحث عن الخيارات المناسبة لك.",
+    request:"إنشاء طلب",
+    typeLabel:"اختر نوع العقار",
+    konut:"سكني",
+    konutText:"شقق وفلل ومساكن وخيارات سكنية أخرى.",
+    isyeri:"تجاري",
+    isyeriText:"محلات ومكاتب ومستودعات وعقارات تجارية.",
+    arsa:"أرض",
+    arsaText:"طلبات شراء الأراضي.",
+    login:"تسجيل الدخول",
+    form:{konut:"طلب عقار سكني",isyeri:"طلب عقار تجاري",arsa:"طلب أرض"},
+    formSubtitle:"أدخل جميع متطلباتك في صفحة واحدة.",
+    back:"← رجوع",
+    notes:"متطلبات إضافية",
+    notesPlaceholder:"اكتب أي متطلبات خاصة أو تفاصيل مهمة.",
+    privacy:"ستُستخدم معلوماتك فقط لتقييم طلبك والتواصل معك.",
+    submit:"إرسال الطلب",
+    success:"تم تسجيل طلبك",
+    successText:"تم استلام طلبك بنجاح. عند العثور على خيار مناسب سنتواصل معك في الوقت الذي اخترته عبر واتساب أو تيليغرام أو الهاتف.",
+    newRequest:"إنشاء طلب جديد"
+  },
+
+  ru:{
+    chooseLanguage:"ВЫБЕРИТЕ ЯЗЫК",
+    welcome:"Добро пожаловать",
+    welcomeText:"Опишите недвижимость, которую вы ищете. Мы найдём её для вас.",
+    register:"Регистрация",
+    enter:"Войти на сайт",
+    heroEyebrow:"ПЛАТФОРМА ЗАПРОСОВ НЕДВИЖИМОСТИ В СТАМБУЛЕ",
+    heroTitle:"Вы описываете.<span>Мы находим.</span>",
+    heroText:"Укажите характеристики объекта, бюджет и требования. Мы подберём подходящие варианты.",
+    request:"Создать запрос",
+    typeLabel:"ВЫБЕРИТЕ ТИП НЕДВИЖИМОСТИ",
+    konut:"Жильё",
+    konutText:"Квартиры, виллы, резиденции и другие жилые объекты.",
+    isyeri:"Коммерция",
+    isyeriText:"Магазины, офисы, склады и коммерческая недвижимость.",
+    arsa:"Земля",
+    arsaText:"Запросы на покупку земли и участков.",
+    login:"Войти",
+    form:{konut:"Запрос на жильё",isyeri:"Запрос на коммерческую недвижимость",arsa:"Запрос на землю"},
+    formSubtitle:"Укажите все требования на одной странице.",
+    back:"← Назад",
+    notes:"Дополнительные требования",
+    notesPlaceholder:"Укажите особые требования и важные детали.",
+    privacy:"Ваши данные будут использованы только для обработки запроса и связи с вами.",
+    submit:"Отправить запрос",
+    success:"Ваш запрос сохранён",
+    successText:"Ваш запрос успешно получен. Если будет найден подходящий вариант, мы свяжемся с вами в выбранное время через WhatsApp, Telegram или по телефону.",
+    newRequest:"Создать новый запрос"
+  }
+
+};
+
+
+/* ---------- ELEMENTS ---------- */
+
+const screens = {
+  language:document.getElementById("languageScreen"),
+  welcome:document.getElementById("welcomeScreen"),
+  home:document.getElementById("homeScreen"),
+  form:document.getElementById("formScreen"),
+  success:document.getElementById("successScreen")
+};
+
+
+/* ---------- SCREEN CONTROL ---------- */
+
+function showScreen(name){
+
+  Object.values(screens).forEach(s=>{
+    s.classList.remove("active");
+  });
+
+  screens[name].classList.add("active");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+
+/* ---------- LANGUAGE ---------- */
+
+function setLanguage(lang){
+
+  state.lang=lang;
+
+  const t=translations[lang];
+
+  document.documentElement.lang=lang;
+
+  if(lang==="fa"){
+    document.body.dir="rtl";
+  }else if(lang==="ar"){
+    document.body.dir="rtl";
+  }else{
+    document.body.dir="ltr";
+  }
+
+  document.querySelector("[data-i18n='chooseLanguage']").textContent=
+    t.chooseLanguage;
+
+  document.getElementById("welcomeTitle").textContent=t.welcome;
+
+  document.getElementById("welcomeText").textContent=t.welcomeText;
+
+  document.getElementById("registerBtn").textContent=t.register;
+
+  document.getElementById("enterBtn").textContent=t.enter;
+
+  document.getElementById("heroEyebrow").textContent=t.heroEyebrow;
+
+  document.getElementById("heroTitle").innerHTML=t.heroTitle;
+
+  document.getElementById("heroText").textContent=t.heroText;
+
+  document.getElementById("startRequest").textContent=t.request;
+
+  document.getElementById("typeLabel").textContent=t.typeLabel;
+
+  document.getElementById("konutTitle").textContent=t.konut;
+
+  document.getElementById("konutText").textContent=t.konutText;
+
+  document.getElementById("isyeriTitle").textContent=t.isyeri;
+
+  document.getElementById("isyeriText").textContent=t.isyeriText;
+
+  document.getElementById("arsaTitle").textContent=t.arsa;
+
+  document.getElementById("arsaText").textContent=t.arsaText;
+
+  document.getElementById("navLogin").textContent=t.login;
+
+  document.getElementById("changeLanguage").textContent=
+    languageName(lang);
+
+  document.getElementById("notesLabel").textContent=t.notes;
+
+  document.getElementById("notes").placeholder=t.notesPlaceholder;
+
+  document.getElementById("privacyText").textContent=t.privacy;
+
+  document.getElementById("submitBtn").textContent=t.submit;
+
+  document.getElementById("successTitle").textContent=t.success;
+
+  document.getElementById("successText").textContent=t.successText;
+
+  document.getElementById("newRequest").textContent=t.newRequest;
+
+  localStorage.setItem("nmgrup_language",lang);
+}
+
+
+function languageName(lang){
+
+  return {
+    tr:"Türkçe",
+    en:"English",
+    fa:"فارسی",
+    ar:"العربية",
+    ru:"Русский"
+  }[lang];
+}
+
+
+/* ---------- LANGUAGE BUTTONS ---------- */
+
+document.querySelectorAll(".lang-card").forEach(card=>{
+
+  card.addEventListener("click",()=>{
+
+    setLanguage(card.dataset.lang);
+
+    showScreen("welcome");
+
+  });
+
+});
+
+
+/* ---------- WELCOME ---------- */
+
+document.getElementById("enterBtn").addEventListener("click",()=>{
+  showScreen("home");
+});
+
+document.getElementById("registerBtn").addEventListener("click",()=>{
+  showScreen("home");
+});
+
+
+/* ---------- HOME ---------- */
+
+document.getElementById("startRequest").addEventListener("click",()=>{
+  openForm("konut");
+});
+
+
+document.querySelectorAll(".type-card").forEach(card=>{
+
+  card.addEventListener("click",()=>{
+
+    openForm(card.dataset.property);
+
+  });
+
+});
+
+
+/* ---------- PROPERTY FORM ---------- */
+
+function openForm(type){
+
+  state.property=type;
+
+  const t=translations[state.lang];
+
+  document.getElementById("formTypeBadge").textContent=
+    type.toUpperCase();
+
+  document.getElementById("formTitle").textContent=
+    t.form[type];
+
+  document.getElementById("formSubtitle").textContent=
+    t.formSubtitle;
+
+  document.querySelectorAll(".housing-only").forEach(el=>{
+    el.style.display=type==="konut" ? "flex" : "none";
+  });
+
+  document.querySelectorAll(".business-only").forEach(el=>{
+    el.style.display=type==="isyeri" ? "flex" : "none";
+  });
+
+  document.querySelectorAll(".land-only").forEach(el=>{
+    el.style.display=type==="arsa" ? "flex" : "none";
+  });
+
+  showScreen("form");
+}
+
+
+/* ---------- DISTRICTS ---------- */
+
+const neighborhoods={
+
+  "Beylikdüzü":[
+    "Adnan Kahveci",
+    "Barış",
+    "Büyükşehir",
+    "Cumhuriyet",
+    "Dereağzı",
+    "Gürpınar",
+    "Kavaklı",
+    "Marmara",
+    "Mavişehir",
+    "Sahil",
+    "Yakuplu"
+  ],
+
+  "Esenyurt":[
+    "Akçaburgaz",
+    "Akevler",
+    "Ardıçlı",
+    "Bağlarçeşme",
+    "Barbaros Hayrettin Paşa",
+    "Battalgazi",
+    "Cumhuriyet",
+    "Gökevler",
+    "Hürriyet",
+    "İncirtepe",
+    "Mehterçeşme",
+    "Mevlana",
+    "Piri Reis",
+    "Saadet",
+    "Sultaniye",
+    "Talatpaşa",
+    "Üçevler",
+    "Yenikent"
+  ]
+
+};
+
+
+document.getElementById("district").addEventListener("change",function(){
+
+  const select=document.getElementById("neighborhood");
+
+  select.innerHTML="";
+
+  const list=neighborhoods[this.value];
+
+  if(!list){
+
+    const option=document.createElement("option");
+
+    option.textContent=
+      state.lang==="tr"
+      ? "Mahalle seçiniz"
+      : "Select neighborhood";
+
+    select.appendChild(option);
+
+    return;
+  }
+
+  const first=document.createElement("option");
+
+  first.value="";
+  first.textContent=
+    state.lang==="tr"
+    ? "Mahalle seçiniz"
+    : "Select neighborhood";
+
+  select.appendChild(first);
+
+  list.forEach(n=>{
+
+    const option=document.createElement("option");
+
+    option.value=n;
+    option.textContent=n;
+
+    select.appendChild(option);
+
+  });
+
+});
+
+
+/* ---------- BACK ---------- */
+
+document.getElementById("backHome").addEventListener("click",()=>{
+  showScreen("home");
+});
+
+
+document.getElementById("changeLanguage").addEventListener("click",()=>{
+  showScreen("language");
+});
+
+
+/* ---------- REQUEST ID ---------- */
+
+function generateRequestId(){
+
+  let counter=
+    Number(localStorage.getItem("nmgrup_request_counter")||0)+1;
+
+  localStorage.setItem(
+    "nmgrup_request_counter",
+    counter
+  );
+
+  return "NM_"+String(counter).padStart(9,"0");
+}
+
+
+/* ---------- TURKEY TIME ---------- */
+
+function turkeyDateTime(){
+
+  return new Intl.DateTimeFormat(
+    "tr-TR",
+    {
+      timeZone:"Europe/Istanbul",
+      dateStyle:"short",
+      timeStyle:"medium"
+    }
+  ).format(new Date());
+
+}
+
+
+/* ---------- FORM SUBMIT ---------- */
+
+document.getElementById("requestForm").addEventListener("submit",function(e){
+
+  e.preventDefault();
+
+  const id=generateRequestId();
+
+  const request={
+
+    id:id,
+
+    createdAt:turkeyDateTime(),
+
+    language:state.lang,
+
+    propertyType:state.property,
+
+    fullName:document.getElementById("fullName").value.trim(),
+
+    phone:document.getElementById("phone").value.trim(),
+
+    side:document.getElementById("side").value,
+
+    district:document.getElementById("district").value,
+
+    neighborhood:document.getElementById("neighborhood").value,
+
+    minPrice:document.getElementById("minPrice").value,
+
+    maxPrice:document.getElementById("maxPrice").value,
+
+    minM2:document.getElementById("minM2").value,
+
+    maxM2:document.getElementById("maxM2").value,
+
+    rooms:document.getElementById("rooms").value,
+
+    bathroom:document.getElementById("bathroom").value,
+
+    floor:document.getElementById("floor").value,
+
+    buildingAge:document.getElementById("buildingAge").value,
+
+    balcony:document.getElementById("balcony").value,
+
+    kitchen:document.getElementById("kitchen").value,
+
+    tapu:document.getElementById("tapu").value,
+
+    credit:document.getElementById("credit").value,
+
+    tenant:document.getElementById("tenant").value,
+
+    condition:document.getElementById("condition").value,
+
+    businessType:document.getElementById("businessType").value,
+
+    permit:document.getElementById("permit").value,
+
+    landType:document.getElementById("landType").value,
+
+    notes:document.getElementById("notes").value.trim(),
+
+    contactTime:document.getElementById("contactTime").value
+
+  };
+
+
+  /*
+
+     TEMPORARY MVP STORAGE
+
+     This is deliberately local for the first frontend test.
+
+     In the next stage this object will be sent to:
+
+     DATABASE → ADMIN PANEL → TELEGRAM
+
+  */
+
+  const oldRequests=
+    JSON.parse(
+      localStorage.getItem("nmgrup_requests")||"[]"
+    );
+
+  oldRequests.push(request);
+
+  localStorage.setItem(
+    "nmgrup_requests",
+    JSON.stringify(oldRequests)
+  );
+
+
+  document.getElementById("requestId").textContent=id;
+
+  showScreen("success");
+
+});
+
+
+/* ---------- NEW REQUEST ---------- */
+
+document.getElementById("newRequest").addEventListener("click",()=>{
+
+  document.getElementById("requestForm").reset();
+
+  showScreen("home");
+
+});
+
+
+/* ---------- INITIAL LANGUAGE ---------- */
+
+const savedLanguage=
+  localStorage.getItem("nmgrup_language");
+
+if(savedLanguage && translations[savedLanguage]){
+  setLanguage(savedLanguage);
+}
+
+
+/* ---------- DEMO VIEW COUNTER ---------- */
+
+(function(){
+
+  const key="nmgrup_views";
+
+  const current=
+    Number(localStorage.getItem(key)||0)+1;
+
+  localStorage.setItem(key,current);
+
+})();
+
+</script>
+
+</body>
+  </html>
