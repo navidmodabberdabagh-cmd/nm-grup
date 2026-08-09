@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#02030a">
 <title>NM GROUP — Istanbul Real Estate</title>
 
 <style>
@@ -20,10 +21,14 @@
   --cyan:#5ee7ff;
   --blue:#667cff;
   --bg:#02030a;
-  --panel:rgba(10,14,28,.78);
+  --panel:rgba(10,14,28,.82);
   --border:rgba(214,179,106,.28);
   --text:#f4f5f8;
   --muted:#9ca3b5;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
@@ -37,7 +42,16 @@ body{
   overflow-x:hidden;
 }
 
-/* SPACE BACKGROUND */
+button,
+input,
+select,
+textarea{
+  font-family:inherit;
+}
+
+/* =========================
+   SPACE BACKGROUND
+========================= */
 
 .space{
   position:fixed;
@@ -50,8 +64,7 @@ body{
 .space::before{
   content:"";
   position:absolute;
-  width:100%;
-  height:100%;
+  inset:0;
   background-image:
     radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 1px),
     radial-gradient(circle,rgba(94,231,255,.5) 1px,transparent 1px);
@@ -93,20 +106,27 @@ body{
   transform:translate(-50%,-50%);
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 header{
   position:fixed;
   top:0;
   left:0;
   right:0;
-  z-index:20;
-  padding:22px 5vw;
+  z-index:50;
+  padding:20px 5vw;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:linear-gradient(to bottom,rgba(2,3,10,.88),transparent);
-  backdrop-filter:blur(5px);
+  background:linear-gradient(
+    to bottom,
+    rgba(2,3,10,.94),
+    rgba(2,3,10,.35),
+    transparent
+  );
+  backdrop-filter:blur(7px);
 }
 
 .logo{
@@ -122,14 +142,16 @@ header{
 
 .lang-current{
   border:1px solid var(--border);
-  padding:9px 15px;
+  padding:10px 17px;
   border-radius:30px;
   cursor:pointer;
   font-size:13px;
   background:rgba(255,255,255,.04);
 }
 
-/* APP */
+/* =========================
+   APP / SCREENS
+========================= */
 
 .app{
   position:relative;
@@ -143,33 +165,55 @@ header{
 .screen{
   display:none;
   min-height:calc(100vh - 150px);
-  animation:enter .7s cubic-bezier(.2,.8,.2,1);
 }
 
 .screen.active{
   display:flex;
   flex-direction:column;
+  animation:enter .75s cubic-bezier(.2,.8,.2,1);
 }
 
 @keyframes enter{
-  from{
+  0%{
     opacity:0;
-    transform:translate3d(90px,0,-250px) scale(.92);
-    filter:blur(8px);
+    transform:
+      perspective(900px)
+      translate3d(100px,0,-350px)
+      scale(.88);
+    filter:blur(12px);
   }
-  to{
+
+  55%{
+    opacity:.8;
+  }
+
+  100%{
     opacity:1;
-    transform:translate3d(0,0,0) scale(1);
+    transform:
+      perspective(900px)
+      translate3d(0,0,0)
+      scale(1);
     filter:blur(0);
   }
 }
 
-@keyframes leave{
-  from{opacity:1;transform:translate3d(0,0,0)}
-  to{opacity:0;transform:translate3d(-180px,0,-300px)}
+@keyframes buttonEnter{
+  from{
+    opacity:0;
+    transform:translateX(70px) scale(.95);
+    filter:blur(5px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateX(0) scale(1);
+    filter:blur(0);
+  }
 }
 
-/* LANGUAGE */
+/* =========================
+   LANGUAGE SCREEN
+========================= */
 
 .language-screen{
   justify-content:center;
@@ -196,7 +240,7 @@ header{
 
 .hero-sub{
   color:var(--muted);
-  max-width:600px;
+  max-width:650px;
   margin:0 auto 45px;
   line-height:1.8;
 }
@@ -214,7 +258,12 @@ header{
   padding:17px 24px;
   border:1px solid var(--border);
   border-radius:18px;
-  background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.015));
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.07),
+      rgba(255,255,255,.015)
+    );
   color:white;
   cursor:pointer;
   transition:.35s;
@@ -223,16 +272,30 @@ header{
 }
 
 .lang:hover{
-  transform:translateY(-6px) scale(1.03);
+  transform:
+    translateY(-6px)
+    scale(1.03);
   border-color:var(--gold2);
-  box-shadow:0 10px 40px rgba(214,179,106,.15);
+  box-shadow:
+    0 10px 40px
+    rgba(214,179,106,.15);
 }
 
-/* PANELS */
+.lang:active{
+  transform:scale(.97);
+}
+
+/* =========================
+   PANELS
+========================= */
 
 .panel{
   background:
-    linear-gradient(145deg,rgba(20,26,48,.78),rgba(5,7,15,.82));
+    linear-gradient(
+      145deg,
+      rgba(20,26,48,.78),
+      rgba(5,7,15,.84)
+    );
   border:1px solid var(--border);
   border-radius:30px;
   padding:35px;
@@ -254,38 +317,72 @@ header{
   margin-bottom:30px;
 }
 
-/* BUTTONS */
+/* =========================
+   ADVERTISEMENT
+========================= */
 
-.btn{
-  border:none;
-  border-radius:15px;
-  padding:15px 25px;
+.ad-slot{
+  position:relative;
+  margin:0 auto 25px;
+  width:100%;
+  min-height:110px;
+  border:1px solid rgba(214,179,106,.35);
+  border-radius:20px;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      110deg,
+      rgba(214,179,106,.12),
+      rgba(50,70,150,.08)
+    ),
+    rgba(10,12,24,.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   cursor:pointer;
-  font-weight:600;
   transition:.3s;
 }
 
-.btn-primary{
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#111;
-}
-
-.btn-primary:hover{
+.ad-slot:hover{
+  border-color:var(--gold2);
   transform:translateY(-2px);
-  box-shadow:0 10px 30px rgba(214,179,106,.2);
 }
 
-.btn-secondary{
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--border);
-  color:white;
+.ad-slot::after{
+  content:"ADVERTISEMENT";
+  position:absolute;
+  top:9px;
+  right:12px;
+  font-size:8px;
+  letter-spacing:2px;
+  color:rgba(255,255,255,.35);
 }
 
-/* GRID */
+.ad-content{
+  text-align:center;
+  padding:25px;
+}
+
+.ad-content strong{
+  display:block;
+  color:var(--gold2);
+  font-size:18px;
+  margin-bottom:6px;
+}
+
+.ad-content span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* =========================
+   CHOICES
+========================= */
 
 .choice-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  grid-template-columns:
+    repeat(auto-fit,minmax(190px,1fr));
   gap:16px;
 }
 
@@ -307,7 +404,8 @@ header{
 .choice.selected{
   border-color:var(--gold2);
   background:rgba(214,179,106,.11);
-  box-shadow:0 0 30px rgba(214,179,106,.08);
+  box-shadow:
+    0 0 30px rgba(214,179,106,.08);
 }
 
 .choice strong{
@@ -319,11 +417,14 @@ header{
   color:var(--muted);
 }
 
-/* FORM */
+/* =========================
+   FORM
+========================= */
 
 .form-grid{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
   gap:18px;
 }
 
@@ -342,7 +443,9 @@ header{
   color:var(--muted);
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
   width:100%;
   background:rgba(255,255,255,.045);
   border:1px solid rgba(255,255,255,.12);
@@ -350,7 +453,11 @@ input,select,textarea{
   padding:14px 15px;
   border-radius:13px;
   outline:none;
-  font-family:inherit;
+  font-size:14px;
+}
+
+select{
+  cursor:pointer;
 }
 
 select option{
@@ -363,11 +470,16 @@ textarea{
   resize:vertical;
 }
 
-input:focus,select:focus,textarea:focus{
+input:focus,
+select:focus,
+textarea:focus{
   border-color:var(--gold);
+  box-shadow:0 0 0 2px rgba(214,179,106,.06);
 }
 
-/* OPTIONS */
+/* =========================
+   OPTIONS
+========================= */
 
 .option-row{
   display:flex;
@@ -382,60 +494,23 @@ input:focus,select:focus,textarea:focus{
   background:rgba(255,255,255,.035);
   cursor:pointer;
   transition:.25s;
+  user-select:none;
+}
+
+.option:hover{
+  border-color:var(--gold);
 }
 
 .option.selected{
   background:rgba(214,179,106,.14);
   border-color:var(--gold2);
+  box-shadow:
+    0 0 20px rgba(214,179,106,.06);
 }
 
-/* AD */
-
-.ad-slot{
-  position:relative;
-  margin:0 auto 25px;
-  width:min(900px,100%);
-  min-height:100px;
-  border:1px solid rgba(214,179,106,.3);
-  border-radius:20px;
-  overflow:hidden;
-  background:
-    linear-gradient(110deg,rgba(214,179,106,.1),rgba(50,70,150,.08)),
-    rgba(10,12,24,.7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-}
-
-.ad-slot::after{
-  content:"ADVERTISEMENT";
-  position:absolute;
-  top:8px;
-  right:12px;
-  font-size:8px;
-  letter-spacing:2px;
-  color:rgba(255,255,255,.35);
-}
-
-.ad-content{
-  text-align:center;
-  padding:25px;
-}
-
-.ad-content strong{
-  display:block;
-  color:var(--gold2);
-  font-size:18px;
-  margin-bottom:5px;
-}
-
-.ad-content span{
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* PROPERTY TYPE */
+/* =========================
+   SUBSECTION
+========================= */
 
 .subsection{
   margin-top:30px;
@@ -447,13 +522,9 @@ input:focus,select:focus,textarea:focus{
   margin-bottom:13px;
 }
 
-/* HIDDEN */
-
-.hidden{
-  display:none!important;
-}
-
-/* NAV */
+/* =========================
+   NAVIGATION
+========================= */
 
 .nav{
   display:flex;
@@ -462,11 +533,59 @@ input:focus,select:focus,textarea:focus{
   margin-top:30px;
 }
 
-.back{
-  opacity:.8;
+.btn{
+  border:none;
+  border-radius:15px;
+  padding:15px 25px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.3s;
 }
 
-/* SUCCESS */
+.btn-primary{
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold2),
+      var(--gold)
+    );
+  color:#111;
+}
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 10px 30px
+    rgba(214,179,106,.2);
+}
+
+.btn-secondary{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  color:white;
+}
+
+.btn-secondary:hover{
+  border-color:var(--gold);
+}
+
+/* =========================
+   SITE SELECT
+========================= */
+
+.site-list-info{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:7px;
+}
+
+.site-select{
+  max-height:220px;
+}
+
+/* =========================
+   SUCCESS
+========================= */
 
 .success{
   text-align:center;
@@ -484,10 +603,13 @@ input:focus,select:focus,textarea:focus{
   font-size:42px;
   color:var(--gold2);
   margin-bottom:25px;
-  box-shadow:0 0 60px rgba(214,179,106,.12);
+  box-shadow:
+    0 0 60px rgba(214,179,106,.12);
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 footer{
   position:relative;
@@ -503,7 +625,42 @@ footer{
   letter-spacing:3px;
 }
 
-/* MOBILE */
+/* =========================
+   RTL
+========================= */
+
+html.rtl,
+html.rtl body{
+  direction:rtl;
+}
+
+html.rtl .hero-title{
+  letter-spacing:3px;
+}
+
+html.rtl .field label{
+  text-align:right;
+}
+
+html.rtl .subsection h3{
+  text-align:right;
+}
+
+html.rtl .section-desc{
+  text-align:right;
+}
+
+html.rtl .nav{
+  direction:rtl;
+}
+
+html.rtl select{
+  text-align:right;
+}
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:700px){
 
@@ -537,6 +694,10 @@ footer{
     letter-spacing:4px;
   }
 
+  .languages{
+    width:100%;
+  }
+
   .lang{
     width:100%;
   }
@@ -547,6 +708,15 @@ footer{
 
   .btn{
     width:100%;
+  }
+
+  .option{
+    width:100%;
+    text-align:center;
+  }
+
+  .ad-slot{
+    min-height:95px;
   }
 }
 </style>
@@ -561,65 +731,147 @@ footer{
 </div>
 
 <header>
-  <div class="logo">NM <span>GROUP</span></div>
-  <div class="lang-current" id="currentLang">Türkçe</div>
+  <div class="logo">
+    NM <span>GROUP</span>
+  </div>
+
+  <div class="lang-current" id="currentLang">
+    Türkçe
+  </div>
 </header>
 
 <main class="app">
 
-<!-- LANGUAGE -->
+<!-- =====================================================
+     LANGUAGE SCREEN
+===================================================== -->
 
-<section id="languageScreen" class="screen language-screen active">
+<section
+  id="languageScreen"
+  class="screen language-screen active">
 
-  <div class="kicker">NM GROUP</div>
+  <div class="kicker">
+    NM GROUP
+  </div>
 
-  <h1 class="hero-title">REAL ESTATE</h1>
+  <h1 class="hero-title">
+    REAL ESTATE
+  </h1>
 
-  <p class="hero-sub" id="languageIntro">
+  <p
+    class="hero-sub"
+    id="languageIntro">
     İstanbul'da doğru gayrimenkulü bulmanın yeni nesil yolu.
   </p>
 
   <div class="languages">
-    <button class="lang" onclick="selectLanguage('tr')">Türkçe</button>
-    <button class="lang" onclick="selectLanguage('fa')">فارسی</button>
-    <button class="lang" onclick="selectLanguage('en')">English</button>
-    <button class="lang" onclick="selectLanguage('ar')">العربية</button>
-    <button class="lang" onclick="selectLanguage('ru')">Русский</button>
+
+    <button
+      class="lang"
+      onclick="selectLanguage('tr')">
+      Türkçe
+    </button>
+
+    <button
+      class="lang"
+      onclick="selectLanguage('fa')">
+      فارسی
+    </button>
+
+    <button
+      class="lang"
+      onclick="selectLanguage('en')">
+      English
+    </button>
+
+    <button
+      class="lang"
+      onclick="selectLanguage('ar')">
+      العربية
+    </button>
+
+    <button
+      class="lang"
+      onclick="selectLanguage('ru')">
+      Русский
+    </button>
+
   </div>
 
 </section>
 
-<!-- WELCOME -->
+<!-- =====================================================
+     WELCOME
+===================================================== -->
 
-<section id="welcomeScreen" class="screen">
+<section
+  id="welcomeScreen"
+  class="screen">
 
-  <div class="ad-slot">
+  <div
+    class="ad-slot"
+    onclick="goTo('advertisingScreen')">
+
     <div class="ad-content">
-      <strong>NM GROUP</strong>
-      <span id="adText">Proje ve gayrimenkul reklamları burada yer alacak.</span>
+
+      <strong id="adTitle">
+        NM GROUP
+      </strong>
+
+      <span id="adText">
+        Proje ve gayrimenkul reklamları burada yer alacak.
+      </span>
+
     </div>
+
   </div>
 
   <div class="panel">
 
-    <div class="kicker">NM GROUP</div>
+    <div class="kicker">
+      NM GROUP
+    </div>
 
-    <h2 class="section-title" id="welcomeTitle">Hoş Geldiniz</h2>
+    <h2
+      class="section-title"
+      id="welcomeTitle">
+      Hoş Geldiniz
+    </h2>
 
-    <p class="section-desc" id="welcomeDesc">
+    <p
+      class="section-desc"
+      id="welcomeDesc">
       Size uygun gayrimenkulü birlikte bulalım.
     </p>
 
     <div class="choice-grid">
 
-      <div class="choice" onclick="goTo('registerScreen')">
-        <strong id="registerChoice">Kayıt Ol</strong>
-        <small id="registerSmall">Profilinizi oluşturun</small>
+      <div
+        class="choice"
+        onclick="goTo('registerScreen')">
+
+        <strong id="registerChoice">
+          Kayıt Ol
+        </strong>
+
+        <small id="registerSmall">
+          Profilinizi oluşturun
+        </small>
+
       </div>
 
-      <div class="choice" onclick="goTo('propertyScreen')">
-        <strong id="guestChoice">Siteye Gir</strong>
-        <small id="guestSmall">Kayıt olmadan devam edin</small>
+      <div
+        class="choice"
+        onclick="goTo('propertyScreen')">
+
+        <strong id="guestChoice">
+          Siteye Gir
+        </strong>
+
+        <small id="guestSmall">
+          Kayıt olmadan devam edin
+        </small>
+
       </div>
 
     </div>
@@ -628,89 +880,198 @@ footer{
 
 </section>
 
-<!-- PROPERTY -->
+<!-- =====================================================
+     PROPERTY REQUEST
+===================================================== -->
 
-<section id="propertyScreen" class="screen">
+<section
+  id="propertyScreen"
+  class="screen">
 
   <div class="panel">
 
-    <div class="kicker">01</div>
+    <div class="kicker">
+      01
+    </div>
 
-    <h2 class="section-title" id="propertyTitle">Gayrimenkul Talebi</h2>
+    <h2
+      class="section-title"
+      id="propertyTitle">
+      Gayrimenkul Talebi
+    </h2>
 
-    <p class="section-desc" id="propertyDesc">
+    <p
+      class="section-desc"
+      id="propertyDesc">
       Aradığınız gayrimenkulün özelliklerini seçin.
     </p>
+
+    <!-- BASIC -->
 
     <div class="form-grid">
 
       <div class="field">
-        <label id="propertyTypeLabel">Gayrimenkul Türü</label>
 
-        <select id="propertyType" onchange="propertyTypeChanged()">
-          <option value="">Seçiniz</option>
-          <option value="daire">Daire</option>
-          <option value="villa">Villa</option>
-          <option value="isyeri">İşyeri</option>
-          <option value="arsa">Arsa</option>
+        <label id="propertyTypeLabel">
+          Gayrimenkul Türü
+        </label>
+
+        <select
+          id="propertyType"
+          onchange="propertyTypeChanged()">
+
+          <option value="">
+            Seçiniz
+          </option>
+
+          <option value="daire">
+            Daire
+          </option>
+
+          <option value="villa">
+            Villa
+          </option>
+
+          <option value="isyeri">
+            İşyeri
+          </option>
+
+          <option value="arsa">
+            Arsa
+          </option>
+
         </select>
+
       </div>
 
       <div class="field">
-        <label id="priceLabel">Fiyat</label>
-        <input id="price" type="text" placeholder="Örn. 3.200.000 TL">
+
+        <label id="priceLabel">
+          Minimum Fiyat
+        </label>
+
+        <input
+          id="priceMin"
+          type="number"
+          min="0"
+          placeholder="650000">
+
       </div>
 
       <div class="field">
-        <label>Yakası</label>
-        <select id="side" onchange="districtChanged()">
-          <option value="">Seçiniz</option>
-          <option value="avrupa">Avrupa Yakası</option>
-          <option value="anadolu">Anadolu Yakası</option>
+
+        <label id="priceMaxLabel">
+          Maksimum Fiyat
+        </label>
+
+        <input
+          id="priceMax"
+          type="number"
+          min="0"
+          placeholder="3500000">
+
+      </div>
+
+      <div class="field">
+
+        <label id="sideLabel">
+          Yakası
+        </label>
+
+        <select
+          id="side"
+          onchange="sideChanged()">
+
+          <option value="">
+            Seçiniz
+          </option>
+
+          <option value="avrupa">
+            Avrupa Yakası
+          </option>
+
+          <option value="anadolu">
+            Anadolu Yakası
+          </option>
+
         </select>
+
       </div>
 
       <div class="field">
-        <label>İlçe</label>
-        <select id="district" onchange="districtChanged()">
-          <option value="">Önce yakayı seçiniz</option>
+
+        <label id="districtLabel">
+          İlçe
+        </label>
+
+        <select
+          id="district"
+          onchange="districtChanged()">
+
+          <option value="">
+            Önce yakayı seçiniz
+          </option>
+
         </select>
+
       </div>
 
       <div class="field">
-        <label>Mahalle</label>
-        <select id="neighborhood">
-          <option value="">Önce ilçeyi seçiniz</option>
+
+        <label id="neighborhoodLabel">
+          Mahalle
+        </label>
+
+        <select
+          id="neighborhood"
+          onchange="neighborhoodChanged()">
+
+          <option value="">
+            Önce ilçeyi seçiniz
+          </option>
+
         </select>
+
       </div>
 
       <div class="field">
-        <label>Metrekare (M²)</label>
-        <input id="sqm" type="number" placeholder="Örn. 120">
+
+        <label id="sqmMinLabel">
+          Min. M²
+        </label>
+
+        <input
+          id="sqmMin"
+          type="number"
+          placeholder="60">
+
       </div>
 
       <div class="field">
-        <label>Bina Yaşı</label>
-        <select id="buildingAge">
-          <option value="">Seçiniz</option>
-          <option>0 (Yeni)</option>
-          <option>1-5</option>
-          <option>6-10</option>
-          <option>11-20</option>
-          <option>21-30</option>
-          <option>30+</option>
-        </select>
+
+        <label id="sqmMaxLabel">
+          Max. M²
+        </label>
+
+        <input
+          id="sqmMax"
+          type="number"
+          placeholder="180">
+
       </div>
 
       <div class="field">
-        <label>Kat</label>
-        <input id="floor" type="text" placeholder="Örn. Giriş, 3, 10">
-      </div>
 
-      <div class="field">
-        <label>Oda</label>
+        <label id="roomsLabel">
+          Oda Sayısı
+        </label>
+
         <select id="rooms">
-          <option value="">Seçiniz</option>
+
+          <option value="">
+            Seçiniz
+          </option>
+
           <option>1+0</option>
           <option>1+1</option>
           <option>2+1</option>
@@ -718,63 +1079,153 @@ footer{
           <option>4+1</option>
           <option>5+1</option>
           <option>5+</option>
+
         </select>
+
       </div>
 
       <div class="field">
-        <label>Banyo Sayısı</label>
+
+        <label id="bathroomsLabel">
+          Banyo Sayısı
+        </label>
+
         <select id="bathrooms">
-          <option value="">Seçiniz</option>
+
+          <option value="">
+            Seçiniz
+          </option>
+
           <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
           <option>5+</option>
+
         </select>
+
       </div>
 
       <div class="field">
-        <label>WC Sayısı</label>
+
+        <label id="wcLabel">
+          WC Sayısı
+        </label>
+
         <select id="wc">
-          <option value="">Seçiniz</option>
+
+          <option value="">
+            Seçiniz
+          </option>
+
           <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
           <option>5+</option>
+
         </select>
+
+      </div>
+
+      <div class="field">
+
+        <label id="buildingAgeLabel">
+          Bina Yaşı
+        </label>
+
+        <select id="buildingAge">
+
+          <option value="">
+            Seçiniz
+          </option>
+
+          <option>0 (Yeni)</option>
+          <option>1-5</option>
+          <option>6-10</option>
+          <option>11-20</option>
+          <option>21-30</option>
+          <option>30+</option>
+
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label id="floorLabel">
+          Kat
+        </label>
+
+        <input
+          id="floor"
+          type="text"
+          placeholder="Örn. Giriş, 3, 10">
+
       </div>
 
     </div>
 
-    <!-- BUILDING -->
+    <!-- BUILDING TYPE -->
 
-    <div class="subsection" id="buildingSection">
+    <div
+      class="subsection"
+      id="buildingSection">
 
-      <h3>Bina / Site Tipi</h3>
+      <h3 id="buildingTypeTitle">
+        Bina / Site Tipi
+      </h3>
 
       <div class="option-row">
 
-        <div class="option" data-group="buildingType"
-             onclick="chooseOption(this,'buildingType','normal')">
-          Normal Apartman
+        <div
+          class="option"
+          data-group="buildingType"
+          onclick="chooseOption(this,'buildingType','normal')">
+
+          <span id="normalApartmentText">
+            Normal Apartman
+          </span>
+
         </div>
 
-        <div class="option" data-group="buildingType"
-             onclick="chooseOption(this,'buildingType','site')">
-          Site İçinde
+        <div
+          class="option"
+          data-group="buildingType"
+          onclick="chooseOption(this,'buildingType','site')">
+
+          <span id="siteApartmentText">
+            Site İçinde
+          </span>
+
         </div>
 
       </div>
 
-      <div id="siteBox" class="subsection hidden">
+      <div
+        id="siteBox"
+        class="subsection hidden">
 
         <div class="field">
-          <label>Site Adı</label>
+
+          <label id="siteNameLabel">
+            Site Adı
+          </label>
 
           <select id="siteName">
-            <option value="">Önce mahalleyi seçiniz</option>
+
+            <option value="">
+              Önce mahalleyi seçiniz
+            </option>
+
           </select>
+
+          <div
+            class="site-list-info"
+            id="siteListInfo">
+            Mahalle seçtiğinizde o mahalledeki siteler burada listelenecektir.
+          </div>
+
         </div>
 
       </div>
@@ -783,32 +1234,56 @@ footer{
 
     <!-- VILLA -->
 
-    <div id="villaSection" class="subsection hidden">
+    <div
+      id="villaSection"
+      class="subsection hidden">
 
-      <h3>Villa Tipi</h3>
+      <h3 id="villaTypeTitle">
+        Villa Tipi
+      </h3>
 
       <div class="option-row">
 
-        <div class="option"
-             onclick="chooseOption(this,'villaType','independent')">
-          Müstakil Villa
+        <div
+          class="option"
+          onclick="chooseOption(this,'villaType','independent')">
+
+          <span id="independentVillaText">
+            Müstakil Villa
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'villaType','site')">
-          Site İçinde Villa
+        <div
+          class="option"
+          onclick="chooseOption(this,'villaType','site')">
+
+          <span id="siteVillaText">
+            Site İçinde Villa
+          </span>
+
         </div>
 
       </div>
 
-      <div id="villaSiteBox" class="subsection hidden">
+      <div
+        id="villaSiteBox"
+        class="subsection hidden">
 
         <div class="field">
-          <label>Villa Sitesi</label>
+
+          <label id="villaSiteLabel">
+            Villa Sitesi
+          </label>
 
           <select id="villaSite">
-            <option value="">Site seçiniz</option>
+
+            <option value="">
+              Site seçiniz
+            </option>
+
           </select>
+
         </div>
 
       </div>
@@ -819,18 +1294,30 @@ footer{
 
     <div class="subsection">
 
-      <h3>Mutfak</h3>
+      <h3 id="kitchenTitle">
+        Mutfak
+      </h3>
 
       <div class="option-row">
 
-        <div class="option"
-             onclick="chooseOption(this,'kitchen','closed')">
-          Kapalı Mutfak
+        <div
+          class="option"
+          onclick="chooseOption(this,'kitchen','closed')">
+
+          <span id="closedKitchenText">
+            Kapalı Mutfak
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'kitchen','open')">
-          Açık Mutfak (Amerikan Mutfak)
+        <div
+          class="option"
+          onclick="chooseOption(this,'kitchen','open')">
+
+          <span id="openKitchenText">
+            Açık Mutfak (Amerikan Mutfak)
+          </span>
+
         </div>
 
       </div>
@@ -841,28 +1328,50 @@ footer{
 
     <div class="subsection">
 
-      <h3>Genel Özellikler</h3>
+      <h3 id="commonTitle">
+        Genel Özellikler
+      </h3>
 
       <div class="option-row">
 
-        <div class="option"
-             onclick="chooseOption(this,'balcony','yes')">
-          Balkon Var
+        <div
+          class="option"
+          onclick="chooseOption(this,'balcony','yes')">
+
+          <span id="balconyYes">
+            Balkon Var
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'balcony','no')">
-          Balkon Yok
+        <div
+          class="option"
+          onclick="chooseOption(this,'balcony','no')">
+
+          <span id="balconyNo">
+            Balkon Yok
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'elevator','yes')">
-          Asansör Var
+        <div
+          class="option"
+          onclick="chooseOption(this,'elevator','yes')">
+
+          <span id="elevatorYes">
+            Asansör Var
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'elevator','no')">
-          Asansör Yok
+        <div
+          class="option"
+          onclick="chooseOption(this,'elevator','no')">
+
+          <span id="elevatorNo">
+            Asansör Yok
+          </span>
+
         </div>
 
       </div>
@@ -871,40 +1380,74 @@ footer{
 
     <!-- SITE FACILITIES -->
 
-    <div id="siteFacilities" class="subsection hidden">
+    <div
+      id="siteFacilities"
+      class="subsection hidden">
 
-      <h3>Site Özellikleri</h3>
+      <h3 id="siteFacilitiesTitle">
+        Site Özellikleri
+      </h3>
 
       <div class="option-row">
 
-        <div class="option"
-             onclick="chooseOption(this,'openPool','yes')">
-          Açık Havuz
+        <div
+          class="option"
+          onclick="chooseOption(this,'openPool','yes')">
+
+          <span id="openPoolText">
+            Açık Havuz
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'closedPool','yes')">
-          Kapalı Havuz
+        <div
+          class="option"
+          onclick="chooseOption(this,'closedPool','yes')">
+
+          <span id="closedPoolText">
+            Kapalı Havuz
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'sauna','yes')">
-          Sauna
+        <div
+          class="option"
+          onclick="chooseOption(this,'sauna','yes')">
+
+          <span id="saunaText">
+            Sauna
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'fitness','yes')">
-          Fitness Salonu
+        <div
+          class="option"
+          onclick="chooseOption(this,'fitness','yes')">
+
+          <span id="fitnessText">
+            Fitness Salonu
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'football','yes')">
-          Futbol Salonu
+        <div
+          class="option"
+          onclick="chooseOption(this,'football','yes')">
+
+          <span id="footballText">
+            Futbol Salonu
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'security','yes')">
-          24 Saat Güvenlik
+        <div
+          class="option"
+          onclick="chooseOption(this,'security','yes')">
+
+          <span id="securityText">
+            24 Saat Güvenlik
+          </span>
+
         </div>
 
       </div>
@@ -915,67 +1458,92 @@ footer{
 
     <div class="subsection">
 
-      <h3>Tapu</h3>
+      <h3 id="tapuTitle">
+        Tapu
+      </h3>
 
       <div class="option-row">
 
-        <div class="option"
-             onclick="chooseOption(this,'tapu','kat-mulkiyet')">
-          Kat Mülkiyeti
+        <div
+          class="option"
+          onclick="chooseOption(this,'tapu','kat-mulkiyet')">
+
+          <span id="katMulkiyetText">
+            Kat Mülkiyeti
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'tapu','kat-irtifak')">
-          Kat İrtifakı
+        <div
+          class="option"
+          onclick="chooseOption(this,'tapu','kat-irtifak')">
+
+          <span id="katIrtifakText">
+            Kat İrtifakı
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'tapu','other')">
-          Diğer
+        <div
+          class="option"
+          onclick="chooseOption(this,'tapu','other')">
+
+          <span id="otherTapuText">
+            Diğer
+          </span>
+
         </div>
 
       </div>
 
     </div>
 
-    <!-- FINANCE -->
+    <!-- CREDIT -->
 
     <div class="subsection">
 
-      <h3>Kredi</h3>
+      <h3 id="creditTitle">
+        Kredi
+      </h3>
 
       <div class="option-row">
 
-        <div class="option"
-             onclick="chooseOption(this,'credit','yes')">
-          Kredi Kullanacağım
+        <div
+          class="option"
+          onclick="chooseOption(this,'credit','yes')">
+
+          <span id="creditYesText">
+            Kredi Kullanacağım
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'credit','no')">
-          Kredi Kullanmayacağım
+        <div
+          class="option"
+          onclick="chooseOption(this,'credit','no')">
+
+          <span id="creditNoText">
+            Kredi Kullanmayacağım
+          </span>
+
         </div>
 
       </div>
 
-      <div id="creditBox" class="subsection hidden">
+      <div
+        id="creditBox"
+        class="subsection hidden">
 
         <div class="field">
-          <label>Kullanmak İstediğiniz Kredi Tutarı</label>
-          <input id="creditAmount" type="text" placeholder="TL">
-        </div>
 
-        <div class="option-row" style="margin-top:15px">
+          <label id="creditAmountLabel">
+            Kullanmak İstediğiniz Kredi Tutarı
+          </label>
 
-          <div class="option"
-               onclick="chooseOption(this,'existingTapu','yes')">
-            Tapu adıma e-Devlet'te mevcut
-          </div>
-
-          <div class="option"
-               onclick="chooseOption(this,'existingTapu','no')">
-            Tapu adıma kayıtlı değil
-          </div>
+          <input
+            id="creditAmount"
+            type="number"
+            placeholder="TL">
 
         </div>
 
@@ -987,50 +1555,88 @@ footer{
 
     <div class="subsection">
 
-      <h3>Durum</h3>
+      <h3 id="statusTitle">
+        Durum
+      </h3>
 
       <div class="option-row">
 
-        <div class="option"
-             onclick="chooseOption(this,'tenant','yes')">
-          Kiracı Var
+        <div
+          class="option"
+          onclick="chooseOption(this,'tenant','yes')">
+
+          <span id="tenantYesText">
+            Kiracı Var
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'tenant','no')">
-          Kiracı Yok
+        <div
+          class="option"
+          onclick="chooseOption(this,'tenant','no')">
+
+          <span id="tenantNoText">
+            Kiracı Yok
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'empty','yes')">
-          Boş
+        <div
+          class="option"
+          onclick="chooseOption(this,'empty','yes')">
+
+          <span id="emptyText">
+            Boş
+          </span>
+
         </div>
 
-        <div class="option"
-             onclick="chooseOption(this,'furnished','yes')">
-          Eşyalı
+        <div
+          class="option"
+          onclick="chooseOption(this,'furnished','yes')">
+
+          <span id="furnishedText">
+            Eşyalı
+          </span>
+
         </div>
 
       </div>
 
     </div>
 
-    <!-- TIME -->
+    <!-- CONTACT TIME -->
 
     <div class="subsection">
 
-      <h3>İletişim Zamanı</h3>
+      <h3 id="contactTimeTitle">
+        İletişim Zamanı
+      </h3>
 
       <div class="form-grid">
 
         <div class="field">
-          <label>Tercih Edilen Gün</label>
-          <input id="contactDate" type="date">
+
+          <label id="contactDateLabel">
+            Tercih Edilen Gün
+          </label>
+
+          <input
+            id="contactDate"
+            type="date">
+
         </div>
 
         <div class="field">
-          <label>Tercih Edilen Saat</label>
-          <input id="contactTime" type="time">
+
+          <label id="contactTimeLabel">
+            Tercih Edilen Saat
+          </label>
+
+          <input
+            id="contactTime"
+            type="time">
+
         </div>
 
       </div>
@@ -1041,34 +1647,72 @@ footer{
 
     <div class="subsection">
 
-      <h3>İletişim Bilgileri</h3>
+      <h3 id="customerTitle">
+        İletişim Bilgileri
+      </h3>
 
       <div class="form-grid">
 
         <div class="field">
-          <label>Ad</label>
-          <input id="firstName" required>
+
+          <label id="firstNameLabel">
+            Ad
+          </label>
+
+          <input
+            id="firstName"
+            required>
+
         </div>
 
         <div class="field">
-          <label>Soyad</label>
-          <input id="lastName" required>
+
+          <label id="lastNameLabel">
+            Soyad
+          </label>
+
+          <input
+            id="lastName"
+            required>
+
         </div>
 
         <div class="field">
-          <label>Telefon</label>
-          <input id="phone" type="tel" required>
+
+          <label id="phoneLabel">
+            Telefon
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            required>
+
         </div>
 
         <div class="field">
-          <label>E-posta</label>
-          <input id="email" type="email">
+
+          <label id="emailLabel">
+            E-posta
+          </label>
+
+          <input
+            id="email"
+            type="email">
+
         </div>
 
         <div class="field full">
-          <label>Özel Açıklamalar</label>
-          <textarea id="notes"
-            placeholder="Aradığınız evle ilgili özel bir isteğiniz varsa yazabilirsiniz."></textarea>
+
+          <label id="notesLabel">
+            Özel Açıklamalar
+          </label>
+
+          <textarea
+            id="notes"
+            placeholder="Aradığınız evle ilgili özel bir isteğiniz varsa yazabilirsiniz.">
+          </textarea>
+
         </div>
 
       </div>
@@ -1077,13 +1721,17 @@ footer{
 
     <div class="nav">
 
-      <button class="btn btn-secondary"
-              onclick="goTo('welcomeScreen')">
+      <button
+        class="btn btn-secondary"
+        onclick="goTo('welcomeScreen')"
+        id="backButton">
         ← Geri
       </button>
 
-      <button class="btn btn-primary"
-              onclick="submitRequest()">
+      <button
+        class="btn btn-primary"
+        onclick="submitRequest()"
+        id="submitButton">
         Talebi Gönder
       </button>
 
@@ -1093,63 +1741,75 @@ footer{
 
 </section>
 
-<!-- REGISTER -->
+<!-- =====================================================
+     REGISTER
+===================================================== -->
 
-<section id="registerScreen" class="screen">
+<section
+  id="registerScreen"
+  class="screen">
 
   <div class="panel">
 
-    <div class="kicker">NM GROUP</div>
+    <div class="kicker">
+      NM GROUP
+    </div>
 
-    <h2 class="section-title">Profil Oluştur</h2>
+    <h2
+      class="section-title"
+      id="registerTitle">
+      Profil Oluştur
+    </h2>
 
-    <p class="section-desc">
-      Profil oluşturmak zorunlu değildir. Kayıt olmadan da talebinizi gönderebilirsiniz.
+    <p
+      class="section-desc"
+      id="registerDesc">
+      Profil oluşturmak zorunlu değildir.
+      Kayıt olmadan da talebinizi gönderebilirsiniz.
     </p>
 
     <div class="form-grid">
 
       <div class="field">
-        <label>Ad</label>
+        <label id="regFirstLabel">Ad</label>
         <input id="regFirst">
       </div>
 
       <div class="field">
-        <label>Soyad</label>
+        <label id="regLastLabel">Soyad</label>
         <input id="regLast">
       </div>
 
       <div class="field">
-        <label>Telefon</label>
+        <label id="regPhoneLabel">Telefon</label>
         <input id="regPhone" type="tel">
       </div>
 
       <div class="field">
-        <label>E-posta</label>
+        <label id="regEmailLabel">E-posta</label>
         <input id="regEmail" type="email">
       </div>
 
       <div class="field">
-        <label>Şifre</label>
+        <label id="regPasswordLabel">Şifre</label>
         <input id="regPassword" type="password">
-      </div>
-
-      <div class="field">
-        <label>Profil Fotoğrafı — Opsiyonel</label>
-        <input type="file" accept="image/*">
       </div>
 
     </div>
 
     <div class="nav">
 
-      <button class="btn btn-secondary"
-              onclick="goTo('welcomeScreen')">
+      <button
+        class="btn btn-secondary"
+        onclick="goTo('welcomeScreen')"
+        id="registerBack">
         ← Geri
       </button>
 
-      <button class="btn btn-primary"
-              onclick="registerUser()">
+      <button
+        class="btn btn-primary"
+        onclick="registerUser()"
+        id="registerButton">
         Kayıt Ol
       </button>
 
@@ -1159,95 +1819,163 @@ footer{
 
 </section>
 
-<!-- SUCCESS -->
+<!-- =====================================================
+     SUCCESS
+===================================================== -->
 
-<section id="successScreen" class="screen success">
+<section
+  id="successScreen"
+  class="screen success">
 
-  <div class="success-icon">✓</div>
+  <div class="success-icon">
+    ✓
+  </div>
 
-  <h2 class="section-title" id="successTitle">
+  <h2
+    class="section-title"
+    id="successTitle">
     Talebiniz Alındı
   </h2>
 
-  <p class="section-desc" id="successText">
-    Talebiniz başarıyla kaydedildi. Uygun bir gayrimenkul bulunduğunda,
-    seçtiğiniz zamanda WhatsApp, Telegram veya telefon üzerinden sizinle iletişime geçilecektir.
+  <p
+    class="section-desc"
+    id="successText">
+    Talebiniz başarıyla kaydedildi.
   </p>
 
-  <button class="btn btn-primary"
-          onclick="goTo('welcomeScreen')">
+  <button
+    class="btn btn-primary"
+    onclick="goTo('welcomeScreen')"
+    id="homeButton">
     Ana Sayfaya Dön
   </button>
 
 </section>
 
-<!-- AD REQUEST -->
+<!-- =====================================================
+     ADVERTISING
+===================================================== -->
 
-<section id="advertisingScreen" class="screen">
+<section
+  id="advertisingScreen"
+  class="screen">
 
   <div class="panel">
 
-    <div class="kicker">NM GROUP</div>
+    <div class="kicker">
+      NM GROUP
+    </div>
 
-    <h2 class="section-title">Reklam Ver</h2>
+    <h2
+      class="section-title"
+      id="advertisingTitle">
+      Reklam Ver
+    </h2>
 
-    <p class="section-desc">
-      Projenizi, şirketinizi veya hizmetinizi NM GROUP platformunda tanıtın.
+    <p
+      class="section-desc"
+      id="advertisingDesc">
+      Projenizi, şirketinizi veya hizmetinizi
+      NM GROUP platformunda tanıtın.
     </p>
 
     <div class="form-grid">
 
       <div class="field">
-        <label>Ad</label>
+
+        <label id="adFirstLabel">
+          Ad
+        </label>
+
         <input id="adFirst">
+
       </div>
 
       <div class="field">
-        <label>Soyad</label>
+
+        <label id="adLastLabel">
+          Soyad
+        </label>
+
         <input id="adLast">
+
       </div>
 
       <div class="field">
-        <label>Şirket Adı</label>
+
+        <label id="adCompanyLabel">
+          Şirket Adı
+        </label>
+
         <input id="adCompany">
+
       </div>
 
       <div class="field">
-        <label>İş Türü</label>
+
+        <label id="adBusinessLabel">
+          İş Türü
+        </label>
+
         <input id="adBusiness">
+
       </div>
 
       <div class="field">
-        <label>Telefon</label>
-        <input id="adPhone">
+
+        <label id="adPhoneLabel">
+          Telefon
+        </label>
+
+        <input id="adPhone" type="tel">
+
       </div>
 
       <div class="field">
-        <label>Ülke</label>
+
+        <label id="adCountryLabel">
+          Ülke
+        </label>
+
         <input id="adCountry">
+
       </div>
 
       <div class="field">
-        <label>Şehir</label>
+
+        <label id="adCityLabel">
+          Şehir
+        </label>
+
         <input id="adCity">
+
       </div>
 
       <div class="field full">
-        <label>Reklam / Proje Açıklaması</label>
+
+        <label id="adNotesLabel">
+          Reklam / Proje Açıklaması
+        </label>
+
         <textarea id="adNotes"></textarea>
+
       </div>
 
     </div>
 
     <div class="nav">
 
-      <button class="btn btn-secondary"
-              onclick="goTo('welcomeScreen')">
+      <button
+        class="btn btn-secondary"
+        onclick="goTo('welcomeScreen')"
+        id="adBackButton">
         ← Geri
       </button>
 
-      <button class="btn btn-primary"
-              onclick="submitAdvertising()">
+      <button
+        class="btn btn-primary"
+        onclick="submitAdvertising()"
+        id="adSubmitButton">
         Reklam Talebi Gönder
       </button>
 
@@ -1260,322 +1988,1883 @@ footer{
 </main>
 
 <footer>
-  <div class="footer-brand">NM GROUP</div>
-  <div style="margin-top:8px">
-    İstanbul Real Estate & Investment
+
+  <div class="footer-brand">
+    NM GROUP
   </div>
+
+  <div style="margin-top:8px">
+    Istanbul Real Estate & Investment
+  </div>
+
 </footer>
 
 <script>
 
 /* =========================================================
-   LANGUAGE SYSTEM
+   LANGUAGE DATABASE
 ========================================================= */
 
 const translations = {
 
 tr:{
+  intro:"İstanbul'da doğru gayrimenkulü bulmanın yeni nesil yolu.",
   welcome:"Hoş Geldiniz",
   welcomeDesc:"Size uygun gayrimenkulü birlikte bulalım.",
   register:"Kayıt Ol",
   registerSmall:"Profilinizi oluşturun",
   guest:"Siteye Gir",
   guestSmall:"Kayıt olmadan devam edin",
+
+  adTitle:"NM GROUP",
+  ad:"Proje ve gayrimenkul reklamları burada yer alacak.",
+
   property:"Gayrimenkul Talebi",
   propertyDesc:"Aradığınız gayrimenkulün özelliklerini seçin.",
-  ad:"Proje ve gayrimenkul reklamları burada yer alacak.",
+
+  propertyType:"Gayrimenkul Türü",
+  priceMin:"Minimum Fiyat (TL)",
+  priceMax:"Maksimum Fiyat (TL)",
+  side:"Yaka",
+  district:"İlçe",
+  neighborhood:"Mahalle",
+  sqmMin:"Min. M²",
+  sqmMax:"Max. M²",
+  rooms:"Oda Sayısı",
+  bathrooms:"Banyo Sayısı",
+  wc:"WC Sayısı",
+  buildingAge:"Bina Yaşı",
+  floor:"Kat",
+
+  buildingType:"Bina / Site Tipi",
+  normalApartment:"Normal Apartman",
+  siteApartment:"Site İçinde",
+  siteName:"Site Adı",
+  siteInfo:"Mahalle seçtiğinizde o mahalledeki siteler burada listelenecektir.",
+
+  villaType:"Villa Tipi",
+  independentVilla:"Müstakil Villa",
+  siteVilla:"Site İçinde Villa",
+  villaSite:"Villa Sitesi",
+
+  kitchen:"Mutfak",
+  closedKitchen:"Kapalı Mutfak",
+  openKitchen:"Açık Mutfak (Amerikan Mutfak)",
+
+  common:"Genel Özellikler",
+  balconyYes:"Balkon Var",
+  balconyNo:"Balkon Yok",
+  elevatorYes:"Asansör Var",
+  elevatorNo:"Asansör Yok",
+
+  siteFacilities:"Site Özellikleri",
+  openPool:"Açık Havuz",
+  closedPool:"Kapalı Havuz",
+  sauna:"Sauna",
+  fitness:"Fitness Salonu",
+  football:"Futbol Salonu",
+  security:"24 Saat Güvenlik",
+
+  tapu:"Tapu",
+  katMulkiyet:"Kat Mülkiyeti",
+  katIrtifak:"Kat İrtifakı",
+  otherTapu:"Diğer",
+
+  credit:"Kredi",
+  creditYes:"Kredi Kullanacağım",
+  creditNo:"Kredi Kullanmayacağım",
+  creditAmount:"Kullanmak İstediğiniz Kredi Tutarı",
+
+  status:"Durum",
+  tenantYes:"Kiracı Var",
+  tenantNo:"Kiracı Yok",
+  empty:"Boş",
+  furnished:"Eşyalı",
+
+  contactTime:"İletişim Zamanı",
+  contactDate:"Tercih Edilen Gün",
+  contactHour:"Tercih Edilen Saat",
+
+  customer:"İletişim Bilgileri",
+  firstName:"Ad",
+  lastName:"Soyad",
+  phone:"Telefon",
+  email:"E-posta",
+  notes:"Özel Açıklamalar",
+
+  back:"← Geri",
+  submit:"Talebi Gönder",
+
+  registerTitle:"Profil Oluştur",
+  registerDesc:"Profil oluşturmak zorunlu değildir. Kayıt olmadan da talebinizi gönderebilirsiniz.",
+  password:"Şifre",
+  registerButton:"Kayıt Ol",
+
   success:"Talebiniz Alındı",
-  successText:"Talebiniz başarıyla kaydedildi. Uygun bir gayrimenkul bulunduğunda, seçtiğiniz zamanda WhatsApp, Telegram veya telefon üzerinden sizinle iletişime geçilecektir."
+  successText:"Talebiniz başarıyla kaydedildi. Uygun bir gayrimenkul bulunduğunda sizinle iletişime geçeceğiz.",
+  home:"Ana Sayfaya Dön",
+
+  advertising:"Reklam Ver",
+  advertisingDesc:"Projenizi, şirketinizi veya hizmetinizi NM GROUP platformunda tanıtın.",
+  company:"Şirket Adı",
+  business:"İş Türü",
+  country:"Ülke",
+  city:"Şehir",
+  advertisingNotes:"Reklam / Proje Açıklaması",
+  advertisingSubmit:"Reklam Talebi Gönder"
 },
 
 fa:{
+  intro:"راه نسل جدید برای پیدا کردن ملک مناسب در استانبول.",
   welcome:"خوش آمدید",
-  welcomeDesc:"بیایید ملک مناسب شما را پیدا کنیم.",
+  welcomeDesc:"بیایید با هم ملک مناسب شما را پیدا کنیم.",
   register:"ثبت‌نام",
   registerSmall:"پروفایل خود را ایجاد کنید",
   guest:"ورود به سایت",
   guestSmall:"بدون ثبت‌نام ادامه دهید",
+
+  adTitle:"NM GROUP",
+  ad:"تبلیغات پروژه‌ها و املاک در این قسمت نمایش داده خواهد شد.",
+
   property:"درخواست ملک",
   propertyDesc:"مشخصات ملکی را که به دنبال آن هستید انتخاب کنید.",
-  ad:"تبلیغات پروژه‌ها و املاک در این قسمت نمایش داده خواهد شد.",
+
+  propertyType:"نوع ملک",
+  priceMin:"حداقل قیمت (لیر)",
+  priceMax:"حداکثر قیمت (لیر)",
+  side:"سمت استانبول",
+  district:"منطقه",
+  neighborhood:"محله",
+  sqmMin:"حداقل متراژ",
+  sqmMax:"حداکثر متراژ",
+  rooms:"تعداد اتاق",
+  bathrooms:"تعداد حمام",
+  wc:"تعداد سرویس بهداشتی",
+  buildingAge:"سن بنا",
+  floor:"طبقه",
+
+  buildingType:"نوع ساختمان",
+  normalApartment:"آپارتمان معمولی",
+  siteApartment:"داخل سایت / مجتمع",
+  siteName:"نام سایت / مجتمع",
+  siteInfo:"بعد از انتخاب محله، سایت‌های موجود در همان محله نمایش داده می‌شوند.",
+
+  villaType:"نوع ویلا",
+  independentVilla:"ویلای مستقل",
+  siteVilla:"ویلا داخل سایت",
+  villaSite:"سایت ویلا",
+
+  kitchen:"آشپزخانه",
+  closedKitchen:"آشپزخانه بسته",
+  openKitchen:"آشپزخانه باز (Amerikan Mutfak)",
+
+  common:"ویژگی‌های عمومی",
+  balconyYes:"بالکن دارد",
+  balconyNo:"بالکن ندارد",
+  elevatorYes:"آسانسور دارد",
+  elevatorNo:"آسانسور ندارد",
+
+  siteFacilities:"امکانات سایت",
+  openPool:"استخر روباز",
+  closedPool:"استخر سرپوشیده",
+  sauna:"سونا",
+  fitness:"سالن بدنسازی",
+  football:"سالن فوتبال",
+  security:"نگهبانی ۲۴ ساعته",
+
+  tapu:"سند",
+  katMulkiyet:"Kat Mülkiyeti",
+  katIrtifak:"Kat İrtifakı",
+  otherTapu:"سایر",
+
+  credit:"وام / اعتبار",
+  creditYes:"از وام استفاده می‌کنم",
+  creditNo:"از وام استفاده نمی‌کنم",
+  creditAmount:"مبلغ وام موردنظر",
+
+  status:"وضعیت ملک",
+  tenantYes:"مستأجر دارد",
+  tenantNo:"بدون مستأجر",
+  empty:"خالی",
+  furnished:"مبله",
+
+  contactTime:"زمان تماس",
+  contactDate:"روز موردنظر",
+  contactHour:"ساعت موردنظر",
+
+  customer:"اطلاعات تماس",
+  firstName:"نام",
+  lastName:"نام خانوادگی",
+  phone:"شماره تلفن",
+  email:"ایمیل",
+  notes:"توضیحات و درخواست‌های خاص",
+
+  back:"→ بازگشت",
+  submit:"ارسال درخواست",
+
+  registerTitle:"ایجاد پروفایل",
+  registerDesc:"ثبت‌نام اجباری نیست. بدون ثبت‌نام نیز می‌توانید درخواست خود را ارسال کنید.",
+  password:"رمز عبور",
+  registerButton:"ثبت‌نام",
+
   success:"درخواست شما ثبت شد",
-  successText:"درخواست شما با موفقیت ثبت شد. در صورت پیدا شدن ملک مناسب، در زمان انتخاب‌شده از طریق واتساپ، تلگرام یا تماس تلفنی با شما ارتباط خواهیم گرفت."
+  successText:"درخواست شما با موفقیت ثبت شد. پس از پیدا شدن ملک مناسب با شما تماس خواهیم گرفت.",
+  home:"بازگشت به صفحه اصلی",
+
+  advertising:"درخواست تبلیغات",
+  advertisingDesc:"پروژه، شرکت یا خدمات خود را در پلتفرم NM GROUP معرفی کنید.",
+  company:"نام شرکت",
+  business:"نوع فعالیت",
+  country:"کشور",
+  city:"شهر",
+  advertisingNotes:"توضیحات تبلیغات / پروژه",
+  advertisingSubmit:"ارسال درخواست تبلیغات"
 },
 
 en:{
+  intro:"The next-generation way to find the right property in Istanbul.",
   welcome:"Welcome",
   welcomeDesc:"Let's find the right property for you.",
   register:"Register",
   registerSmall:"Create your profile",
   guest:"Enter Site",
   guestSmall:"Continue without registration",
+
+  adTitle:"NM GROUP",
+  ad:"Project and real estate advertisements will appear here.",
+
   property:"Property Request",
   propertyDesc:"Select the features of the property you are looking for.",
-  ad:"Project and real estate advertisements will appear here.",
+
+  propertyType:"Property Type",
+  priceMin:"Minimum Price (TRY)",
+  priceMax:"Maximum Price (TRY)",
+  side:"Side",
+  district:"District",
+  neighborhood:"Neighborhood",
+  sqmMin:"Minimum m²",
+  sqmMax:"Maximum m²",
+  rooms:"Number of Rooms",
+  bathrooms:"Number of Bathrooms",
+  wc:"Number of WC",
+  buildingAge:"Building Age",
+  floor:"Floor",
+
+  buildingType:"Building / Site Type",
+  normalApartment:"Normal Apartment",
+  siteApartment:"Inside a Residential Site",
+  siteName:"Site Name",
+  siteInfo:"After selecting a neighborhood, available residential sites will appear here.",
+
+  villaType:"Villa Type",
+  independentVilla:"Independent Villa",
+  siteVilla:"Villa Inside a Site",
+  villaSite:"Villa Site",
+
+  kitchen:"Kitchen",
+  closedKitchen:"Closed Kitchen",
+  openKitchen:"Open Kitchen (American Kitchen)",
+
+  common:"General Features",
+  balconyYes:"Balcony",
+  balconyNo:"No Balcony",
+  elevatorYes:"Elevator",
+  elevatorNo:"No Elevator",
+
+  siteFacilities:"Site Facilities",
+  openPool:"Outdoor Pool",
+  closedPool:"Indoor Pool",
+  sauna:"Sauna",
+  fitness:"Fitness Center",
+  football:"Football Hall",
+  security:"24-Hour Security",
+
+  tapu:"Title Deed",
+  katMulkiyet:"Kat Mülkiyeti",
+  katIrtifak:"Kat İrtifakı",
+  otherTapu:"Other",
+
+  credit:"Mortgage",
+  creditYes:"I Will Use Mortgage",
+  creditNo:"I Will Not Use Mortgage",
+  creditAmount:"Desired Mortgage Amount",
+
+  status:"Property Status",
+  tenantYes:"Tenant Present",
+  tenantNo:"No Tenant",
+  empty:"Vacant",
+  furnished:"Furnished",
+
+  contactTime:"Contact Time",
+  contactDate:"Preferred Day",
+  contactHour:"Preferred Time",
+
+  customer:"Contact Information",
+  firstName:"First Name",
+  lastName:"Last Name",
+  phone:"Phone",
+  email:"E-mail",
+  notes:"Special Requirements",
+
+  back:"← Back",
+  submit:"Submit Request",
+
+  registerTitle:"Create Profile",
+  registerDesc:"Registration is optional. You can submit your request without registering.",
+  password:"Password",
+  registerButton:"Register",
+
   success:"Your Request Has Been Received",
-  successText:"Your request has been successfully registered. When a suitable property becomes available, we will contact you through WhatsApp, Telegram or phone at your selected time."
+  successText:"Your request has been successfully registered. We will contact you when a suitable property is found.",
+  home:"Back to Home",
+
+  advertising:"Advertise",
+  advertisingDesc:"Promote your project, company or service on the NM GROUP platform.",
+  company:"Company Name",
+  business:"Business Type",
+  country:"Country",
+  city:"City",
+  advertisingNotes:"Advertisement / Project Description",
+  advertisingSubmit:"Submit Advertising Request"
 },
 
 ar:{
+  intro:"الطريقة الجديدة للعثور على العقار المناسب في إسطنبول.",
   welcome:"مرحباً بكم",
   welcomeDesc:"دعونا نعثر معاً على العقار المناسب لكم.",
   register:"التسجيل",
   registerSmall:"إنشاء ملفك الشخصي",
   guest:"دخول الموقع",
   guestSmall:"المتابعة بدون تسجيل",
+
+  adTitle:"NM GROUP",
+  ad:"ستظهر إعلانات المشاريع والعقارات هنا.",
+
   property:"طلب عقار",
   propertyDesc:"اختر مواصفات العقار الذي تبحث عنه.",
-  ad:"ستظهر إعلانات المشاريع والعقارات هنا.",
+
+  propertyType:"نوع العقار",
+  priceMin:"الحد الأدنى للسعر (ليرة)",
+  priceMax:"الحد الأقصى للسعر (ليرة)",
+  side:"جهة إسطنبول",
+  district:"المنطقة",
+  neighborhood:"الحي",
+  sqmMin:"الحد الأدنى للمتر",
+  sqmMax:"الحد الأقصى للمتر",
+  rooms:"عدد الغرف",
+  bathrooms:"عدد الحمامات",
+  wc:"عدد دورات المياه",
+  buildingAge:"عمر البناء",
+  floor:"الطابق",
+
+  buildingType:"نوع المبنى",
+  normalApartment:"شقة عادية",
+  siteApartment:"داخل مجمع سكني",
+  siteName:"اسم المجمع",
+  siteInfo:"بعد اختيار الحي ستظهر المجمعات الموجودة فيه.",
+
+  villaType:"نوع الفيلا",
+  independentVilla:"فيلا مستقلة",
+  siteVilla:"فيلا داخل مجمع",
+  villaSite:"مجمع الفلل",
+
+  kitchen:"المطبخ",
+  closedKitchen:"مطبخ مغلق",
+  openKitchen:"مطبخ مفتوح (Amerikan Mutfak)",
+
+  common:"المواصفات العامة",
+  balconyYes:"يوجد شرفة",
+  balconyNo:"لا توجد شرفة",
+  elevatorYes:"يوجد مصعد",
+  elevatorNo:"لا يوجد مصعد",
+
+  siteFacilities:"مرافق المجمع",
+  openPool:"مسبح خارجي",
+  closedPool:"مسبح داخلي",
+  sauna:"ساونا",
+  fitness:"صالة رياضية",
+  football:"ملعب كرة قدم",
+  security:"حراسة 24 ساعة",
+
+  tapu:"الطابو",
+  katMulkiyet:"Kat Mülkiyeti",
+  katIrtifak:"Kat İrtifakı",
+  otherTapu:"أخرى",
+
+  credit:"التمويل",
+  creditYes:"سأستخدم التمويل",
+  creditNo:"لن أستخدم التمويل",
+  creditAmount:"قيمة التمويل المطلوبة",
+
+  status:"حالة العقار",
+  tenantYes:"يوجد مستأجر",
+  tenantNo:"لا يوجد مستأجر",
+  empty:"فارغ",
+  furnished:"مفروش",
+
+  contactTime:"وقت التواصل",
+  contactDate:"اليوم المفضل",
+  contactHour:"الوقت المفضل",
+
+  customer:"معلومات التواصل",
+  firstName:"الاسم",
+  lastName:"اسم العائلة",
+  phone:"الهاتف",
+  email:"البريد الإلكتروني",
+  notes:"ملاحظات خاصة",
+
+  back:"→ رجوع",
+  submit:"إرسال الطلب",
+
+  registerTitle:"إنشاء الملف الشخصي",
+  registerDesc:"التسجيل اختياري. يمكنك إرسال طلبك بدون تسجيل.",
+  password:"كلمة المرور",
+  registerButton:"تسجيل",
+
   success:"تم استلام طلبكم",
-  successText:"تم تسجيل طلبكم بنجاح. عند توفر عقار مناسب سنتواصل معكم عبر واتساب أو تيليغرام أو الهاتف في الوقت الذي اخترتموه."
+  successText:"تم تسجيل طلبكم بنجاح. سنتواصل معكم عند العثور على عقار مناسب.",
+  home:"العودة إلى الصفحة الرئيسية",
+
+  advertising:"طلب إعلان",
+  advertisingDesc:"روّج لمشروعك أو شركتك أو خدمتك على منصة NM GROUP.",
+  company:"اسم الشركة",
+  business:"نوع النشاط",
+  country:"الدولة",
+  city:"المدينة",
+  advertisingNotes:"تفاصيل الإعلان / المشروع",
+  advertisingSubmit:"إرسال طلب الإعلان"
 },
 
 ru:{
+  intro:"Новый способ найти подходящую недвижимость в Стамбуле.",
   welcome:"Добро пожаловать",
   welcomeDesc:"Давайте вместе найдём подходящую недвижимость.",
   register:"Регистрация",
   registerSmall:"Создайте свой профиль",
   guest:"Войти на сайт",
   guestSmall:"Продолжить без регистрации",
+
+  adTitle:"NM GROUP",
+  ad:"Здесь будут размещаться объявления проектов и недвижимости.",
+
   property:"Запрос недвижимости",
   propertyDesc:"Выберите характеристики недвижимости, которую вы ищете.",
-  ad:"Здесь будут размещаться объявления проектов и недвижимости.",
+
+  propertyType:"Тип недвижимости",
+  priceMin:"Минимальная цена (TRY)",
+  priceMax:"Максимальная цена (TRY)",
+  side:"Сторона Стамбула",
+  district:"Район",
+  neighborhood:"Махалле",
+  sqmMin:"Минимальная площадь",
+  sqmMax:"Максимальная площадь",
+  rooms:"Количество комнат",
+  bathrooms:"Количество ванных",
+  wc:"Количество WC",
+  buildingAge:"Возраст здания",
+  floor:"Этаж",
+
+  buildingType:"Тип здания",
+  normalApartment:"Обычный дом",
+  siteApartment:"Жилой комплекс",
+  siteName:"Название комплекса",
+  siteInfo:"После выбора махалле здесь появятся доступные жилые комплексы.",
+
+  villaType:"Тип виллы",
+  independentVilla:"Отдельная вилла",
+  siteVilla:"Вилла в комплексе",
+  villaSite:"Вилла-комплекс",
+
+  kitchen:"Кухня",
+  closedKitchen:"Закрытая кухня",
+  openKitchen:"Открытая кухня (Amerikan Mutfak)",
+
+  common:"Общие характеристики",
+  balconyYes:"Есть балкон",
+  balconyNo:"Нет балкона",
+  elevatorYes:"Есть лифт",
+  elevatorNo:"Нет лифта",
+
+  siteFacilities:"Удобства комплекса",
+  openPool:"Открытый бассейн",
+  closedPool:"Крытый бассейн",
+  sauna:"Сауна",
+  fitness:"Фитнес-зал",
+  football:"Футбольный зал",
+  security:"Охрана 24 часа",
+
+  tapu:"Тапу",
+  katMulkiyet:"Kat Mülkiyeti",
+  katIrtifak:"Kat İrtifakı",
+  otherTapu:"Другое",
+
+  credit:"Ипотека",
+  creditYes:"Буду использовать ипотеку",
+  creditNo:"Не буду использовать ипотеку",
+  creditAmount:"Желаемая сумма кредита",
+
+  status:"Состояние недвижимости",
+  tenantYes:"Есть арендатор",
+  tenantNo:"Нет арендатора",
+  empty:"Свободно",
+  furnished:"Меблировано",
+
+  contactTime:"Время связи",
+  contactDate:"Предпочтительный день",
+  contactHour:"Предпочтительное время",
+
+  customer:"Контактная информация",
+  firstName:"Имя",
+  lastName:"Фамилия",
+  phone:"Телефон",
+  email:"Электронная почта",
+  notes:"Особые требования",
+
+  back:"← Назад",
+  submit:"Отправить запрос",
+
+  registerTitle:"Создать профиль",
+  registerDesc:"Регистрация не обязательна. Вы можете отправить запрос без регистрации.",
+  password:"Пароль",
+  registerButton:"Регистрация",
+
   success:"Ваш запрос получен",
-  successText:"Ваш запрос успешно зарегистрирован. Когда появится подходящий объект, мы свяжемся с вами через WhatsApp, Telegram или по телефону в выбранное вами время."
+  successText:"Ваш запрос успешно зарегистрирован. Мы свяжемся с вами, когда найдём подходящий объект.",
+  home:"Вернуться на главную",
+
+  advertising:"Разместить рекламу",
+  advertisingDesc:"Продвигайте свой проект, компанию или услугу на платформе NM GROUP.",
+  company:"Название компании",
+  business:"Вид деятельности",
+  country:"Страна",
+  city:"Город",
+  advertisingNotes:"Описание рекламы / проекта",
+  advertisingSubmit:"Отправить рекламный запрос"
 }
 
 };
 
-let selectedLanguage="tr";
+/* =========================================================
+   CURRENT LANGUAGE
+========================================================= */
+
+let selectedLanguage =
+  localStorage.getItem("nm_language") || "tr";
+
+const state = {
+  buildingType:"",
+  villaType:"",
+  kitchen:"",
+  balcony:"",
+  elevator:"",
+  openPool:"",
+  closedPool:"",
+  sauna:"",
+  fitness:"",
+  football:"",
+  security:"",
+  tapu:"",
+  credit:"",
+  tenant:"",
+  empty:"",
+  furnished:""
+};
+
+/* =========================================================
+   LANGUAGE APPLY
+========================================================= */
 
 function selectLanguage(lang){
 
+  if(!translations[lang]){
+    lang="tr";
+  }
+
   selectedLanguage=lang;
 
-  localStorage.setItem("nm_language",lang);
+  localStorage.setItem(
+    "nm_language",
+    lang
+  );
 
   document.documentElement.lang=lang;
 
-  document.getElementById("currentLang").textContent =
-    lang==="tr" ? "Türkçe" :
-    lang==="fa" ? "فارسی" :
-    lang==="en" ? "English" :
-    lang==="ar" ? "العربية" :
-    "Русский";
+  if(lang==="fa" || lang==="ar"){
+    document.documentElement.classList.add("rtl");
+    document.documentElement.dir="rtl";
+  }else{
+    document.documentElement.classList.remove("rtl");
+    document.documentElement.dir="ltr";
+  }
 
-  const t=translations[lang];
+  const languageNames={
+    tr:"Türkçe",
+    fa:"فارسی",
+    en:"English",
+    ar:"العربية",
+    ru:"Русский"
+  };
 
-  document.getElementById("welcomeTitle").textContent=t.welcome;
-  document.getElementById("welcomeDesc").textContent=t.welcomeDesc;
-  document.getElementById("registerChoice").textContent=t.register;
-  document.getElementById("registerSmall").textContent=t.registerSmall;
-  document.getElementById("guestChoice").textContent=t.guest;
-  document.getElementById("guestSmall").textContent=t.guestSmall;
-  document.getElementById("propertyTitle").textContent=t.property;
-  document.getElementById("propertyDesc").textContent=t.propertyDesc;
-  document.getElementById("adText").textContent=t.ad;
-  document.getElementById("successTitle").textContent=t.success;
-  document.getElementById("successText").textContent=t.successText;
+  document.getElementById("currentLang")
+    .textContent=languageNames[lang];
+
+  applyTranslations();
+
+  /*
+    IMPORTANT:
+    This is the part that was broken in the previous
+    incomplete code.
+  */
 
   goTo("welcomeScreen");
 }
 
-function goTo(id){
+/* =========================================================
+   TRANSLATION HELPER
+========================================================= */
 
-  document.querySelectorAll(".screen").forEach(s=>{
-    s.classList.remove("active");
+function setText(id,value){
+
+  const el=document.getElementById(id);
+
+  if(el){
+    el.textContent=value;
+  }
+
+}
+
+function setPlaceholder(id,value){
+
+  const el=document.getElementById(id);
+
+  if(el){
+    el.placeholder=value;
+  }
+
+}
+
+/* =========================================================
+   APPLY TRANSLATIONS
+========================================================= */
+
+function applyTranslations(){
+
+  const t=translations[selectedLanguage];
+
+  if(!t) return;
+
+  const map={
+
+    languageIntro:"intro",
+
+    welcomeTitle:"welcome",
+    welcomeDesc:"welcomeDesc",
+    registerChoice:"register",
+    registerSmall:"registerSmall",
+    guestChoice:"guest",
+    guestSmall:"guestSmall",
+
+    adText:"ad",
+
+    propertyTitle:"property",
+    propertyDesc:"propertyDesc",
+
+    propertyTypeLabel:"propertyType",
+    priceLabel:"priceMin",
+    priceMaxLabel:"priceMax",
+    sideLabel:"side",
+    districtLabel:"district",
+    neighborhoodLabel:"neighborhood",
+    sqmMinLabel:"sqmMin",
+    sqmMaxLabel:"sqmMax",
+    roomsLabel:"rooms",
+    bathroomsLabel:"bathrooms",
+    wcLabel:"wc",
+    buildingAgeLabel:"buildingAge",
+    floorLabel:"floor",
+
+    buildingTypeTitle:"buildingType",
+    normalApartmentText:"normalApartment",
+    siteApartmentText:"siteApartment",
+    siteNameLabel:"siteName",
+    siteListInfo:"siteInfo",
+
+    villaTypeTitle:"villaType",
+    independentVillaText:"independentVilla",
+    siteVillaText:"siteVilla",
+    villaSiteLabel:"villaSite",
+
+    kitchenTitle:"kitchen",
+    closedKitchenText:"closedKitchen",
+    openKitchenText:"openKitchen",
+
+    commonTitle:"common",
+    balconyYes:"balconyYes",
+    balconyNo:"balconyNo",
+    elevatorYes:"elevatorYes",
+    elevatorNo:"elevatorNo",
+
+    siteFacilitiesTitle:"siteFacilities",
+    openPoolText:"openPool",
+    closedPoolText:"closedPool",
+    saunaText:"sauna",
+    fitnessText:"fitness",
+    footballText:"football",
+    securityText:"security",
+
+    tapuTitle:"tapu",
+    katMulkiyetText:"katMulkiyet",
+    katIrtifakText:"katIrtifak",
+    otherTapuText:"otherTapu",
+
+    creditTitle:"credit",
+    creditYesText:"creditYes",
+    creditNoText:"creditNo",
+    creditAmountLabel:"creditAmount",
+
+    statusTitle:"status",
+    tenantYesText:"tenantYes",
+    tenantNoText:"tenantNo",
+    emptyText:"empty",
+    furnishedText:"furnished",
+
+    contactTimeTitle:"contactTime",
+    contactDateLabel:"contactDate",
+    contactTimeLabel:"contactHour",
+
+    customerTitle:"customer",
+    firstNameLabel:"firstName",
+    lastNameLabel:"lastName",
+    phoneLabel:"phone",
+    emailLabel:"email",
+    notesLabel:"notes",
+
+    backButton:"back",
+    submitButton:"submit",
+
+    registerTitle:"registerTitle",
+    registerDesc:"registerDesc",
+    regFirstLabel:"firstName",
+    regLastLabel:"lastName",
+    regPhoneLabel:"phone",
+    regEmailLabel:"email",
+    regPasswordLabel:"password",
+    registerBack:"back",
+    registerButton:"registerButton",
+
+    successTitle:"success",
+    successText:"successText",
+    homeButton:"home",
+
+    advertisingTitle:"advertising",
+    advertisingDesc:"advertisingDesc",
+    adFirstLabel:"firstName",
+    adLastLabel:"lastName",
+    adCompanyLabel:"company",
+    adBusinessLabel:"business",
+    adPhoneLabel:"phone",
+    adCountryLabel:"country",
+    adCityLabel:"city",
+    adNotesLabel:"advertisingNotes",
+    adBackButton:"back",
+    adSubmitButton:"advertisingSubmit"
+
+  };
+
+  Object.keys(map).forEach(id=>{
+    setText(id,t[map[id]]);
   });
 
-  const target=document.getElementById(id);
+  setPlaceholder(
+    "notes",
+    selectedLanguage==="fa"
+      ?"اگر درخواست خاصی درباره ملک دارید اینجا بنویسید."
+      :selectedLanguage==="en"
+      ?"Write any special requirements here."
+      :selectedLanguage==="ar"
+      ?"اكتب أي متطلبات خاصة هنا."
+      :selectedLanguage==="ru"
+      ?"Укажите здесь особые требования."
+      :"Aradığınız evle ilgili özel bir isteğiniz varsa yazabilirsiniz."
+  );
 
-  if(target){
-    target.classList.add("active");
-    window.scrollTo({top:0,behavior:"smooth"});
-  }
+}
+
+/* =========================================================
+   SCREEN NAVIGATION
+========================================================= */
+
+function goTo(id){
+
+  const screens=
+    document.querySelectorAll(".screen");
+
+  screens.forEach(screen=>{
+    screen.classList.remove("active");
+  });
+
+  const target=
+    document.getElementById(id);
+
+  if(!target) return;
+
+  target.classList.add("active");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
 /* =========================================================
    ISTANBUL DISTRICTS
+   ALL 39 DISTRICTS
 ========================================================= */
 
 const districts={
 
-avrupa:[
-"Arnavutköy","Avcılar","Bağcılar","Bahçelievler","Bakırköy",
-"Başakşehir","Bayrampaşa","Beşiktaş","Beylikdüzü","Beyoğlu",
-"Büyükçekmece","Çatalca","Esenler","Esenyurt","Eyüpsultan",
-"Fatih","Gaziosmanpaşa","Güngören","Kağıthane","Küçükçekmece",
-"Sarıyer","Silivri","Sultangazi","Şişli","Zeytinburnu"
-],
+  avrupa:[
+    "Arnavutköy",
+    "Avcılar",
+    "Bağcılar",
+    "Bahçelievler",
+    "Bakırköy",
+    "Başakşehir",
+    "Bayrampaşa",
+    "Beşiktaş",
+    "Beylikdüzü",
+    "Beyoğlu",
+    "Büyükçekmece",
+    "Çatalca",
+    "Esenler",
+    "Esenyurt",
+    "Eyüpsultan",
+    "Fatih",
+    "Gaziosmanpaşa",
+    "Güngören",
+    "Kağıthane",
+    "Küçükçekmece",
+    "Sarıyer",
+    "Silivri",
+    "Sultangazi",
+    "Şişli",
+    "Zeytinburnu"
+  ],
 
-anadolu:[
-"Adalar","Ataşehir","Beykoz","Çekmeköy","Kadıköy","Kartal",
-"Maltepe","Pendik","Sancaktepe","Sultanbeyli","Şile",
-"Şile","Tuzla","Ümraniye","Üsküdar"
-]
+  anadolu:[
+    "Adalar",
+    "Ataşehir",
+    "Beykoz",
+    "Çekmeköy",
+    "Kadıköy",
+    "Kartal",
+    "Maltepe",
+    "Pendik",
+    "Sancaktepe",
+    "Sultanbeyli",
+    "Şile",
+    "Tuzla",
+    "Ümraniye",
+    "Üsküdar"
+  ]
 
 };
 
-/*
-  MVP neighborhood data.
-  More neighborhoods will be added to the database layer.
-*/
+/* =========================================================
+   NEIGHBORHOODS
+========================================================= */
 
 const neighborhoods={
 
-"Beylikdüzü":[
-"Adnan Kahveci","Barış","Büyükşehir","Cumhuriyet",
-"Dereağzı","Gürpınar","Kavaklı","Marmara","Yakuplu"
+"Arnavutköy":[
+"Arnavutköy Merkez",
+"Atatürk",
+"Boğazköy İstiklal",
+"Deliklikaya",
+"Dursunköy",
+"Haraççı",
+"Hadımköy",
+"İmrahor",
+"İslambey",
+"Taşoluk",
+"Yassıören"
 ],
 
-"Esenyurt":[
-"Akçaburgaz","Akevler","Ardıçlı","Bağlarçeşme","Balıkyolu",
-"Barbaros Hayrettin Paşa","Battalgazi","Beylikdüzü OSB",
-"Cumhuriyet","Çınar","Esenkent","Fatih","Gökevler",
-"Hürriyet","İncirtepe","İnönü","Mehterçeşme",
-"Mevlana","Necip Fazıl Kısakürek","Orhangazi",
-"Örnek","Pınar","Saadet","Saadetdere","Sultaniye",
-"Talatpaşa","Turgut Özal","Üçevler","Yenikent","Yeşilkent"
+"Avcılar":[
+"Ambarlı",
+"Avcılar Merkez",
+"Denizköşkler",
+"Firuzköy",
+"Gümüşpala",
+"Mustafa Kemal Paşa",
+"Tahtakale",
+"Üniversite",
+"Yeşilkent"
 ],
 
-"Büyükçekmece":[
-"Alkent 2000","Atatürk","Bahçelievler","Batıköy",
-"Celaliye","Cumhuriyet","Dizdariye","Fatih",
-"Güzelce","Kamiloba","Kumburgaz","Mimarsinan",
-"Muratçeşme","Sinanoba","Tepecik"
+"Bağcılar":[
+"Bağlar",
+"Barbaros",
+"Çınar",
+"Demirkapı",
+"Fatih",
+"Güneşli",
+"İnönü",
+"Mahmutbey",
+"Merkez",
+"Yavuz Selim",
+"Yıldıztepe"
+],
+
+"Bahçelievler":[
+"Bahçelievler",
+"Cumhuriyet",
+"Çobançeşme",
+"Fevzi Çakmak",
+"Hürriyet",
+"Kocasinan",
+"Şirinevler",
+"Soğanlı",
+"Yenibosna",
+"Zafer"
+],
+
+"Bakırköy":[
+"Ataköy",
+"Bakırköy",
+"Basınköy",
+"Cevizlik",
+"Florya",
+"Osmaniye",
+"Şenlikköy",
+"Yeşilköy",
+"Yeşilyurt"
 ],
 
 "Başakşehir":[
-"Bahçeşehir 1. Kısım","Bahçeşehir 2. Kısım",
-"Başakşehir","Başak","Kayabaşı","Kayaşehir",
+"Bahçeşehir 1. Kısım",
+"Bahçeşehir 2. Kısım",
+"Başak",
+"Başakşehir",
+"Kayabaşı",
+"Kayaşehir",
 "Şahintepe"
 ],
 
-"Kağıthane":[
-"Çağlayan","Çeliktepe","Gültepe","Hamidiye",
-"Merkez","Nurtepe","Seyrantepe","Telsizler",
-"Yahya Kemal"
+"Bayrampaşa":[
+"Altıntepsi",
+"Bayrampaşa",
+"Cevatpaşa",
+"Kocatepe",
+"Muradiye",
+"Orta",
+"Terazidere",
+"Vatan"
 ],
 
 "Beşiktaş":[
-"Abbasağa","Akat","Arnavutköy","Balmumcu",
-"Barbaros","Bebek","Dikilitaş","Etiler",
-"Gayrettepe","Levent","Mecidiye","Ortaköy",
-"Sinanpaşa","Vişnezade"
+"Abbasağa",
+"Akat",
+"Arnavutköy",
+"Balmumcu",
+"Barbaros",
+"Bebek",
+"Dikilitaş",
+"Etiler",
+"Gayrettepe",
+"Konaklar",
+"Levent",
+"Mecidiye",
+"Ortaköy",
+"Sinanpaşa",
+"Vişnezade"
+],
+
+"Beylikdüzü":[
+"Adnan Kahveci",
+"Barış",
+"Büyükşehir",
+"Cumhuriyet",
+"Dereağzı",
+"Gürpınar",
+"Kavaklı",
+"Marmara",
+"Marmara Mahallesi",
+"Yakuplu"
+],
+
+"Beyoğlu":[
+"Arap Cami",
+"Asmalı Mescit",
+"Bereketzade",
+"Cihangir",
+"Çukur",
+"Firuzağa",
+"Galata",
+"Hacıahmet",
+"İstiklal",
+"Kamer Hatun",
+"Kaptanpaşa",
+"Kasımpaşa",
+"Katip Mustafa Çelebi",
+"Kılıçali Paşa",
+"Ömer Avni",
+"Piripaşa",
+"Sururi",
+"Şehit Muhtar",
+"Tomtom"
+],
+
+"Büyükçekmece":[
+"Alkent 2000",
+"Atatürk",
+"Bahçelievler",
+"Batıköy",
+"Celaliye",
+"Cumhuriyet",
+"Dizdariye",
+"Fatih",
+"Güzelce",
+"Kamiloba",
+"Kumburgaz",
+"Mimarsinan",
+"Muratçeşme",
+"Sinanoba",
+"Tepecik"
+],
+
+"Çatalca":[
+"Atatürk",
+"Çakıl",
+"Elbasan",
+"Ferhatpaşa",
+"İzzettin",
+"Kaleiçi",
+"Karacaköy",
+"Murakka",
+"Subaşı",
+"Yalıköy"
+],
+
+"Esenler":[
+"Birlik",
+"Çifte Havuzlar",
+"Davutpaşa",
+"Fevzi Çakmak",
+"Fatih",
+"Nine Hatun",
+"Oruçreis",
+"Tuna",
+"Yavuz Selim"
+],
+
+"Esenyurt":[
+"Akçaburgaz",
+"Akevler",
+"Ardıçlı",
+"Bağlarçeşme",
+"Balıkyolu",
+"Barbaros Hayrettin Paşa",
+"Battalgazi",
+"Beylikdüzü OSB",
+"Cumhuriyet",
+"Çınar",
+"Esenkent",
+"Fatih",
+"Gökevler",
+"Hürriyet",
+"İncirtepe",
+"İnönü",
+"Mehterçeşme",
+"Mevlana",
+"Necip Fazıl Kısakürek",
+"Orhangazi",
+"Örnek",
+"Pınar",
+"Saadet",
+"Saadetdere",
+"Sultaniye",
+"Talatpaşa",
+"Turgut Özal",
+"Üçevler",
+"Yenikent",
+"Yeşilkent"
+],
+
+"Eyüpsultan":[
+"Akşemsettin",
+"Alibeyköy",
+"Çırçır",
+"Defterdar",
+"Emniyettepe",
+"Esentepe",
+"Göktürk Merkez",
+"İslambey",
+"Karadolap",
+"Kemerburgaz",
+"Merkez",
+"Mithatpaşa",
+"Rami Cuma",
+"Rami Yeni",
+"Topçular"
+],
+
+"Fatih":[
+"Aksaray",
+"Balabanağa",
+"Balat",
+"Beyazıt",
+"Cankurtaran",
+"Caferağa",
+"Çapa",
+"Fener",
+"Fevzipaşa",
+"Fatih",
+"Grand Bazaar",
+"Haseki",
+"İskenderpaşa",
+"Katip Kasım",
+"Kocamustafapaşa",
+"Laleli",
+"Mahmutpaşa",
+"Sultanahmet",
+"Topkapı",
+"Yedikule"
+],
+
+"Gaziosmanpaşa":[
+"Bağlarbaşı",
+"Barbaros Hayrettin Paşa",
+"Fevzi Çakmak",
+"Hürriyet",
+"Karadeniz",
+"Karlıtepe",
+"Karayolları",
+"Merkez",
+"Mevlana",
+"Sarıgöl",
+"Şemsipaşa",
+"Yenidoğan",
+"Yıldıztepe"
+],
+
+"Güngören":[
+"Akıncılar",
+"Gençosman",
+"Güneştepe",
+"Merkez",
+"Mehmet Nesih Özmen",
+"Sanayi",
+"Tozkoparan"
+],
+
+"Kağıthane":[
+"Çağlayan",
+"Çeliktepe",
+"Gültepe",
+"Gültepe",
+"Hamidiye",
+"Harmantepe",
+"Merkez",
+"Nurtepe",
+"Seyrantepe",
+"Telsizler",
+"Yahya Kemal"
+],
+
+"Küçükçekmece":[
+"Atakent",
+"Atatürk",
+"Beşyol",
+"Cumhuriyet",
+"Fevzi Çakmak",
+"Fatih",
+"Gültepe",
+"Halkalı Merkez",
+"İnönü",
+"Kanarya",
+"Kartaltepe",
+"Mehmet Akif",
+"Sefaköy",
+"Tevfikbey",
+"Yarımburgaz"
 ],
 
 "Sarıyer":[
-"Bahçeköy Merkez","Baltalimanı","Büyükdere","Çayırbaşı",
-"Darüşşafaka","Emirgan","Ferahevler","İstinye",
-"Kireçburnu","Maslak","Pınar","Rumeli Hisarı",
-"Tarabya","Yeniköy","Zekeriyaköy"
+"Bahçeköy Merkez",
+"Baltalimanı",
+"Bahçeköy",
+"Büyükdere",
+"Çayırbaşı",
+"Darüşşafaka",
+"Emirgan",
+"Ferahevler",
+"İstinye",
+"Kireçburnu",
+"Maslak",
+"Pınar",
+"Poligon",
+"Reşitpaşa",
+"Rumeli Hisarı",
+"Tarabya",
+"Yeniköy",
+"Zekeriyaköy"
+],
+
+"Silivri":[
+"Alipaşa",
+"Alibey",
+"Balaban",
+"Beyciler",
+"Büyükçavuşlu",
+"Cumhuriyet",
+"Çanta",
+"Değirmenköy",
+"Fatih",
+"Gazitepe",
+"Kadıköy",
+"Kavaklı",
+"Mimarsinan",
+"Ortaköy",
+"Piri Mehmet Paşa",
+"Selimpaşa",
+"Semizkumlar",
+"Yeni"
+],
+
+"Sultangazi":[
+"50. Yıl",
+"75. Yıl",
+"Esentepe",
+"Gazi",
+"Habibler",
+"İsmetpaşa",
+"Karadeniz",
+"Uğur Mumcu",
+"Yayla",
+"Zübeyde Hanım"
+],
+
+"Şişli":[
+"19 Mayıs",
+"Bozkurt",
+"Cumhuriyet",
+"Dünya",
+"Esentepe",
+"Feriköy",
+"Fulya",
+"Halaskargazi",
+"Harbiye",
+"İnönü",
+"İzzet Paşa",
+"Kağıthane",
+"Kültür",
+"Merkez",
+"Meşrutiyet",
+"Teşvikiye"
+],
+
+"Zeytinburnu":[
+"Beştelsiz",
+"Çırpıcı",
+"Demirciler",
+"Gökalp",
+"Maltepe",
+"Merkezefendi",
+"Nuri Paşa",
+"Seyitnizam",
+"Sümer",
+"Telsiz"
+],
+
+"Adalar":[
+"Büyükada",
+"Heybeliada",
+"Kınalıada",
+"Burgazada"
+],
+
+"Ataşehir":[
+"Atatürk",
+"Barbaros",
+"Batı Ataşehir",
+"Esatpaşa",
+"Ferhatpaşa",
+"İçerenköy",
+"Kayışdağı",
+"Küçükbakkalköy",
+"Mevlana",
+"Mustafa Kemal",
+"Örnek",
+"Yeni Çamlıca",
+"Yenisahra"
+],
+
+"Beykoz":[
+"Anadoluhisarı",
+"Anadolu Kavağı",
+"Çavuşbaşı",
+"Çengeldere",
+"Çubuklu",
+"Göksu",
+"Göztepe",
+"Kanlıca",
+"Kavacık",
+"Merkez",
+"Paşabahçe",
+"Riva",
+"Tokatköy"
+],
+
+"Çekmeköy":[
+"Cumhuriyet",
+"Çamlık",
+"Çatalmeşe",
+"Ekşioğlu",
+"Merkez",
+"Mehmet Akif",
+"Merkez Mahallesi",
+"Mimar Sinan",
+"Ömerli",
+"Sırapınar",
+"Taşdelen"
+],
+
+"Kadıköy":[
+"Acıbadem",
+"Caddebostan",
+"Caferağa",
+"Fenerbahçe",
+"Feneryolu",
+"Göztepe",
+"Hasanpaşa",
+"Koşuyolu",
+"Kozyatağı",
+"Merdivenköy",
+"Moda",
+"Osmanağa",
+"Rasimpaşa",
+"Suadiye",
+"Zühtüpaşa"
+],
+
+"Kartal":[
+"Atalar",
+"Cumhuriyet",
+"Çavuşoğlu",
+"Esentepe",
+"Fatih",
+"Gençlik",
+"Gümüşpınar",
+"Hürriyet",
+"İstasyon",
+"Karlıktepe",
+"Kordonboyu",
+"Orhantepe",
+"Petrol-İş",
+"Topselvi",
+"Uğur Mumcu",
+"Yakacık",
+"Yalı",
+"Yukarı"
+],
+
+"Maltepe":[
+"Altayçeşme",
+"Altıntepe",
+"Bağlarbaşı",
+"Başıbüyük",
+"Büyükbakkalköy",
+"Cevizli",
+"Çınar",
+"Esenkent",
+"Feyzullah",
+"Fındıklı",
+"Girne",
+"İdealtepe",
+"Küçükyalı",
+"Yalı",
+"Zümrütevler"
+],
+
+"Pendik":[
+"Ahmet Yesevi",
+"Bahçelievler",
+"Çamçeşme",
+"Çamlık",
+"Çınardere",
+"Dumlupınar",
+"Doğu",
+"Esenler",
+"Fevzi Çakmak",
+"Güllübağlar",
+"Güzelyalı",
+"Harmandere",
+"Kavakpınar",
+"Kaynarca",
+"Kurtköy",
+"Orhangazi",
+"Pendik",
+"Sapanbağları",
+"Şeyhli",
+"Velibaba",
+"Yenişehir",
+"Yeşilbağlar"
+],
+
+"Sancaktepe":[
+"Abdurrahmangazi",
+"Akpınar",
+"Atatürk",
+"Eyüp Sultan",
+"Fatih",
+"Fevzi Çakmak",
+"Hilal",
+"İnönü",
+"Meclis",
+"Mevlana",
+"Osman Gazi",
+"Sarıgazi",
+"Veysel Karani",
+"Yenidoğan"
+],
+
+"Sultanbeyli":[
+"Abdurrahmangazi",
+"Ahmet Yesevi",
+"Battalgazi",
+"Fatih",
+"Hasanpaşa",
+"Mehmet Akif",
+"Mecidiye",
+"Necip Fazıl",
+"Orhangazi",
+"Risale",
+"Yavuz Selim"
+],
+
+"Şile":[
+"Ahmetli",
+"Ağva Merkez",
+"Balibey",
+"Çavuş",
+"Çayırbaşı",
+"Çelebi",
+"İmrendere",
+"Kumbaba",
+"Meşrutiyet",
+"Şile Merkez",
+"Üvezli"
+],
+
+"Tuzla":[
+"Aydınlı",
+"Aydıntepe",
+"Cami",
+"Çarşı",
+"Evliya Çelebi",
+"Fatih",
+"İçmeler",
+"İstasyon",
+"İstasyon Mahallesi",
+"Mescit",
+"Postane",
+"Şifa",
+"Tepeören"
+],
+
+"Ümraniye":[
+"Altınşehir",
+"Armağanevler",
+"Atakent",
+"Atatürk",
+"Çakmak",
+"Çamlık",
+"Çavuşoğlu",
+"Elmalıkent",
+"Esenevler",
+"Fatih Sultan Mehmet",
+"Hekimbaşı",
+"Ihlamurkuyu",
+"İnkılap",
+"Kazım Karabekir",
+"Namık Kemal",
+"Parseller",
+"Saray",
+"Site",
+"Şerifali",
+"Tantavi",
+"Tepeüstü",
+"Yamanevler",
+"Yukarı Dudullu"
+],
+
+"Üsküdar":[
+"Acıbadem",
+"Altunizade",
+"Bağlarbaşı",
+"Barbaros",
+"Bağlarbaşı",
+"Beylerbeyi",
+"Burhaniye",
+"Çengelköy",
+"Cumhuriyet",
+"Ferah",
+"Fıstıkağacı",
+"İcadiye",
+"Kandilli",
+"Kısıklı",
+"Kuzguncuk",
+"Libadiye",
+"Mehmet Akif Ersoy",
+"Mimar Sinan",
+"Salacak",
+"Selimiye",
+"Ünalan",
+"Valide-i Atik"
 ]
 
 };
 
 /* =========================================================
-   SITE DATA
+   SITE DATABASE
 ========================================================= */
 
 const sites={
 
 "Yeşilkent":[
 "Fi-Tower",
-"Onay Life"
+"Onay Life",
+"Prestige City",
+"Akros İstanbul",
+"Garden City"
 ],
 
 "Yakuplu":[
 "Fi-Tower",
 "Marina Park",
+"West Side Istanbul",
+"White City",
+"Yakuplu Residence"
+],
+
+"Adnan Kahveci":[
+"Perla Vista",
+"Bizimkent",
+"Kristalşehir",
+"West Side",
+"Marmara Residence"
+],
+
+"Barış":[
+"Bizimkent",
+"West Side",
+"Barış Residence"
+],
+
+"Büyükşehir":[
+"Kristalşehir",
+"White City",
 "West Side Istanbul"
 ],
 
+"Cumhuriyet":[
+"Paradise Life",
+"Vira İstanbul",
+"City Center"
+],
+
 "Esenkent":[
-"Örnek Site"
+"Örnek Site",
+"City Home",
+"Esenkent Residence"
+],
+
+"Gökevler":[
+"Fi Side",
+"Residence Park",
+"Modern City"
 ],
 
 "Bahçeşehir 1. Kısım":[
 "Akbatı Residence",
-"Bahçeşehir Konutları"
+"Bahçeşehir Konutları",
+"Prestige Park",
+"Spradon",
+"Boğazköy Residence"
 ],
 
 "Bahçeşehir 2. Kısım":[
-"Prestige Mall Residence"
-]
+"Prestige Mall Residence",
+"Bahçeşehir Modern",
+"Life in Bahçeşehir",
+"Elite City"
+],
 
-};
+"Kayabaşı":[
+"Avrasya Konutları",
+"Kayaşehir Konutları",
+"Başakşehir Evleri"
+],
 
-const villaSites={
+"Kayaşehir":[
+"Kayaşehir Konutları",
+"Avrasya Konutları",
+"Başakşehir Vadi"
+],
+
+"İstinye":[
+"İstinye Park Residence",
+"İstinye Living",
+"İstinye Suites"
+],
 
 "Zekeriyaköy":[
-"Zekeriyaköy Villa Sitesi"
+"Zekeriyaköy Life",
+"Forest Residence",
+"Zekeriyaköy Villaları"
 ],
 
-"Bahçeşehir 1. Kısım":[
-"Bahçeşehir Villa Sitesi"
+"Maslak":[
+"Maslak 1453",
+"Nurol Life",
+"Vadi İstanbul",
+"Skyland Istanbul"
 ],
 
-"Bahçeşehir 2. Kısım":[
-"Bahçeşehir Villa Yaşam"
+"Levent":[
+"Levent Residence",
+"İş Kuleleri Residence",
+"Levent Suites"
+],
+
+"Etiler":[
+"Etiler Residence",
+"Akmerkez Residence"
+],
+
+"Ortaköy":[
+"Ortaköy Residence",
+"Palace Residence"
+],
+
+"Çengelköy":[
+"Çengelköy Residence",
+"Boğaz Residence"
+],
+
+"Altunizade":[
+"Altunizade Residence",
+"Capitol Residence"
 ]
 
 };
 
 /* =========================================================
-   DISTRICT SELECTOR
+   VILLA SITE DATABASE
+========================================================= */
+
+const villaSites={
+
+"Zekeriyaköy":[
+"Zekeriyaköy Villaları",
+"Forest Villas",
+"Zekeriyaköy Life Villas"
+],
+
+"Bahçeşehir 1. Kısım":[
+"Bahçeşehir Villa Sitesi",
+"Prestige Villas",
+"Bahçeşehir Garden Villas"
+],
+
+"Bahçeşehir 2. Kısım":[
+"Bahçeşehir Villa Yaşam",
+"Modern Villas Bahçeşehir",
+"Elite Villa Site"
+],
+
+"Riva":[
+"Riva Villa Sitesi",
+"Riva Garden Villas"
+],
+
+"Çengelköy":[
+"Çengelköy Boğaz Villaları"
+],
+
+"Ömerli":[
+"Ömerli Villa Sitesi",
+"Ömerli Garden"
+]
+
+};
+
+/* =========================================================
+   SIDE CHANGED
+========================================================= */
+
+function sideChanged(){
+
+  const side=
+    document.getElementById("side").value;
+
+  const district=
+    document.getElementById("district");
+
+  const neighborhood=
+    document.getElementById("neighborhood");
+
+  district.innerHTML="";
+
+  neighborhood.innerHTML=
+    `<option value="">${selectedLanguage==="fa"
+      ?"ابتدا منطقه را انتخاب کنید"
+      :selectedLanguage==="en"
+      ?"Select district first"
+      :selectedLanguage==="ar"
+      ?"اختر المنطقة أولاً"
+      :selectedLanguage==="ru"
+      ?"Сначала выберите район"
+      :"Önce ilçeyi seçiniz"}</option>`;
+
+  if(!side){
+    district.innerHTML=
+      `<option value="">${selectedLanguage==="fa"
+        ?"انتخاب کنید"
+        :"Seçiniz"}</option>`;
+    return;
+  }
+
+  district.innerHTML=
+    `<option value="">
+      ${selectedLanguage==="fa"
+        ?"منطقه را انتخاب کنید"
+        :selectedLanguage==="en"
+        ?"Select district"
+        :selectedLanguage==="ar"
+        ?"اختر المنطقة"
+        :selectedLanguage==="ru"
+        ?"Выберите район"
+        :"İlçe seçiniz"}
+    </option>`;
+
+  districts[side].forEach(d=>{
+
+    const option=
+      document.createElement("option");
+
+    option.value=d;
+
+    option.textContent=
+      getBilingualDistrictName(d);
+
+    district.appendChild(option);
+
+  });
+
+}
+
+/* =========================================================
+   BILINGUAL DISTRICT NAMES
+========================================================= */
+
+const persianNames={
+
+"Beylikdüzü":"Beylikdüzü — بیلیک‌دوزو",
+"Esenyurt":"Esenyurt — اسنیورت",
+"Büyükçekmece":"Büyükçekmece — بیوک‌چکمجه",
+"Başakşehir":"Başakşehir — باشاک‌شهیر",
+"Kağıthane":"Kağıthane — کاغی‌تانه",
+"Beşiktaş":"Beşiktaş — بشیکتاش",
+"Sarıyer":"Sarıyer — ساری‌یر",
+"Avcılar":"Avcılar — آوجیلار",
+"Bakırköy":"Bakırköy — باکرکوی",
+"Bahçelievler":"Bahçelievler — باغچلی‌اولر",
+"Bağcılar":"Bağcılar — باغجیلار",
+"Şişli":"Şişli — شیشلی",
+"Fatih":"Fatih — فاتح",
+"Kadıköy":"Kadıköy — کادیکوی",
+"Üsküdar":"Üsküdar — اسکودار",
+"Ataşehir":"Ataşehir — آتاشهیر",
+"Maltepe":"Maltepe — مالتپه",
+"Pendik":"Pendik — پندیک",
+"Kartal":"Kartal — کارتال",
+"Tuzla":"Tuzla — توزلا",
+"Çekmeköy":"Çekmeköy — چکمکوی",
+"Beykoz":"Beykoz — بیکوز",
+"Sarıyer":"Sarıyer — ساری‌یر"
+};
+
+function getBilingualDistrictName(name){
+
+  if(selectedLanguage==="fa" &&
+     persianNames[name]){
+    return persianNames[name];
+  }
+
+  return name;
+}
+
+/* =========================================================
+   DISTRICT CHANGED
 ========================================================= */
 
 function districtChanged(){
 
-  const side=document.getElementById("side").value;
-  const districtSelect=document.getElementById("district");
-  const neighborhoodSelect=document.getElementById("neighborhood");
+  const district=
+    document.getElementById("district").value;
 
-  if(event && event.target===document.getElementById("side")){
+  const neighborhood=
+    document.getElementById("neighborhood");
 
-    districtSelect.innerHTML='<option value="">İlçe seçiniz</option>';
+  neighborhood.innerHTML=
+    `<option value="">
+      ${selectedLanguage==="fa"
+        ?"محله را انتخاب کنید"
+        :selectedLanguage==="en"
+        ?"Select neighborhood"
+        :selectedLanguage==="ar"
+        ?"اختر الحي"
+        :selectedLanguage==="ru"
+        ?"Выберите махалле"
+        :"Mahalle seçiniz"}
+    </option>`;
 
-    if(side && districts[side]){
+  if(!district) return;
 
-      districts[side].forEach(d=>{
-        const option=document.createElement("option");
-        option.value=d;
-        option.textContent=d;
-        districtSelect.appendChild(option);
-      });
+  const list=
+    neighborhoods[district] || [];
 
-    }
+  list.forEach(n=>{
 
-    neighborhoodSelect.innerHTML=
-      '<option value="">Önce ilçeyi seçiniz</option>';
+    const option=
+      document.createElement("option");
 
-    return;
-  }
+    option.value=n;
 
-  const district=districtSelect.value;
+    option.textContent=
+      selectedLanguage==="fa"
+        ?`${n} — ${n}`
+        :n;
 
-  neighborhoodSelect.innerHTML=
-    '<option value="">Mahalle seçiniz</option>';
+    neighborhood.appendChild(option);
 
-  if(neighborhoods[district]){
+  });
 
-    neighborhoods[district].forEach(n=>{
-      const option=document.createElement("option");
-      option.value=n;
-      option.textContent=n;
-      neighborhoodSelect.appendChild(option);
-    });
+  loadSites();
+}
 
-  }else{
+/* =========================================================
+   NEIGHBORHOOD CHANGED
+========================================================= */
 
-    const option=document.createElement("option");
-    option.textContent="Bu bölge yakında açılacak";
-    option.value="";
-    neighborhoodSelect.appendChild(option);
+function neighborhoodChanged(){
 
-  }
+  loadSites();
 
-  neighborhoodSelect.onchange=loadSites;
+  loadVillaSites();
+
 }
 
 /* =========================================================
@@ -1584,21 +3873,570 @@ function districtChanged(){
 
 function loadSites(){
 
-  const neighborhood=document.getElementById("neighborhood").value;
+  const neighborhood=
+    document.getElementById("neighborhood").value;
 
-  const siteSelect=document.getElementById("siteName");
+  const siteSelect=
+    document.getElementById("siteName");
 
-  siteSelect.innerHTML='<option value="">Site seçiniz</option>';
+  siteSelect.innerHTML=
+    `<option value="">
+      ${selectedLanguage==="fa"
+        ?"سایت را انتخاب کنید"
+        :selectedLanguage==="en"
+        ?"Select site"
+        :selectedLanguage==="ar"
+        ?"اختر المجمع"
+        :selectedLanguage==="ru"
+        ?"Выберите комплекс"
+        :"Site seçiniz"}
+    </option>`;
 
-  if(sites[neighborhood]){
+  const list=
+    sites[neighborhood] || [];
 
-    sites[neighborhood].forEach(site=>{
-      const option=document.createElement("option");
-      option.value=site;
-      option.textContent=site;
-      siteSelect.appendChild(option);
-    });
+  list.forEach(site=>{
+
+    const option=
+      document.createElement("option");
+
+    option.value=site;
+    option.textContent=site;
+
+    siteSelect.appendChild(option);
+
+  });
+
+}
+
+/* =========================================================
+   VILLA SITE LOADER
+========================================================= */
+
+function loadVillaSites(){
+
+  const neighborhood=
+    document.getElementById("neighborhood").value;
+
+  const select=
+    document.getElementById("villaSite");
+
+  select.innerHTML=
+    `<option value="">
+      ${selectedLanguage==="fa"
+        ?"سایت ویلا را انتخاب کنید"
+        :selectedLanguage==="en"
+        ?"Select villa site"
+        :selectedLanguage==="ar"
+        ?"اختر مجمع الفلل"
+        :selectedLanguage==="ru"
+        ?"Выберите вилла-комплекс"
+        :"Site seçiniz"}
+    </option>`;
+
+  const list=
+    villaSites[neighborhood] || [];
+
+  list.forEach(site=>{
+
+    const option=
+      document.createElement("option");
+
+    option.value=site;
+    option.textContent=site;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+/* =========================================================
+   PROPERTY TYPE
+========================================================= */
+
+function propertyTypeChanged(){
+
+  const type=
+    document.getElementById("propertyType").value;
+
+  const villaSection=
+    document.getElementById("villaSection");
+
+  const buildingSection=
+    document.getElementById("buildingSection");
+
+  if(type==="villa"){
+
+    villaSection.classList.remove("hidden");
+
+    buildingSection.classList.add("hidden");
 
   }else{
 
-   
+    villaSection.classList.add("hidden");
+
+    buildingSection.classList.remove("hidden");
+
+  }
+
+}
+
+/* =========================================================
+   OPTION SELECTOR
+========================================================= */
+
+function chooseOption(
+  element,
+  group,
+  value
+){
+
+  document
+    .querySelectorAll(
+      `.option[data-group="${group}"]`
+    )
+    .forEach(el=>{
+      el.classList.remove("selected");
+    });
+
+  /*
+    Villa options don't have data-group in the HTML,
+    so handle them separately.
+  */
+
+  if(
+    group==="villaType"
+  ){
+
+    const parent=
+      element.parentElement;
+
+    parent
+      .querySelectorAll(".option")
+      .forEach(el=>{
+        el.classList.remove("selected");
+      });
+
+  }
+
+  element.classList.add("selected");
+
+  state[group]=value;
+
+  /* Site selected */
+
+  if(group==="buildingType"){
+
+    const siteBox=
+      document.getElementById("siteBox");
+
+    const siteFacilities=
+      document.getElementById("siteFacilities");
+
+    if(value==="site"){
+
+      siteBox.classList.remove("hidden");
+      siteFacilities.classList.remove("hidden");
+
+      loadSites();
+
+    }else{
+
+      siteBox.classList.add("hidden");
+      siteFacilities.classList.add("hidden");
+
+    }
+
+  }
+
+  /* Villa site */
+
+  if(group==="villaType"){
+
+    const box=
+      document.getElementById("villaSiteBox");
+
+    if(value==="site"){
+
+      box.classList.remove("hidden");
+      loadVillaSites();
+
+    }else{
+
+      box.classList.add("hidden");
+
+    }
+
+  }
+
+  /* Credit */
+
+  if(group==="credit"){
+
+    const box=
+      document.getElementById("creditBox");
+
+    if(value==="yes"){
+      box.classList.remove("hidden");
+    }else{
+      box.classList.add("hidden");
+    }
+
+  }
+
+}
+
+/* =========================================================
+   COLLECT PROPERTY DATA
+========================================================= */
+
+function collectPropertyData(){
+
+  return {
+
+    language:selectedLanguage,
+
+    propertyType:
+      document.getElementById("propertyType").value,
+
+    priceMin:
+      document.getElementById("priceMin").value,
+
+    priceMax:
+      document.getElementById("priceMax").value,
+
+    side:
+      document.getElementById("side").value,
+
+    district:
+      document.getElementById("district").value,
+
+    neighborhood:
+      document.getElementById("neighborhood").value,
+
+    sqmMin:
+      document.getElementById("sqmMin").value,
+
+    sqmMax:
+      document.getElementById("sqmMax").value,
+
+    rooms:
+      document.getElementById("rooms").value,
+
+    bathrooms:
+      document.getElementById("bathrooms").value,
+
+    wc:
+      document.getElementById("wc").value,
+
+    buildingAge:
+      document.getElementById("buildingAge").value,
+
+    floor:
+      document.getElementById("floor").value,
+
+    buildingType:
+      state.buildingType,
+
+    siteName:
+      document.getElementById("siteName").value,
+
+    villaType:
+      state.villaType,
+
+    villaSite:
+      document.getElementById("villaSite").value,
+
+    kitchen:
+      state.kitchen,
+
+    balcony:
+      state.balcony,
+
+    elevator:
+      state.elevator,
+
+    openPool:
+      state.openPool,
+
+    closedPool:
+      state.closedPool,
+
+    sauna:
+      state.sauna,
+
+    fitness:
+      state.fitness,
+
+    football:
+      state.football,
+
+    security:
+      state.security,
+
+    tapu:
+      state.tapu,
+
+    credit:
+      state.credit,
+
+    creditAmount:
+      document.getElementById("creditAmount").value,
+
+    tenant:
+      state.tenant,
+
+    empty:
+      state.empty,
+
+    furnished:
+      state.furnished,
+
+    contactDate:
+      document.getElementById("contactDate").value,
+
+    contactTime:
+      document.getElementById("contactTime").value,
+
+    firstName:
+      document.getElementById("firstName").value,
+
+    lastName:
+      document.getElementById("lastName").value,
+
+    phone:
+      document.getElementById("phone").value,
+
+    email:
+      document.getElementById("email").value,
+
+    notes:
+      document.getElementById("notes").value,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+}
+
+/* =========================================================
+   SUBMIT PROPERTY
+========================================================= */
+
+function submitRequest(){
+
+  const firstName=
+    document.getElementById("firstName").value.trim();
+
+  const phone=
+    document.getElementById("phone").value.trim();
+
+  if(!firstName || !phone){
+
+    alert(
+      selectedLanguage==="fa"
+        ?"لطفاً نام و شماره تلفن را وارد کنید."
+        :selectedLanguage==="en"
+        ?"Please enter your name and phone number."
+        :selectedLanguage==="ar"
+        ?"يرجى إدخال الاسم ورقم الهاتف."
+        :selectedLanguage==="ru"
+        ?"Введите имя и номер телефона."
+        :"Lütfen adınızı ve telefon numaranızı girin."
+    );
+
+    return;
+  }
+
+  const data=
+    collectPropertyData();
+
+  /*
+    Temporary local storage.
+    Later we connect this directly to the
+    NM GROUP backend / Telegram / database.
+  */
+
+  const old=
+    JSON.parse(
+      localStorage.getItem(
+        "nm_property_requests"
+      ) || "[]"
+    );
+
+  old.push(data);
+
+  localStorage.setItem(
+    "nm_property_requests",
+    JSON.stringify(old)
+  );
+
+  goTo("successScreen");
+
+}
+
+/* =========================================================
+   REGISTER
+========================================================= */
+
+function registerUser(){
+
+  const data={
+
+    language:selectedLanguage,
+
+    firstName:
+      document.getElementById("regFirst").value,
+
+    lastName:
+      document.getElementById("regLast").value,
+
+    phone:
+      document.getElementById("regPhone").value,
+
+    email:
+      document.getElementById("regEmail").value,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+  localStorage.setItem(
+    "nm_user",
+    JSON.stringify(data)
+  );
+
+  goTo("propertyScreen");
+
+}
+
+/* =========================================================
+   ADVERTISING
+========================================================= */
+
+function submitAdvertising(){
+
+  const first=
+    document.getElementById("adFirst").value.trim();
+
+  const phone=
+    document.getElementById("adPhone").value.trim();
+
+  if(!first || !phone){
+
+    alert(
+      selectedLanguage==="fa"
+        ?"لطفاً نام و شماره تلفن را وارد کنید."
+        :selectedLanguage==="en"
+        ?"Please enter your name and phone."
+        :selectedLanguage==="ar"
+        ?"يرجى إدخال الاسم والهاتف."
+        :selectedLanguage==="ru"
+        ?"Введите имя и телефон."
+        :"Lütfen adınızı ve telefonunuzu girin."
+    );
+
+    return;
+  }
+
+  const data={
+
+    language:selectedLanguage,
+
+    firstName:first,
+
+    lastName:
+      document.getElementById("adLast").value,
+
+    company:
+      document.getElementById("adCompany").value,
+
+    business:
+      document.getElementById("adBusiness").value,
+
+    phone,
+
+    country:
+      document.getElementById("adCountry").value,
+
+    city:
+      document.getElementById("adCity").value,
+
+    notes:
+      document.getElementById("adNotes").value,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+  const old=
+    JSON.parse(
+      localStorage.getItem(
+        "nm_advertising_requests"
+      ) || "[]"
+    );
+
+  old.push(data);
+
+  localStorage.setItem(
+    "nm_advertising_requests",
+    JSON.stringify(old)
+  );
+
+  alert(
+    selectedLanguage==="fa"
+      ?"درخواست تبلیغات شما ثبت شد."
+      :selectedLanguage==="en"
+      ?"Your advertising request has been received."
+      :selectedLanguage==="ar"
+      ?"تم استلام طلب الإعلان."
+      :selectedLanguage==="ru"
+      ?"Ваш рекламный запрос получен."
+      :"Reklam talebiniz alındı."
+  );
+
+  goTo("welcomeScreen");
+
+}
+
+/* =========================================================
+   INIT
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  ()=>{
+
+    /*
+      Load saved language.
+    */
+
+    selectLanguage(selectedLanguage);
+
+    /*
+      Set default values.
+    */
+
+    document.getElementById("priceMin")
+      .value="650000";
+
+    document.getElementById("priceMax")
+      .value="3500000";
+
+    document.getElementById("sqmMin")
+      .value="60";
+
+    document.getElementById("sqmMax")
+      .value="180";
+
+  }
+);
+
+</script>
+
+</body>
+  </html>
