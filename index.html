@@ -1,4554 +1,2249 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>NM GROUP</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NM GROUP — Real Estate</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
 :root{
-  --bg:#03050d;
-  --panel:#0b1020;
-  --panel2:#121a31;
-  --gold:#e8c36d;
-  --gold2:#fff0b0;
-  --text:#f7f8fc;
-  --muted:#9ca6bd;
-  --line:rgba(232,195,109,.28);
-  --shadow:0 35px 100px rgba(0,0,0,.55);
+ --gold:#d8b66c;
+ --gold2:#ffe0a0;
+ --cyan:#63e8ff;
+ --bg:#02030a;
+ --panel:rgba(10,14,28,.82);
+ --line:rgba(216,182,108,.28);
+ --text:#f5f7fb;
+ --muted:#a6adbf;
 }
 
-*{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
-  background:
-    radial-gradient(circle at 50% 0%,#1c2349 0%,#090d1d 38%,#02040b 80%);
-  color:var(--text);
-}
+html{scroll-behavior:smooth}
 
 body{
-  overflow-x:hidden;
+ font-family:Inter,Arial,sans-serif;
+ background:
+ radial-gradient(circle at 50% 35%,rgba(76,88,190,.20),transparent 35%),
+ radial-gradient(circle at 15% 80%,rgba(0,220,255,.08),transparent 30%),
+ #02030a;
+ color:var(--text);
+ min-height:100vh;
+ overflow-x:hidden;
 }
 
-button,input,select,textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-#stars{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  overflow:hidden;
-}
-
-.star{
-  position:absolute;
-  width:2px;
-  height:2px;
-  border-radius:50%;
-  background:white;
-  opacity:.45;
-  animation:twinkle 4s infinite alternate;
-}
-
-@keyframes twinkle{
-  from{opacity:.05;transform:scale(.5)}
-  to{opacity:.55;transform:scale(1.4)}
+body:before{
+ content:"";
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ opacity:.18;
+ background-image:
+ radial-gradient(circle,#fff 1px,transparent 1px),
+ radial-gradient(circle,#63e8ff 1px,transparent 1px);
+ background-size:90px 90px,150px 150px;
+ background-position:0 0,40px 70px;
+ z-index:0;
 }
 
 header{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  height:78px;
-  z-index:50;
-  padding:0 5vw;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:linear-gradient(#02040de8,transparent);
-  backdrop-filter:blur(14px);
+ position:fixed;
+ top:0;
+ left:0;
+ right:0;
+ z-index:100;
+ padding:20px 5vw;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ background:linear-gradient(to bottom,rgba(2,3,10,.95),transparent);
+ backdrop-filter:blur(8px);
 }
 
 .logo{
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:7px;
+ font:800 23px Montserrat;
+ letter-spacing:4px;
 }
-
-.logo span{
-  color:var(--gold);
-}
+.logo span{color:var(--gold2)}
 
 .lang-current{
-  color:white;
-  background:rgba(255,255,255,.04);
-  border:1px solid var(--line);
-  border-radius:50px;
-  padding:11px 19px;
+ padding:9px 16px;
+ border:1px solid var(--line);
+ border-radius:30px;
+ background:rgba(255,255,255,.05);
+ font-size:13px;
 }
 
-main{
-  width:min(1150px,92vw);
-  margin:auto;
-  min-height:100vh;
-  padding:105px 0 70px;
-  position:relative;
-  z-index:2;
+.space{
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ overflow:hidden;
+ z-index:0;
+}
+
+.orbit{
+ position:absolute;
+ border:1px solid rgba(99,232,255,.12);
+ border-radius:50%;
+}
+
+.orbit.one{
+ width:850px;height:850px;
+ left:-300px;top:-280px;
+ transform:rotate(-18deg);
+}
+
+.orbit.two{
+ width:1100px;height:500px;
+ right:-450px;bottom:-150px;
+ transform:rotate(15deg);
+}
+
+.glow{
+ position:absolute;
+ width:500px;height:500px;
+ border-radius:50%;
+ filter:blur(90px);
+ background:rgba(91,100,255,.13);
+ left:50%;top:35%;
+ transform:translate(-50%,-50%);
+}
+
+.app{
+ position:relative;
+ z-index:2;
+ width:min(1150px,94%);
+ margin:auto;
+ padding:105px 0 60px;
+ min-height:100vh;
 }
 
 .screen{
-  display:none;
-  opacity:0;
-  transform:
-    perspective(1400px)
-    translate3d(120px,0,-180px)
-    rotateY(-11deg)
-    scale(.94);
+ display:none;
+ min-height:calc(100vh - 150px);
 }
 
 .screen.active{
-  display:block;
-  animation:screenIn .72s cubic-bezier(.18,.82,.2,1) forwards;
+ display:flex;
+ flex-direction:column;
+ animation:enter .8s cubic-bezier(.16,1,.3,1);
 }
 
-.screen.leave{
-  display:block;
-  animation:screenOut .42s cubic-bezier(.4,0,.7,1) forwards;
+@keyframes enter{
+ 0%{
+  opacity:0;
+  transform:perspective(1200px) translate3d(130px,0,-350px) rotateY(-12deg) scale(.9);
+  filter:blur(10px);
+ }
+ 100%{
+  opacity:1;
+  transform:perspective(1200px) translate3d(0,0,0) rotateY(0) scale(1);
+  filter:blur(0);
+ }
 }
 
-@keyframes screenIn{
-  0%{
-    opacity:0;
-    transform:
-      perspective(1400px)
-      translate3d(130px,0,-220px)
-      rotateY(-13deg)
-      scale(.92);
-  }
-  100%{
-    opacity:1;
-    transform:
-      perspective(1400px)
-      translate3d(0,0,0)
-      rotateY(0)
-      scale(1);
-  }
+@keyframes optionIn{
+ 0%{
+  opacity:0;
+  transform:perspective(800px) translate3d(100px,0,-250px) rotateY(-15deg);
+ }
+ 100%{
+  opacity:1;
+  transform:none;
+ }
 }
 
-@keyframes screenOut{
-  0%{
-    opacity:1;
-    transform:
-      perspective(1400px)
-      translate3d(0,0,0)
-      rotateY(0)
-      scale(1);
-  }
-  100%{
-    opacity:0;
-    transform:
-      perspective(1400px)
-      translate3d(-150px,0,-220px)
-      rotateY(13deg)
-      scale(.92);
-  }
-}
-
-.hero{
-  text-align:center;
-  padding:30px 0 20px;
+.language-screen{
+ justify-content:center;
+ align-items:center;
+ text-align:center;
 }
 
 .kicker{
-  color:var(--gold);
-  font-size:11px;
-  letter-spacing:7px;
-  text-transform:uppercase;
+ color:var(--gold2);
+ letter-spacing:5px;
+ font-size:11px;
+ margin-bottom:22px;
+ text-transform:uppercase;
 }
 
-.hero h1{
-  margin:15px 0 10px;
-  font-size:clamp(45px,9vw,100px);
-  letter-spacing:8px;
-  text-shadow:
-    0 5px 0 #8d7134,
-    0 15px 45px rgba(232,195,109,.22);
+.hero-title{
+ font:700 clamp(44px,8vw,92px) Montserrat;
+ letter-spacing:8px;
+ text-shadow:0 0 45px rgba(216,182,108,.18);
 }
 
-.hero p{
-  color:var(--muted);
-  line-height:1.8;
+.hero-sub{
+ max-width:650px;
+ margin:18px auto 42px;
+ color:var(--muted);
+ line-height:1.8;
+}
+
+.languages{
+ display:flex;
+ justify-content:center;
+ flex-wrap:wrap;
+ gap:13px;
+ max-width:900px;
+}
+
+.lang{
+ min-width:145px;
+ padding:17px 25px;
+ color:#fff;
+ border:1px solid var(--line);
+ border-radius:18px;
+ background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+ cursor:pointer;
+ transition:.35s;
+ backdrop-filter:blur(12px);
+}
+
+.lang:hover{
+ transform:translateY(-7px) scale(1.03);
+ border-color:var(--gold2);
+ box-shadow:0 15px 45px rgba(216,182,108,.18);
 }
 
 .panel{
-  position:relative;
-  overflow:hidden;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(21,28,55,.96),
-      rgba(6,9,19,.96)
-    );
-  border:1px solid var(--line);
-  border-radius:30px;
-  padding:clamp(22px,4vw,45px);
-  box-shadow:var(--shadow);
+ background:linear-gradient(145deg,rgba(20,26,48,.86),rgba(5,7,15,.88));
+ border:1px solid var(--line);
+ border-radius:30px;
+ padding:35px;
+ box-shadow:0 30px 90px rgba(0,0,0,.5),inset 0 1px rgba(255,255,255,.05);
+ backdrop-filter:blur(18px);
 }
 
-.panel:before{
-  content:"";
-  position:absolute;
-  width:400px;
-  height:400px;
-  right:-200px;
-  top:-200px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(232,195,109,.09),transparent 65%);
-  pointer-events:none;
+.section-title{
+ font:600 clamp(27px,4vw,44px) Montserrat;
+ margin-bottom:10px;
 }
 
-.panel:after{
-  content:"";
-  position:absolute;
-  top:-100%;
-  left:-30%;
-  width:25%;
-  height:300%;
-  background:rgba(255,255,255,.035);
-  transform:rotate(20deg);
-  animation:sheen 9s linear infinite;
-  pointer-events:none;
+.section-desc{
+ color:var(--muted);
+ line-height:1.75;
+ margin-bottom:30px;
 }
 
-@keyframes sheen{
-  from{left:-30%}
-  to{left:140%}
+.choice-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:17px;
 }
 
-.title{
-  margin:8px 0;
-  font-size:clamp(28px,5vw,50px);
-  text-shadow:0 8px 30px rgba(0,0,0,.35);
+.choice{
+ min-height:120px;
+ padding:25px;
+ border-radius:21px;
+ border:1px solid rgba(255,255,255,.1);
+ background:rgba(255,255,255,.035);
+ cursor:pointer;
+ transition:.4s;
+ animation:optionIn .7s both;
 }
 
-.desc{
-  color:var(--muted);
-  line-height:1.8;
+.choice:hover{
+ transform:translateY(-7px) scale(1.015);
+ border-color:var(--gold);
+ box-shadow:0 15px 45px rgba(216,182,108,.12);
 }
 
-.ad{
-  margin-bottom:22px;
-  padding:25px;
-  border:1px solid var(--line);
-  border-radius:23px;
-  text-align:center;
-  background:rgba(255,255,255,.025);
-  box-shadow:0 15px 50px rgba(0,0,0,.25);
+.choice strong{
+ display:block;
+ font-size:17px;
+ margin-bottom:8px;
 }
 
-.ad strong{
-  display:block;
-  color:var(--gold2);
-  font-size:23px;
-  margin-bottom:7px;
-  text-shadow:0 0 25px rgba(232,195,109,.2);
+.choice small{color:var(--muted)}
+
+.ad-slot{
+ width:min(900px,100%);
+ min-height:90px;
+ margin:0 auto 24px;
+ border:1px solid rgba(216,182,108,.3);
+ border-radius:20px;
+ background:linear-gradient(110deg,rgba(216,182,108,.10),rgba(50,70,150,.08));
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ position:relative;
+ overflow:hidden;
 }
 
-.ad span{
-  color:var(--muted);
+.ad-slot:after{
+ content:"ADVERTISEMENT";
+ position:absolute;
+ right:12px;
+ top:8px;
+ font-size:8px;
+ letter-spacing:2px;
+ color:rgba(255,255,255,.3);
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
+.ad-content{text-align:center;padding:20px}
+.ad-content strong{display:block;color:var(--gold2);margin-bottom:5px}
+.ad-content span{font-size:12px;color:var(--muted)}
 
-.three{
-  grid-template-columns:repeat(3,1fr);
-}
-
-.lang-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-  margin-top:30px;
-}
-
-.type-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:14px;
-  margin-top:30px;
-}
-
-.card{
-  position:relative;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:23px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.075),
-      rgba(255,255,255,.015)
-    );
-  color:white;
-  padding:24px;
-  min-height:125px;
-  text-align:left;
-  transition:.4s cubic-bezier(.2,.8,.2,1);
-}
-
-.card:hover{
-  transform:
-    translateY(-8px)
-    rotateX(2deg)
-    scale(1.015);
-  border-color:var(--gold);
-  box-shadow:
-    0 25px 70px rgba(0,0,0,.45),
-    0 0 35px rgba(232,195,109,.08);
-}
-
-.card b{
-  display:block;
-  font-size:18px;
-  margin-bottom:8px;
-}
-
-.card small{
-  color:var(--muted);
-  line-height:1.55;
-}
-
-.type-card{
-  min-height:190px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-
-.type-icon{
-  font-size:42px;
-  color:var(--gold2);
-  text-shadow:0 8px 30px rgba(232,195,109,.2);
-}
-
-.type-card b{
-  font-size:19px;
-  letter-spacing:2px;
-}
-
-.progress{
-  display:flex;
-  gap:7px;
-  margin-bottom:22px;
-}
-
-.dot{
-  height:4px;
-  flex:1;
-  border-radius:20px;
-  background:#222a43;
-}
-
-.dot.on{
-  background:linear-gradient(90deg,var(--gold),var(--gold2));
-  box-shadow:0 0 15px rgba(232,195,109,.25);
-}
-
-.sub{
-  border-top:1px solid rgba(255,255,255,.07);
-  padding-top:25px;
-  margin-top:28px;
-}
-
-.sub h3{
-  color:var(--gold2);
-  font-size:15px;
-  margin:0 0 14px;
+.form-grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:17px;
 }
 
 .field{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
+ display:flex;
+ flex-direction:column;
+ gap:8px;
 }
 
-.field label{
-  color:var(--muted);
-  font-size:12px;
+.field.full{grid-column:1/-1}
+
+label{
+ font-size:12px;
+ color:var(--muted);
 }
 
-input,
-select,
-textarea{
-  width:100%;
-  padding:14px 15px;
-  border-radius:15px;
-  border:1px solid rgba(255,255,255,.12);
-  outline:none;
-  background:#10172b;
-  color:white;
-  transition:.25s;
+input,select,textarea{
+ width:100%;
+ color:#fff;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.12);
+ border-radius:13px;
+ padding:14px 15px;
+ outline:none;
+ font:inherit;
 }
 
 select option{
-  background:#11172b;
-  color:white;
+ background:#101321;
+ color:#fff;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(232,195,109,.09);
+input:focus,select:focus,textarea:focus{
+ border-color:var(--gold);
+ box-shadow:0 0 20px rgba(216,182,108,.08);
 }
 
 textarea{
-  min-height:145px;
-  resize:vertical;
+ min-height:130px;
+ resize:vertical;
 }
 
-.options{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
+.subsection{
+ margin-top:30px;
+}
+
+.subsection h3{
+ color:var(--gold2);
+ font-size:14px;
+ margin-bottom:13px;
+}
+
+.option-row{
+ display:flex;
+ flex-wrap:wrap;
+ gap:10px;
 }
 
 .option{
-  padding:11px 15px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.035);
-  color:white;
-  transition:.25s;
+ padding:12px 16px;
+ border-radius:13px;
+ border:1px solid rgba(255,255,255,.1);
+ background:rgba(255,255,255,.035);
+ cursor:pointer;
+ transition:.3s;
+ animation:optionIn .45s both;
 }
 
 .option:hover{
-  transform:translateY(-2px);
+ transform:translateY(-3px);
+ border-color:var(--gold);
 }
 
 .option.selected{
-  border-color:var(--gold);
-  background:rgba(232,195,109,.13);
-  color:var(--gold2);
-  box-shadow:0 0 25px rgba(232,195,109,.08);
+ background:rgba(216,182,108,.15);
+ border-color:var(--gold2);
+ box-shadow:0 0 25px rgba(216,182,108,.08);
 }
 
-.check-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.check{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  padding:12px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.025);
-  color:var(--muted);
-  font-size:12px;
-}
-
-.check input{
-  width:auto;
-}
+.hidden{display:none!important}
 
 .nav{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-top:32px;
+ display:flex;
+ justify-content:space-between;
+ gap:15px;
+ margin-top:32px;
 }
 
 .btn{
-  padding:14px 23px;
-  border-radius:15px;
-  border:1px solid rgba(255,255,255,.12);
-  font-weight:800;
-  transition:.3s;
+ border:0;
+ border-radius:15px;
+ padding:15px 25px;
+ cursor:pointer;
+ font-weight:700;
+ transition:.3s;
 }
 
-.btn:hover{
-  transform:translateY(-3px);
+.btn-primary{
+ background:linear-gradient(135deg,var(--gold2),var(--gold));
+ color:#111;
 }
 
-.primary{
-  color:#111;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  box-shadow:0 12px 40px rgba(232,195,109,.12);
+.btn-primary:hover{
+ transform:translateY(-3px);
+ box-shadow:0 12px 35px rgba(216,182,108,.2);
 }
 
-.secondary{
-  color:white;
-  background:rgba(255,255,255,.05);
-}
-
-.hidden{
-  display:none!important;
-}
-
-.note{
-  color:#7e89a4;
-  font-size:11px;
-  line-height:1.6;
-  margin-top:8px;
-}
-
-.photo-row{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.avatar{
-  width:78px;
-  height:78px;
-  object-fit:cover;
-  border-radius:50%;
-  border:1px solid var(--line);
-  background:#17203a;
-}
-
-.history{
-  display:grid;
-  gap:12px;
-}
-
-.request-card{
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:18px;
-  background:rgba(255,255,255,.025);
-}
-
-.request-card strong{
-  color:var(--gold2);
+.btn-secondary{
+ color:#fff;
+ background:rgba(255,255,255,.05);
+ border:1px solid var(--line);
 }
 
 .success{
-  text-align:center;
-  padding:60px 0;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
 }
 
 .success-icon{
-  width:110px;
-  height:110px;
-  margin:0 auto 25px;
-  display:grid;
-  place-items:center;
-  border:1px solid var(--gold);
-  border-radius:50%;
-  color:var(--gold2);
-  font-size:48px;
-  box-shadow:0 0 80px rgba(232,195,109,.14);
+ width:105px;
+ height:105px;
+ border:1px solid var(--gold);
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ font-size:45px;
+ color:var(--gold2);
+ margin-bottom:25px;
+ box-shadow:0 0 70px rgba(216,182,108,.15);
 }
 
 footer{
-  position:relative;
-  z-index:2;
-  text-align:center;
-  padding:25px;
-  color:#68738d;
-  font-size:11px;
+ position:relative;
+ z-index:2;
+ text-align:center;
+ padding:30px;
+ color:rgba(255,255,255,.4);
+ font-size:11px;
 }
 
 .footer-brand{
-  color:var(--gold);
-  letter-spacing:5px;
+ color:var(--gold);
+ letter-spacing:3px;
 }
 
-.rtl{
-  direction:rtl;
+.mini-note{
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.7;
+ margin-top:10px;
 }
 
-.rtl .card,
-.rtl .panel{
-  text-align:right;
-}
-
-.rtl .nav{
-  flex-direction:row-reverse;
-}
-
-@media(max-width:900px){
-  .type-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .check-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .three{
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media(max-width:650px){
-  header{
-    padding:0 20px;
-  }
-
-  .logo{
-    font-size:20px;
-    letter-spacing:5px;
-  }
-
-  main{
-    width:94vw;
-  }
-
-  .grid,
-  .three,
-  .lang-grid,
-  .type-grid,
-  .check-grid{
-    grid-template-columns:1fr;
-  }
-
-  .panel{
-    padding:22px;
-    border-radius:24px;
-  }
-
-  .type-card{
-    min-height:145px;
-  }
-
-  .nav{
-    flex-direction:column;
-  }
-
-  .btn{
-    width:100%;
-  }
-
-  .hero h1{
-    font-size:42px;
-  }
+@media(max-width:700px){
+ header{padding:17px 20px}
+ .app{width:94%;padding-top:92px}
+ .panel{padding:21px;border-radius:23px}
+ .form-grid{grid-template-columns:1fr}
+ .field.full{grid-column:auto}
+ .hero-title{letter-spacing:4px}
+ .lang{width:100%}
+ .choice-grid{grid-template-columns:1fr}
+ .nav{flex-direction:column-reverse}
+ .btn{width:100%}
 }
 </style>
 </head>
 
 <body>
 
-<div id="stars"></div>
+<div class="space">
+ <div class="orbit one"></div>
+ <div class="orbit two"></div>
+ <div class="glow"></div>
+</div>
 
 <header>
-  <div class="logo">NM <span>GROUP</span></div>
-  <button class="lang-current" id="languageButton" onclick="go('language')">
-    Türkçe
-  </button>
+ <div class="logo">NM <span>GROUP</span></div>
+ <div class="lang-current" id="currentLang">Türkçe</div>
 </header>
 
-<main>
+<main class="app">
 
-<!-- =========================================================
-     LANGUAGE
-========================================================= -->
+<!-- ================= LANGUAGE ================= -->
 
-<section id="language" class="screen active">
+<section id="languageScreen" class="screen language-screen active">
 
-  <div class="hero">
+ <div class="kicker">NM GROUP</div>
 
-    <div class="kicker">NM GROUP</div>
+ <h1 class="hero-title" id="heroTitle">EMLAK</h1>
 
-    <h1 id="brandTitle">GAYRİMENKUL</h1>
+ <p class="hero-sub" id="languageIntro">
+ İstanbul'da doğru gayrimenkulü bulmanın yeni nesil yolu.
+ </p>
 
-    <p id="brandTag"></p>
-
-    <div class="lang-grid">
-
-      <button class="card" onclick="setLanguage('tr')">
-        <b>Türkçe</b>
-        <small>Türkçe devam edin</small>
-      </button>
-
-      <button class="card" onclick="setLanguage('fa')">
-        <b>فارسی</b>
-        <small>ادامه به زبان فارسی</small>
-      </button>
-
-      <button class="card" onclick="setLanguage('en')">
-        <b>English</b>
-        <small>Continue in English</small>
-      </button>
-
-      <button class="card" onclick="setLanguage('ar')">
-        <b>العربية</b>
-        <small>المتابعة باللغة العربية</small>
-      </button>
-
-      <button class="card" onclick="setLanguage('ru')">
-        <b>Русский</b>
-        <small>Продолжить на русском</small>
-      </button>
-
-      <button class="card" onclick="setLanguage('uk')">
-        <b>Українська</b>
-        <small>Продовжити українською</small>
-      </button>
-
-    </div>
-
-  </div>
+ <div class="languages">
+  <button class="lang" onclick="selectLanguage('tr')">Türkçe</button>
+  <button class="lang" onclick="selectLanguage('fa')">فارسی</button>
+  <button class="lang" onclick="selectLanguage('en')">English</button>
+  <button class="lang" onclick="selectLanguage('ar')">العربية</button>
+  <button class="lang" onclick="selectLanguage('ru')">Русский</button>
+  <button class="lang" onclick="selectLanguage('uk')">Українська</button>
+ </div>
 
 </section>
 
+<!-- ================= WELCOME ================= -->
 
-<!-- =========================================================
-     WELCOME
-========================================================= -->
+<section id="welcomeScreen" class="screen">
 
-<section id="welcome" class="screen">
-
-  <div class="ad">
-    <strong>NM GROUP</strong>
-    <span data-text="advertisement"></span>
+ <div class="ad-slot">
+  <div class="ad-content">
+   <strong>NM GROUP</strong>
+   <span id="adText">İnşaat ve gayrimenkul sektörüne yönelik reklam alanı.</span>
   </div>
+ </div>
 
-  <div class="panel">
-
-    <div class="kicker">NM GROUP</div>
-
-    <h2 class="title" data-text="welcome"></h2>
-
-    <p class="desc" data-text="welcomeDesc"></p>
-
-    <div class="grid">
-
-      <button class="card" onclick="go('register')">
-        <b data-text="register"></b>
-        <small data-text="registerSmall"></small>
-      </button>
-
-      <button class="card" onclick="go('login')">
-        <b data-text="login"></b>
-        <small data-text="loginSmall"></small>
-      </button>
-
-      <button class="card" onclick="startGuest()">
-        <b data-text="guest"></b>
-        <small data-text="guestSmall"></small>
-      </button>
-
-      <button class="card" onclick="go('history')">
-        <b data-text="requests"></b>
-        <small data-text="requestsSmall"></small>
-      </button>
-
-      <button class="card" onclick="go('seller')">
-        <b data-text="sell"></b>
-        <small data-text="sellSmall"></small>
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     REGISTER
-========================================================= -->
-
-<section id="register" class="screen">
-
-  <div class="panel">
-
-    <div class="kicker">NM GROUP</div>
-
-    <h2 class="title" data-text="registerTitle"></h2>
-
-    <p class="desc" data-text="registerDesc"></p>
-
-    <div class="grid">
-
-      <div class="field">
-        <label data-text="firstName"></label>
-        <input id="registerFirst">
-      </div>
-
-      <div class="field">
-        <label data-text="lastName"></label>
-        <input id="registerLast">
-      </div>
-
-      <div class="field">
-        <label data-text="phone"></label>
-        <input id="registerPhone" type="tel">
-      </div>
-
-      <div class="field">
-        <label data-text="email"></label>
-        <input id="registerEmail" type="email">
-      </div>
-
-      <div class="field">
-        <label data-text="password"></label>
-        <input id="registerPassword" type="password">
-      </div>
-
-      <div class="field">
-        <label data-text="displayName"></label>
-        <input id="registerDisplay">
-      </div>
-
-      <div class="field" style="grid-column:1/-1">
-
-        <label data-text="profilePhoto"></label>
-
-        <div class="photo-row">
-
-          <img id="profilePreview" class="avatar">
-
-          <input
-            id="registerPhoto"
-            type="file"
-            accept="image/*"
-            onchange="previewProfilePhoto(this)"
-          >
-
-        </div>
-
-      </div>
-
-      <label class="check" style="grid-column:1/-1">
-
-        <input id="registerTapu" type="checkbox">
-
-        <span data-text="ownTapu"></span>
-
-      </label>
-
-    </div>
-
-    <div class="nav">
-
-      <button class="btn secondary"
-              onclick="go('welcome')"
-              data-text="back">
-      </button>
-
-      <button class="btn primary"
-              onclick="registerUser()"
-              data-text="register">
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     LOGIN
-========================================================= -->
-
-<section id="login" class="screen">
-
-  <div class="panel">
-
-    <div class="kicker">NM GROUP</div>
-
-    <h2 class="title" data-text="loginTitle"></h2>
-
-    <div class="grid">
-
-      <div class="field">
-        <label data-text="email"></label>
-        <input id="loginEmail" type="email">
-      </div>
-
-      <div class="field">
-        <label data-text="password"></label>
-        <input id="loginPassword" type="password">
-      </div>
-
-    </div>
-
-    <div class="nav">
-
-      <button class="btn secondary"
-              onclick="go('welcome')"
-              data-text="back">
-      </button>
-
-      <button class="btn primary"
-              onclick="loginUser()"
-              data-text="login">
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     PROFILE
-========================================================= -->
-
-<section id="profile" class="screen">
-
-  <div class="panel">
-
-    <div class="kicker">NM GROUP</div>
-
-    <h2 class="title" data-text="profile"></h2>
-
-    <div id="profileContent"></div>
-
-    <div class="nav">
-
-      <button class="btn secondary"
-              onclick="go('welcome')"
-              data-text="back">
-      </button>
-
-      <button class="btn primary"
-              onclick="go('history')"
-              data-text="requests">
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     HISTORY
-========================================================= -->
-
-<section id="history" class="screen">
-
-  <div class="panel">
-
-    <div class="kicker">NM GROUP</div>
-
-    <h2 class="title" data-text="requests"></h2>
-
-    <p class="desc" data-text="historyDescription"></p>
-
-    <div id="historyContent" class="history"></div>
-
-    <div class="nav">
-
-      <button class="btn secondary"
-              onclick="go('welcome')"
-              data-text="back">
-      </button>
-
-      <button class="btn primary"
-              onclick="startGuest()"
-              data-text="newRequest">
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     PROPERTY TYPE
-========================================================= -->
-
-<section id="type" class="screen">
-
-  <div class="progress">
-    <i class="dot on"></i>
-    <i class="dot"></i>
-    <i class="dot"></i>
-    <i class="dot"></i>
-  </div>
-
-  <div class="panel">
-
-    <div class="kicker">01</div>
-
-    <h2 class="title" data-text="propertyQuestion"></h2>
-
-    <p class="desc" data-text="propertyQuestionDesc"></p>
-
-    <div class="type-grid">
-
-      <button class="card type-card"
-              onclick="choosePropertyType('daire')">
-
-        <span class="type-icon">⌂</span>
-
-        <b data-text="daire"></b>
-
-        <small data-text="daireDesc"></small>
-
-      </button>
-
-
-      <button class="card type-card"
-              onclick="choosePropertyType('villa')">
-
-        <span class="type-icon">⌂</span>
-
-        <b data-text="villa"></b>
-
-        <small data-text="villaDesc"></small>
-
-      </button>
-
-
-      <button class="card type-card"
-              onclick="choosePropertyType('dukkân')">
-
-        <span class="type-icon">▣</span>
-
-        <b data-text="dukkân"></b>
-
-        <small data-text="dukkânDesc"></small>
-
-      </button>
-
-
-      <button class="card type-card"
-              onclick="choosePropertyType('fabrika')">
-
-        <span class="type-icon">▤</span>
-
-        <b data-text="fabrika"></b>
-
-        <small data-text="fabrikaDesc"></small>
-
-      </button>
-
-
-      <button class="card type-card"
-              onclick="choosePropertyType('arsa')">
-
-        <span class="type-icon">◇</span>
-
-        <b data-text="arsa"></b>
-
-        <small data-text="arsaDesc"></small>
-
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     PROPERTY SPECIFIC
-========================================================= -->
-
-<section id="property" class="screen">
-
-  <div class="progress">
-    <i class="dot on"></i>
-    <i class="dot on"></i>
-    <i class="dot"></i>
-    <i class="dot"></i>
-  </div>
-
-  <div class="panel">
-
-    <div class="kicker">02</div>
-
-    <h2 class="title" id="propertyTitle"></h2>
-
-    <div id="propertyFields"></div>
-
-    <div class="nav">
-
-      <button class="btn secondary"
-              onclick="go('type')"
-              data-text="back">
-      </button>
-
-      <button class="btn primary"
-              onclick="goDetails()"
-              data-text="continue">
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     LOCATION / SITE / FEATURES
-========================================================= -->
-
-<section id="details" class="screen">
-
-  <div class="progress">
-    <i class="dot on"></i>
-    <i class="dot on"></i>
-    <i class="dot on"></i>
-    <i class="dot"></i>
-  </div>
-
-  <div class="panel">
-
-    <div class="kicker">03</div>
-
-    <h2 class="title" data-text="detailsTitle"></h2>
-
-    <div id="detailsFields"></div>
-
-    <div class="nav">
-
-      <button class="btn secondary"
-              onclick="go('property')"
-              data-text="back">
-      </button>
-
-      <button class="btn primary"
-              onclick="goFinal()"
-              data-text="continue">
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     FINAL REQUEST
-========================================================= -->
-
-<section id="final" class="screen">
-
-  <div class="progress">
-    <i class="dot on"></i>
-    <i class="dot on"></i>
-    <i class="dot on"></i>
-    <i class="dot on"></i>
-  </div>
-
-  <div class="panel">
-
-    <div class="kicker">04</div>
-
-    <h2 class="title" data-text="finalTitle"></h2>
-
-    <p class="desc" data-text="finalDescription"></p>
-
-    <div class="field">
-
-      <label data-text="specialRequests"></label>
-
-      <textarea
-        id="specialRequests"
-        data-placeholder="specialPlaceholder">
-      </textarea>
-
-    </div>
-
-
-    <div class="sub">
-
-      <h3 data-text="transport"></h3>
-
-      <div class="check-grid" id="transportOptions"></div>
-
-    </div>
-
-
-    <div class="sub">
-
-      <h3 data-text="contactInformation"></h3>
-
-      <div class="grid">
-
-        <div class="field">
-          <label data-text="firstName"></label>
-          <input id="requestFirst">
-        </div>
-
-        <div class="field">
-          <label data-text="lastName"></label>
-          <input id="requestLast">
-        </div>
-
-        <div class="field">
-          <label data-text="phone"></label>
-          <input id="requestPhone" type="tel">
-        </div>
-
-        <div class="field">
-          <label data-text="email"></label>
-          <input id="requestEmail" type="email">
-        </div>
-
-        <div class="field">
-          <label data-text="contactDate"></label>
-          <input id="requestDate" type="date">
-        </div>
-
-        <div class="field">
-          <label data-text="contactTime"></label>
-          <input id="requestTime" type="time">
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="nav">
-
-      <button class="btn secondary"
-              onclick="go('details')"
-              data-text="back">
-      </button>
-
-      <button class="btn primary"
-              onclick="submitPurchaseRequest()"
-              data-text="sendRequest">
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     SELLER
-========================================================= -->
-
-<section id="seller" class="screen">
-
-  <div class="panel">
-
-    <div class="kicker">NM GROUP</div>
-
-    <h2 class="title" data-text="sellTitle"></h2>
-
-    <p class="desc" data-text="sellDescription"></p>
-
-    <div class="grid">
-
-      <div class="field">
-        <label data-text="propertyType"></label>
-        <select id="sellerType"></select>
-      </div>
-
-      <div class="field">
-        <label data-text="sellerName"></label>
-        <input id="sellerName">
-      </div>
-
-      <div class="field">
-        <label data-text="phone"></label>
-        <input id="sellerPhone" type="tel">
-      </div>
-
-      <div class="field">
-        <label data-text="email"></label>
-        <input id="sellerEmail" type="email">
-      </div>
-
-      <div class="field" style="grid-column:1/-1">
-        <label data-text="propertyAddress"></label>
-        <input id="sellerAddress">
-      </div>
-
-      <div class="field">
-        <label data-text="expectedPrice"></label>
-        <input id="sellerPrice" type="number">
-      </div>
-
-      <div class="field">
-        <label data-text="area"></label>
-        <input id="sellerArea" type="number">
-      </div>
-
-      <div class="field" style="grid-column:1/-1">
-        <label data-text="description"></label>
-        <textarea id="sellerDescription"></textarea>
-      </div>
-
-      <div class="field" style="grid-column:1/-1">
-        <label data-text="propertyPhotos"></label>
-        <input id="sellerPhotos" type="file" accept="image/*" multiple>
-      </div>
-
-    </div>
-
-    <div class="nav">
-
-      <button class="btn secondary"
-              onclick="go('welcome')"
-              data-text="back">
-      </button>
-
-      <button class="btn primary"
-              onclick="submitSellerRequest()"
-              data-text="sendSeller">
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================================================
-     SUCCESS
-========================================================= -->
-
-<section id="success" class="screen success">
-
-  <div class="success-icon">✓</div>
+ <div class="panel">
 
   <div class="kicker">NM GROUP</div>
 
-  <h2 class="title" data-text="successTitle"></h2>
+  <h2 class="section-title" id="welcomeTitle">Hoş Geldiniz</h2>
 
-  <p class="desc"
-     id="successMessage"
-     style="max-width:760px;margin:20px auto">
+  <p class="section-desc" id="welcomeDesc">
+   Aradığınız gayrimenkulü birlikte bulalım.
   </p>
 
-  <button class="btn primary"
-          onclick="go('welcome')"
-          data-text="home">
-  </button>
+  <div class="choice-grid">
+
+   <div class="choice" onclick="goTo('registerScreen')">
+    <strong id="registerChoice">Kayıt Ol</strong>
+    <small id="registerSmall">Profilinizi oluşturun</small>
+   </div>
+
+   <div class="choice" onclick="goTo('propertyTypeScreen')">
+    <strong id="guestChoice">Siteye Gir</strong>
+    <small id="guestSmall">Gayrimenkul talebi oluşturun</small>
+   </div>
+
+   <div class="choice" onclick="goTo('sellScreen')">
+    <strong id="sellChoice">Gayrimenkulümü Sat</strong>
+    <small id="sellSmall">Mülkünüzü satışa sunun</small>
+   </div>
+
+   <div class="choice" onclick="goTo('advertisingScreen')">
+    <strong id="advertisingChoice">Reklam Ver</strong>
+    <small id="advertisingSmall">Sektörel reklam başvurusu</small>
+   </div>
+
+  </div>
+
+ </div>
+</section>
+
+<!-- ================= REGISTER ================= -->
+
+<section id="registerScreen" class="screen">
+
+ <div class="panel">
+
+  <div class="kicker">NM GROUP</div>
+
+  <h2 class="section-title" id="registerTitle">Profil Oluştur</h2>
+
+  <p class="section-desc" id="registerDesc">
+   Kayıt olarak taleplerinizi daha sonra takip edebilirsiniz.
+  </p>
+
+  <div class="form-grid">
+
+   <div class="field">
+    <label id="firstLabel">Ad</label>
+    <input id="regFirst">
+   </div>
+
+   <div class="field">
+    <label id="lastLabel">Soyad</label>
+    <input id="regLast">
+   </div>
+
+   <div class="field">
+    <label id="phoneLabel">Telefon</label>
+    <input id="regPhone" type="tel">
+   </div>
+
+   <div class="field">
+    <label>E-mail</label>
+    <input id="regEmail" type="email">
+   </div>
+
+   <div class="field">
+    <label id="passwordLabel">Şifre</label>
+    <input id="regPassword" type="password">
+   </div>
+
+   <div class="field">
+    <label id="photoLabel">Profil Fotoğrafı</label>
+    <input id="regPhoto" type="file" accept="image/*">
+   </div>
+
+   <div class="field full">
+    <label id="deedQuestion">Tapu adınıza kayıtlı mı?</label>
+
+    <div class="option-row">
+     <div class="option" onclick="chooseOption(this,'registeredDeed','yes')">
+      <span id="yesText">Evet</span>
+     </div>
+     <div class="option" onclick="chooseOption(this,'registeredDeed','no')">
+      <span id="noText">Hayır</span>
+     </div>
+    </div>
+   </div>
+
+  </div>
+
+  <div class="nav">
+   <button class="btn btn-secondary" onclick="goTo('welcomeScreen')" id="backBtn">← Geri</button>
+   <button class="btn btn-primary" onclick="registerUser()" id="registerBtn">Kayıt Ol</button>
+  </div>
+
+ </div>
+</section>
+
+<!-- ================= PROPERTY TYPE ================= -->
+
+<section id="propertyTypeScreen" class="screen">
+
+ <div class="panel">
+
+  <div class="kicker">01</div>
+
+  <h2 class="section-title" id="typeTitle">Gayrimenkul Türü</h2>
+
+  <p class="section-desc" id="typeDesc">
+   Aradığınız gayrimenkul türünü seçin.
+  </p>
+
+  <div class="choice-grid">
+
+   <div class="choice" onclick="startProperty('daire')">
+    <strong id="daireText">DAİRE</strong>
+    <small id="daireSmall">Satılık daire</small>
+   </div>
+
+   <div class="choice" onclick="startProperty('villa')">
+    <strong id="villaText">VİLLA</strong>
+    <small id="villaSmall">Satılık villa</small>
+   </div>
+
+   <div class="choice" onclick="startProperty('dukkan')">
+    <strong id="dukkanText">DÜKKÂN</strong>
+    <small id="dukkanSmall">Satılık ticari alan</small>
+   </div>
+
+   <div class="choice" onclick="startProperty('fabrika')">
+    <strong id="fabrikaText">FABRİKA</strong>
+    <small id="fabrikaSmall">Satılık fabrika</small>
+   </div>
+
+   <div class="choice" onclick="startProperty('arsa')">
+    <strong id="arsaText">ARSA</strong>
+    <small id="arsaSmall">Satılık arsa</small>
+   </div>
+
+  </div>
+
+  <div class="nav">
+   <button class="btn btn-secondary" onclick="goTo('welcomeScreen')" id="backType">← Geri</button>
+  </div>
+
+ </div>
+</section>
+
+<!-- ================= PROPERTY ================= -->
+
+<section id="propertyScreen" class="screen">
+
+<div class="panel">
+
+<div class="kicker">02</div>
+
+<h2 class="section-title" id="propertyTitle">Gayrimenkul Talebi</h2>
+
+<p class="section-desc" id="propertyDesc">
+ Aradığınız gayrimenkulün özelliklerini seçin.
+</p>
+
+<!-- LOCATION -->
+
+<div class="subsection">
+<h3 id="locationTitle">Konum</h3>
+
+<div class="form-grid">
+
+<div class="field">
+<label id="sideLabel">Yakası</label>
+<select id="side" onchange="fillDistricts()">
+<option value="">Seçiniz</option>
+<option value="avrupa">Avrupa Yakası</option>
+<option value="anadolu">Anadolu Yakası</option>
+</select>
+</div>
+
+<div class="field">
+<label id="districtLabel">İlçe</label>
+<select id="district" onchange="fillNeighborhoods()">
+<option value="">Önce yakayı seçiniz</option>
+</select>
+</div>
+
+<div class="field">
+<label id="neighborhoodLabel">Mahalle</label>
+<select id="neighborhood" onchange="loadSites()">
+<option value="">Önce ilçeyi seçiniz</option>
+</select>
+</div>
+
+</div>
+</div>
+
+<!-- SITE TYPE -->
+
+<div class="subsection">
+<h3 id="buildingTypeTitle">Bina / Site</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseBuilding('normal',this)">
+<span id="normalApartment">Normal Apartman</span>
+</div>
+
+<div class="option" onclick="chooseBuilding('site',this)">
+<span id="siteInside">Site İçerisinde</span>
+</div>
+
+</div>
+
+<div id="siteBox" class="subsection hidden">
+
+<div class="field">
+<label id="siteNameLabel">Site Adı</label>
+
+<select id="siteName">
+<option value="">Tüm Siteler</option>
+</select>
+
+<div class="mini-note" id="siteNote">
+ İsterseniz belirli bir site seçebilirsiniz; seçmezseniz tüm siteler değerlendirilir.
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- PRICE -->
+
+<div class="subsection">
+<h3 id="basicInfoTitle">Temel Bilgiler</h3>
+
+<div class="form-grid">
+
+<div class="field">
+<label id="priceLabel">Fiyat</label>
+<input id="price" type="text">
+</div>
+
+<div class="field">
+<label id="grossLabel">M² (Brüt)</label>
+<input id="gross" type="number">
+</div>
+
+<div class="field">
+<label id="netLabel">M² (Net)</label>
+<input id="net" type="number">
+</div>
+
+<div class="field">
+<label id="ageLabel">Bina Yaşı</label>
+<select id="buildingAge">
+<option value="">Tümü</option>
+<option>0 (Yeni)</option>
+<option>1-5</option>
+<option>6-10</option>
+<option>11-20</option>
+<option>21-30</option>
+<option>30+</option>
+</select>
+</div>
+
+</div>
+</div>
+
+<!-- ROOMS -->
+
+<div class="subsection">
+<h3 id="roomsTitle">Oda Sayısı</h3>
+
+<div class="option-row" id="rooms"></div>
+</div>
+
+<!-- FLOOR -->
+
+<div class="subsection">
+<h3 id="floorTitle">Kat / Bina Kat Sayısı</h3>
+
+<div class="form-grid">
+
+<div class="field">
+<label id="floorLabel">Bulunduğu Kat</label>
+<select id="floor" onchange="updateBuildingFloors()"></select>
+</div>
+
+<div class="field">
+<label id="buildingFloorsLabel">Bina Kat Sayısı</label>
+<select id="buildingFloors"></select>
+</div>
+
+</div>
+</div>
+
+<!-- BATH WC -->
+
+<div class="subsection">
+<h3 id="bathTitle">Banyo / WC</h3>
+
+<div class="form-grid">
+
+<div class="field">
+<label id="bathLabel">Banyo Sayısı</label>
+<select id="bathrooms"></select>
+</div>
+
+<div class="field">
+<label id="wcLabel">WC Sayısı</label>
+<select id="wc"></select>
+</div>
+
+</div>
+</div>
+
+<!-- KITCHEN -->
+
+<div class="subsection">
+<h3 id="kitchenTitle">Mutfak</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseOption(this,'kitchen','closed')">
+<span id="closedKitchen">Kapalı Mutfak</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'kitchen','open')">
+<span id="openKitchen">Amerikan Mutfak</span>
+</div>
+
+</div>
+</div>
+
+<!-- COMMON -->
+
+<div class="subsection">
+<h3 id="featuresTitle">Özellikler</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseOption(this,'balcony','yes')">
+<span id="balconyYes">Balkon Var</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'balcony','no')">
+<span id="balconyNo">Balkon Yok</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'elevator','yes')">
+<span id="elevatorYes">Asansör Var</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'elevator','no')">
+<span id="elevatorNo">Asansör Yok</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'parking','yes')">
+<span id="parkingYes">Otopark Var</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'furnished','yes')">
+<span id="furnishedYes">Eşyalı</span>
+</div>
+
+</div>
+</div>
+
+<!-- VILLA -->
+
+<div id="villaSection" class="subsection hidden">
+
+<h3 id="villaTypeTitle">Villa Tipi</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseVilla('independent',this)">
+<span id="independentVilla">Müstakil Villa</span>
+</div>
+
+<div class="option" onclick="chooseVilla('site',this)">
+<span id="villaInSite">Site İçinde Villa</span>
+</div>
+
+</div>
+
+<div id="villaSiteBox" class="subsection hidden">
+
+<div class="field">
+<label id="villaSiteLabel">Villa Sitesi</label>
+<select id="villaSite">
+<option value="">Tüm Siteler</option>
+</select>
+</div>
+
+</div>
+
+</div>
+
+<!-- SITE FACILITIES -->
+
+<div id="siteFacilities" class="subsection hidden">
+
+<h3 id="siteFacilitiesTitle">Site Özellikleri</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseOption(this,'openPool','yes')">
+<span id="openPool">Açık Havuz</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'closedPool','yes')">
+<span id="closedPool">Kapalı Havuz</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'sauna','yes')">
+<span id="sauna">Sauna</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'fitness','yes')">
+<span id="fitness">Fitness Salonu</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'football','yes')">
+<span id="football">Futbol Salonu</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'security','yes')">
+<span id="security">24 Saat Güvenlik</span>
+</div>
+
+</div>
+</div>
+
+<!-- TAPU -->
+
+<div class="subsection">
+<h3 id="deedTitle">Tapu Durumu</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseOption(this,'tapu','kat-mulkiyeti')">
+<span id="katMulkiyeti">Kat Mülkiyeti</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'tapu','kat-irtifaki')">
+<span id="katIrtifaki">Kat İrtifakı</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'tapu','other')">
+<span id="otherDeed">Diğer</span>
+</div>
+
+</div>
+</div>
+
+<!-- CREDIT -->
+
+<div class="subsection">
+<h3 id="creditTitle">Krediye Uygun</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseOption(this,'credit','yes')">
+<span id="creditYes">Kredi Kullanacağım</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'credit','no')">
+<span id="creditNo">Kredi Kullanmayacağım</span>
+</div>
+
+</div>
+</div>
+
+<!-- STATUS -->
+
+<div class="subsection">
+<h3 id="statusTitle">Kullanım Durumu</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseOption(this,'tenant','yes')">
+<span id="tenantYes">Kiracı Var</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'tenant','no')">
+<span id="tenantNo">Kiracı Yok</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'empty','yes')">
+<span id="emptyYes">Boş</span>
+</div>
+
+</div>
+</div>
+
+<!-- VIEW / TRANSPORT -->
+
+<div class="subsection">
+<h3 id="viewTitle">Manzara / Ulaşım</h3>
+
+<div class="option-row">
+
+<div class="option" onclick="chooseOption(this,'view','bosporus')">
+<span id="viewBosporus">Boğaz Manzarası</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'view','sea')">
+<span id="viewSea">Deniz Manzarası</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'view','forest')">
+<span id="viewForest">Orman Manzarası</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'view','city')">
+<span id="viewCity">Şehir Manzarası</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'transport','metrobus')">
+<span id="nearMetrobus">Metrobüse Yakın</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'transport','marmaray')">
+<span id="nearMarmaray">Marmaray'a Yakın</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'transport','metro')">
+<span id="nearMetro">Metroya Yakın</span>
+</div>
+
+<div class="option" onclick="chooseOption(this,'transport','public')">
+<span id="nearTransport">Toplu Taşımaya Yakın</span>
+</div>
+
+</div>
+</div>
+
+<!-- EXTRA -->
+
+<div class="subsection">
+
+<h3 id="extraTitle">Özel İstekler</h3>
+
+<textarea id="notes"
+placeholder="Örneğin: Boğaz manzaralı, metroya yakın, sessiz bir bölgede..."></textarea>
+
+</div>
+
+<!-- CONTACT -->
+
+<div class="subsection">
+
+<h3 id="contactTitle">İletişim Bilgileri</h3>
+
+<div class="form-grid">
+
+<div class="field">
+<label id="contactFirst">Ad</label>
+<input id="firstName">
+</div>
+
+<div class="field">
+<label id="contactLast">Soyad</label>
+<input id="lastName">
+</div>
+
+<div class="field">
+<label id="contactPhone">Telefon</label>
+<input id="phone" type="tel">
+</div>
+
+<div class="field">
+<label>E-mail</label>
+<input id="email" type="email">
+</div>
+
+<div class="field">
+<label id="contactDateLabel">Tercih Edilen Tarih</label>
+<input id="contactDate" type="date">
+</div>
+
+<div class="field">
+<label id="contactTimeLabel">Tercih Edilen Saat</label>
+<input id="contactTime" type="time">
+</div>
+
+</div>
+
+</div>
+
+<div class="nav">
+
+<button class="btn btn-secondary" onclick="goTo('propertyTypeScreen')" id="propertyBack">
+← Geri
+</button>
+
+<button class="btn btn-primary" onclick="submitRequest()" id="submitBtn">
+Talebi Gönder
+</button>
+
+</div>
+
+</div>
+</section>
+
+<!-- ================= SELL ================= -->
+
+<section id="sellScreen" class="screen">
+
+<div class="panel">
+
+<div class="kicker">NM GROUP</div>
+
+<h2 class="section-title" id="sellTitle">Gayrimenkulünüzü Satmak İster misiniz?</h2>
+
+<p class="section-desc" id="sellDesc">
+ Evinizi, villanızı, arsanızı veya ticari gayrimenkulünüzü satışa sunmak için bilgilerinizi bırakın.
+</p>
+
+<div class="form-grid">
+
+<div class="field">
+<label id="sellName">Ad</label>
+<input id="sellFirst">
+</div>
+
+<div class="field">
+<label id="sellSurname">Soyad</label>
+<input id="sellLast">
+</div>
+
+<div class="field">
+<label id="sellPhone">Telefon</label>
+<input id="sellPhoneInput" type="tel">
+</div>
+
+<div class="field">
+<label id="sellEmail">E-mail</label>
+<input id="sellEmailInput" type="email">
+</div>
+
+<div class="field">
+<label id="sellProperty">Gayrimenkul Türü</label>
+<select id="sellType">
+<option>Daire</option>
+<option>Villa</option>
+<option>Arsa</option>
+<option>Dükkan</option>
+<option>Fabrika</option>
+<option>Diğer</option>
+</select>
+</div>
+
+<div class="field">
+<label id="sellPrice">Talep Edilen Fiyat</label>
+<input id="sellPriceInput">
+</div>
+
+<div class="field full">
+<label id="sellAddress">Adres / Konum</label>
+<input id="sellAddressInput">
+</div>
+
+<div class="field full">
+<label id="sellDetails">Açıklama</label>
+<textarea id="sellDetailsInput"></textarea>
+</div>
+
+</div>
+
+<div class="nav">
+<button class="btn btn-secondary" onclick="goTo('welcomeScreen')" id="sellBack">← Geri</button>
+<button class="btn btn-primary" onclick="submitSell()" id="sellSubmit">Satış Talebi Gönder</button>
+</div>
+
+</div>
+</section>
+
+<!-- ================= ADVERTISING ================= -->
+
+<section id="advertisingScreen" class="screen">
+
+<div class="panel">
+
+<div class="kicker">NM GROUP</div>
+
+<h2 class="section-title" id="adTitle">Reklam Ver</h2>
+
+<p class="section-desc" id="adDesc">
+ NM GROUP platformunda yalnızca yapı ve yapı sektörüyle bağlantılı ürün ve hizmetlerin reklamları kabul edilir.
+</p>
+
+<div class="form-grid">
+
+<div class="field">
+<label id="adFirstLabel">Ad</label>
+<input id="adFirst">
+</div>
+
+<div class="field">
+<label id="adLastLabel">Soyad</label>
+<input id="adLast">
+</div>
+
+<div class="field">
+<label id="adCompanyLabel">Şirket Adı</label>
+<input id="adCompany">
+</div>
+
+<div class="field">
+<label id="adBusinessLabel">İş Türü</label>
+<input id="adBusiness">
+</div>
+
+<div class="field">
+<label id="adPhoneLabel">Telefon</label>
+<input id="adPhone">
+</div>
+
+<div class="field">
+<label id="adCountryLabel">Ülke</label>
+<input id="adCountry">
+</div>
+
+<div class="field">
+<label id="adCityLabel">Şehir</label>
+<input id="adCity">
+</div>
+
+<div class="field">
+<label id="adDurationLabel">Reklam Süresi</label>
+<select id="adDuration">
+<option>1 Hafta</option>
+</select>
+</div>
+
+<div class="field full">
+<label id="adDescriptionLabel">Reklam Açıklaması</label>
+<textarea id="adNotes"></textarea>
+</div>
+
+</div>
+
+<div class="mini-note" id="adRules">
+ Reklamlar yapı ve inşaat sektörüyle ilgili olmalıdır. Gayrimenkul veya arsa satışı reklamları bu alanda kabul edilmez. Gerekli ruhsat ve izinler reklam verenin sorumluluğundadır.
+</div>
+
+<div class="nav">
+
+<button class="btn btn-secondary" onclick="goTo('welcomeScreen')" id="adBack">
+← Geri
+</button>
+
+<button class="btn btn-primary" onclick="submitAdvertising()" id="adSubmit">
+Reklam Talebi Gönder
+</button>
+
+</div>
+
+</div>
+</section>
+
+<!-- ================= SUCCESS ================= -->
+
+<section id="successScreen" class="screen success">
+
+<div class="success-icon">✓</div>
+
+<h2 class="section-title" id="successTitle">
+Talebiniz Alındı
+</h2>
+
+<p class="section-desc" id="successText" style="max-width:720px">
+ Talebiniz başarıyla alınmıştır.
+</p>
+
+<button class="btn btn-primary" onclick="goTo('welcomeScreen')" id="homeBtn">
+Ana Sayfaya Dön
+</button>
 
 </section>
 
 </main>
 
 <footer>
-  <div class="footer-brand">NM GROUP</div>
-  <div id="footerText"></div>
+<div class="footer-brand">NM GROUP</div>
+<div style="margin-top:8px">Real Estate & Investment</div>
 </footer>
-
 
 <script>
 
 /* =========================================================
-   TELEGRAM
-   توکن و Chat ID خودت را اینجا قرار بده
+   LANGUAGE
 ========================================================= */
 
-const TELEGRAM = {
-  BOT_TOKEN:"",
-  CHAT_ID:""
-};
+const T={
 
-
-/* =========================================================
-   LANGUAGE DATA
-========================================================= */
-
-const LANG={
 tr:{
-brand:"GAYRİMENKUL",
-tag:"İstanbul'da doğru gayrimenkulü bulmanın yeni nesil yolu.",
-advertisement:"Proje ve gayrimenkul reklamları burada yer alacak.",
-welcome:"Hoş Geldiniz",
-welcomeDesc:"Size uygun gayrimenkulü birlikte bulalım.",
-register:"Kayıt Ol",
-registerSmall:"Profilinizi oluşturun",
-login:"Siteye Gir",
-loginSmall:"Kayıtlı hesabınızla devam edin",
-guest:"Kayıtsız Devam Et",
-guestSmall:"Kayıt olmadan talep oluşturun",
-requests:"Taleplerim",
-requestsSmall:"Kayıtlı taleplerinizi görüntüleyin",
-sell:"Gayrimenkulümü Satmak İstiyorum",
-sellSmall:"Evinizi, villanızı, arsanızı, dükkânınızı veya fabrikanızı bize ulaştırın",
-registerTitle:"Profil Oluştur",
-registerDesc:"Ad, soyad, telefon, e-posta, fotoğraf ve Tapu bilgilerinizi kaydedin.",
-loginTitle:"Siteye Giriş",
-profile:"Profilim",
-historyDescription:"Kayıtlı hesabınızdaki tüm satın alma talepleriniz ayrı numaralarla burada görünür.",
-newRequest:"Yeni Talep",
-firstName:"Ad",
-lastName:"Soyad",
-phone:"Telefon",
-email:"E-posta",
-password:"Şifre",
-displayName:"Görünen İsim",
-profilePhoto:"Profil Fotoğrafı",
-ownTapu:"Tapu kendi adınıza kayıtlı mı?",
-back:"← Geri",
-propertyQuestion:"Ne tür bir gayrimenkul arıyorsunuz?",
-propertyQuestionDesc:"Önce gayrimenkul türünü seçin. Sonraki sayfada yalnızca seçtiğiniz türe ait özellikler açılacaktır.",
-daire:"DAİRE",
-villa:"VİLLA",
-dukkân:"DÜKKÂN",
-fabrika:"FABRİKA",
-arsa:"ARSA",
-daireDesc:"Apartman, rezidans veya site içerisindeki daire",
-villaDesc:"Müstakil veya site içerisinde villa",
-dukkânDesc:"Mağaza veya ticari ünite",
-fabrikaDesc:"Fabrika, depo veya sanayi tesisi",
-arsaDesc:"Konut, ticari veya yatırım arsası",
-continue:"Devam Et →",
-detailsTitle:"Konum, Site ve Özellikler",
-finalTitle:"Talebiniz",
-finalDescription:"İstediğiniz manzara, ulaşım, çevre ve diğer özel şartları kendi cümlelerinizle yazabilirsiniz.",
-specialRequests:"Özel İstekleriniz",
-specialPlaceholder:"Örneğin: Deniz manzarası olsun, yüksek katta olsun, önü açık olsun ve Metrobüs'e en fazla 10 dakika uzaklıkta olsun...",
-transport:"Ulaşım / Yakınlık",
-contactInformation:"İletişim Bilgileri",
-contactDate:"Tercih Edilen İletişim Günü",
-contactTime:"Tercih Edilen Saat",
-sendRequest:"Talebi Gönder",
-propertyType:"Gayrimenkul Türü",
-sellerName:"Ad Soyad",
-propertyAddress:"Gayrimenkul Adresi",
-expectedPrice:"Beklenen Satış Fiyatı",
-area:"Alan / m²",
-description:"Açıklama",
-propertyPhotos:"Gayrimenkul Fotoğrafları",
-sendSeller:"Satış Talebini Gönder",
-sellTitle:"Gayrimenkulümü Satmak İstiyorum",
-sellDescription:"Evinizi, villanızı, arsanızı, dükkânınızı veya fabrikanızı satmak için bilgilerinizi bırakın.",
-successTitle:"Talebiniz Alındı",
-home:"Ana Sayfaya Dön",
-footer:"Istanbul Real Estate & Investment",
-
-budget:"Bütçe",
-minimumBudget:"Minimum Bütçe",
-maximumBudget:"Maksimum Bütçe",
-gross:"m² (Brüt)",
-net:"m² (Net)",
-roomCount:"Oda Sayısı",
-buildingAge:"Bina Yaşı",
-floorCount:"Kat Sayısı",
-floor:"Bulunduğu Kat",
-heating:"Isıtma",
-bathroom:"Banyo Sayısı",
-wc:"WC Sayısı",
-kitchen:"Mutfak",
-balcony:"Balkon",
-terrace:"Teras",
-elevator:"Asansör",
-parking:"Otopark",
-furnished:"Eşyalı",
-usage:"Kullanım Durumu",
-credit:"Krediye Uygun",
-tapu:"Tapu Durumu",
-facade:"Cephe",
-insideFeatures:"İç Özellikler",
-outsideFeatures:"Dış Özellikler",
-environment:"Muhit",
-disabled:"Engelliye ve Yaşlıya Uygun",
-site:"Site İçerisinde",
-siteName:"Site Adı",
-allSites:"Tüm Siteler",
-normalBuilding:"Normal Apartman",
-insideSite:"Site İçinde",
-noPreference:"Fark Etmez",
-siteFacilities:"Site Olanakları",
-pool:"Yüzme Havuzu",
-indoorPool:"Kapalı Havuz",
-gym:"Fitness / Spor Salonu",
-security:"24 Saat Güvenlik",
-garden:"Peyzaj / Yeşil Alan",
-playground:"Çocuk Oyun Alanı",
-sauna:"Sauna",
-spa:"SPA",
-visitorParking:"Misafir Otoparkı",
-generator:"Jeneratör",
-sportsArea:"Spor Alanı",
-bosporus:"Boğaz Manzarası",
-sea:"Deniz Manzarası",
-forest:"Orman Manzarası",
-city:"Şehir Manzarası",
-gardenView:"Bahçe Manzarası",
-openView:"Önü Açık",
-noImportant:"Manzara Önemli Değil",
-metrobus:"Metrobüs'e yakın",
-marmaray:"Marmaray'a yakın",
-metro:"Metro'ya yakın",
-publicTransport:"Toplu Taşımaya yakın",
-e5:"E-5 / D100'e yakın",
-tem:"TEM'e yakın",
-school:"Okula yakın",
-hospital:"Hastaneye yakın",
-mall:"AVM'ye yakın",
-location:"Konum",
-side:"Yaka",
-district:"İlçe",
-neighborhood:"Mahalle",
-industrialArea:"Üretim Alanı / m²",
-warehouse:"Depo Alanı / m²",
-ceiling:"Tavan Yüksekliği",
-crane:"Vinç",
-industrialPower:"Sanayi Elektriği",
-loading:"Yükleme Alanı",
-landArea:"Arsa m²",
-zoning:"İmar Durumu",
-far:"Emsal / KAKS",
-taks:"TAKS",
-block:"Ada",
-parcel:"Parsel",
-successText:"Talebiniz ayrı bir kayıt olarak incelenecektir. Uzmanlarımız en kısa sürede sizinle iletişime geçecektir.<br><br>Kayıtlıysanız talebinizi «Taleplerim» bölümünden görebilirsiniz.<br><br>Teşekkür ederiz.<br><br><strong>NM GROUP</strong>"
+ hero:"EMLAK",
+ intro:"İstanbul'da doğru gayrimenkulü bulmanın yeni nesil yolu.",
+ welcome:"Hoş Geldiniz",
+ welcomeDesc:"Aradığınız gayrimenkulü birlikte bulalım.",
+ register:"Kayıt Ol",
+ registerSmall:"Profilinizi oluşturun",
+ guest:"Siteye Gir",
+ guestSmall:"Gayrimenkul talebi oluşturun",
+ sell:"Gayrimenkulümü Sat",
+ sellSmall:"Mülkünüzü satışa sunun",
+ adChoice:"Reklam Ver",
+ adSmall:"Sektörel reklam başvurusu",
+ ad:"İnşaat ve gayrimenkul sektörüne yönelik reklam alanı.",
+ type:"Gayrimenkul Türü",
+ typeDesc:"Aradığınız gayrimenkul türünü seçin.",
+ daire:"DAİRE",villa:"VİLLA",dukkan:"DÜKKÂN",fabrika:"FABRİKA",arsa:"ARSA",
+ property:"Gayrimenkul Talebi",
+ propertyDesc:"Aradığınız gayrimenkulün özelliklerini seçin.",
+ location:"Konum",side:"Yakası",district:"İlçe",neighborhood:"Mahalle",
+ building:"Bina / Site",normal:"Normal Apartman",site:"Site İçerisinde",
+ siteName:"Site Adı",siteNote:"Belirli bir site seçebilirsiniz; seçmezseniz tüm siteler değerlendirilir.",
+ basic:"Temel Bilgiler",price:"Fiyat",gross:"M² (Brüt)",net:"M² (Net)",age:"Bina Yaşı",
+ rooms:"Oda Sayısı",floor:"Bulunduğu Kat",buildingFloors:"Bina Kat Sayısı",
+ bath:"Banyo Sayısı",wc:"WC Sayısı",kitchen:"Mutfak",
+ closed:"Kapalı Mutfak",open:"Amerikan Mutfak",features:"Özellikler",
+ balconyYes:"Balkon Var",balconyNo:"Balkon Yok",elevatorYes:"Asansör Var",elevatorNo:"Asansör Yok",
+ parkingYes:"Otopark Var",furnished:"Eşyalı",villaType:"Villa Tipi",
+ independent:"Müstakil Villa",villaSite:"Site İçinde Villa",siteFeatures:"Site Özellikleri",
+ openPool:"Açık Havuz",closedPool:"Kapalı Havuz",sauna:"Sauna",fitness:"Fitness Salonu",
+ football:"Futbol Salonu",security:"24 Saat Güvenlik",deed:"Tapu Durumu",
+ katMulkiyeti:"Kat Mülkiyeti",katIrtifaki:"Kat İrtifakı",other:"Diğer",
+ credit:"Krediye Uygun",creditYes:"Kredi Kullanacağım",creditNo:"Kredi Kullanmayacağım",
+ status:"Kullanım Durumu",tenantYes:"Kiracı Var",tenantNo:"Kiracı Yok",empty:"Boş",
+ view:"Manzara / Ulaşım",bosporus:"Boğaz Manzarası",sea:"Deniz Manzarası",
+ forest:"Orman Manzarası",city:"Şehir Manzarası",metrobus:"Metrobüse Yakın",
+ marmaray:"Marmaray'a Yakın",metro:"Metroya Yakın",public:"Toplu Taşımaya Yakın",
+ extra:"Özel İstekler",contact:"İletişim Bilgileri",date:"Tercih Edilen Tarih",time:"Tercih Edilen Saat",
+ submit:"Talebi Gönder",back:"← Geri",
+ sellTitle:"Gayrimenkulünüzü Satmak İster misiniz?",
+ sellDesc:"Evinizi, villanızı, arsanızı veya ticari gayrimenkulünüzü satışa sunmak için bilgilerinizi bırakın.",
+ sellSubmit:"Satış Talebi Gönder",
+ adTitle:"Reklam Ver",adDesc:"NM GROUP platformunda yalnızca yapı ve yapı sektörüyle bağlantılı ürün ve hizmetlerin reklamları kabul edilir.",
+ adSubmit:"Reklam Talebi Gönder",
+ success:"Talebiniz Alındı",
+ successText:"Talebiniz başarıyla alınmıştır. Eğer sitemize kayıt olduysanız talebinizi profilinizden takip edebilirsiniz. Kayıt olmadıysanız talebiniz ayrıca değerlendirilecek ve uzmanlarımız en kısa sürede sizinle iletişime geçecektir. Teşekkür ederiz. NM GROUP"
 },
 
 fa:{
-brand:"املاک",
-tag:"نسل جدیدی از پیدا کردن ملک مناسب در استانبول.",
-advertisement:"تبلیغات پروژه‌ها و املاک در این بخش قرار خواهد گرفت.",
-welcome:"خوش آمدید",
-welcomeDesc:"با هم ملک مناسب شما را پیدا می‌کنیم.",
-register:"ثبت نام",
-registerSmall:"پروفایل خود را بسازید",
-login:"ورود به سایت",
-loginSmall:"با حساب خود ادامه دهید",
-guest:"ادامه بدون ثبت نام",
-guestSmall:"بدون ثبت نام درخواست خود را ثبت کنید",
-requests:"درخواست‌های من",
-requestsSmall:"درخواست‌های ثبت‌شده خود را ببینید",
-sell:"می‌خواهم ملک خود را بفروشم",
-sellSmall:"خانه، ویلا، زمین، مغازه یا کارخانه خود را برای فروش ثبت کنید",
-registerTitle:"ساخت پروفایل",
-registerDesc:"نام، نام خانوادگی، تلفن، ایمیل، عکس و وضعیت تاپو را ثبت کنید.",
-loginTitle:"ورود به سایت",
-profile:"پروفایل من",
-historyDescription:"تمام درخواست‌های خرید شما با شماره جداگانه در این قسمت قابل مشاهده است.",
-newRequest:"درخواست جدید",
-firstName:"نام",
-lastName:"نام خانوادگی",
-phone:"شماره تلفن",
-email:"ایمیل",
-password:"رمز عبور",
-displayName:"نام نمایشی",
-profilePhoto:"عکس پروفایل",
-ownTapu:"آیا تاپو به نام خودتان دارید؟",
-back:"← بازگشت",
-propertyQuestion:"چه نوع ملکی می‌خواهید؟",
-propertyQuestionDesc:"ابتدا نوع ملک را انتخاب کنید. در مرحله بعد فقط امکانات و مشخصات همان نوع نمایش داده می‌شود.",
-daire:"واحد",
-villa:"ویلا",
-dukkân:"مغازه",
-fabrika:"کارخانه",
-arsa:"زمین",
-daireDesc:"آپارتمان، رزیدانس یا واحد داخل سایت",
-villaDesc:"ویلای مستقل یا داخل سایت",
-dukkânDesc:"مغازه یا واحد تجاری",
-fabrikaDesc:"کارخانه، انبار یا مجموعه صنعتی",
-arsaDesc:"زمین مسکونی، تجاری یا سرمایه‌گذاری",
-continue:"ادامه ←",
-detailsTitle:"موقعیت، سایت و امکانات",
-finalTitle:"درخواست شما",
-finalDescription:"منظره، دسترسی، محیط اطراف و هر شرط خاص دیگری را با زبان خودتان بنویسید.",
-specialRequests:"خواسته‌های ویژه",
-specialPlaceholder:"مثلاً: منظره دریا داشته باشد، طبقه بالا باشد، جلوی ساختمان باز باشد و حداکثر ۱۰ دقیقه با متروبوس فاصله داشته باشد...",
-transport:"حمل‌ونقل / نزدیکی",
-contactInformation:"اطلاعات تماس",
-contactDate:"روز مناسب تماس",
-contactTime:"ساعت مناسب تماس",
-sendRequest:"ارسال درخواست",
-propertyType:"نوع ملک",
-sellerName:"نام و نام خانوادگی",
-propertyAddress:"آدرس ملک",
-expectedPrice:"قیمت مورد انتظار فروش",
-area:"مساحت / مترمربع",
-description:"توضیحات",
-propertyPhotos:"عکس‌های ملک",
-sendSeller:"ارسال درخواست فروش",
-sellTitle:"می‌خواهم ملک خود را بفروشم",
-sellDescription:"برای فروش خانه، ویلا، زمین، مغازه یا کارخانه اطلاعات خود را ثبت کنید.",
-successTitle:"درخواست شما ثبت شد",
-home:"بازگشت به صفحه اصلی",
-footer:"املاک و سرمایه‌گذاری در استانبول",
-budget:"بودجه",
-minimumBudget:"حداقل بودجه",
-maximumBudget:"حداکثر بودجه",
-gross:"مترمربع ناخالص",
-net:"مترمربع خالص",
-roomCount:"تعداد اتاق",
-buildingAge:"سن ساختمان",
-floorCount:"تعداد طبقات",
-floor:"طبقه",
-heating:"گرمایش",
-bathroom:"تعداد حمام",
-wc:"تعداد سرویس",
-kitchen:"آشپزخانه",
-balcony:"بالکن",
-terrace:"تراس",
-elevator:"آسانسور",
-parking:"پارکینگ",
-furnished:"مبله",
-usage:"وضعیت استفاده",
-credit:"مناسب وام",
-tapu:"وضعیت تاپو",
-facade:"نما / جهت",
-insideFeatures:"ویژگی‌های داخلی",
-outsideFeatures:"ویژگی‌های خارجی",
-environment:"محیط اطراف",
-disabled:"مناسب سالمند و معلول",
-site:"داخل سایت",
-siteName:"نام سایت",
-allSites:"تمام سایت‌ها",
-normalBuilding:"آپارتمان معمولی",
-insideSite:"داخل سایت",
-noPreference:"فرقی ندارد",
-siteFacilities:"امکانات سایت",
-pool:"استخر",
-indoorPool:"استخر سرپوشیده",
-gym:"سالن بدنسازی",
-security:"نگهبانی ۲۴ ساعته",
-garden:"فضای سبز",
-playground:"زمین بازی کودکان",
-sauna:"سونا",
-spa:"اسپا",
-visitorParking:"پارکینگ مهمان",
-generator:"ژنراتور",
-sportsArea:"زمین ورزشی",
-bosporus:"منظره بسفر",
-sea:"منظره دریا",
-forest:"منظره جنگل",
-city:"منظره شهر",
-gardenView:"منظره باغ",
-openView:"جلوی باز",
-noImportant:"منظره مهم نیست",
-metrobus:"نزدیک متروبوس",
-marmaray:"نزدیک مارمارای",
-metro:"نزدیک مترو",
-publicTransport:"نزدیک حمل‌ونقل عمومی",
-e5:"نزدیک E-5 / D100",
-tem:"نزدیک TEM",
-school:"نزدیک مدرسه",
-hospital:"نزدیک بیمارستان",
-mall:"نزدیک مرکز خرید",
-location:"موقعیت",
-side:"سمت",
-district:"منطقه",
-neighborhood:"محله",
-industrialArea:"مساحت تولید / مترمربع",
-warehouse:"مساحت انبار / مترمربع",
-ceiling:"ارتفاع سقف",
-crane:"جرثقیل",
-industrialPower:"برق صنعتی",
-loading:"محل بارگیری",
-landArea:"مساحت زمین",
-zoning:"وضعیت کاربری",
-far:"Emsal / KAKS",
-taks:"TAKS",
-block:"بلوک / Ada",
-parcel:"پلاک / Parsel",
-successText:"درخواست شما به صورت جداگانه مورد بررسی قرار خواهد گرفت. متخصصین ما در اسرع وقت با شما تماس خواهند گرفت.<br><br>اگر در سایت ثبت نام کرده باشید، درخواست خود را در بخش «درخواست‌های من» مشاهده خواهید کرد.<br><br>با تشکر از شما<br><br><strong>NM GROUP</strong>"
+ hero:"املاک",
+ intro:"نسل جدید پیدا کردن ملک مناسب در استانبول.",
+ welcome:"خوش آمدید",
+ welcomeDesc:"بیایید ملک مناسب شما را پیدا کنیم.",
+ register:"ثبت‌نام",
+ registerSmall:"پروفایل خود را ایجاد کنید",
+ guest:"ورود به سایت",
+ guestSmall:"ثبت درخواست ملک",
+ sell:"فروش ملک من",
+ sellSmall:"ملک خود را برای فروش معرفی کنید",
+ adChoice:"تبلیغات",
+ adSmall:"درخواست تبلیغات",
+ ad:"فضای تبلیغات مرتبط با صنعت ساختمان و املاک.",
+ type:"نوع ملک",
+ typeDesc:"نوع ملکی را که به دنبال آن هستید انتخاب کنید.",
+ daire:"واحد",villa:"ویلا",dukkan:"مغازه",fabrika:"کارخانه",arsa:"زمین",
+ property:"درخواست ملک",
+ propertyDesc:"مشخصات ملکی را که به دنبال آن هستید انتخاب کنید.",
+ location:"موقعیت",side:"سمت شهر",district:"منطقه",neighborhood:"محله",
+ building:"نوع ساختمان / شهرک",normal:"آپارتمان معمولی",site:"داخل شهرک",
+ siteName:"نام شهرک",siteNote:"می‌توانید شهرک مشخصی را انتخاب کنید یا همه شهرک‌ها را در نظر بگیرید.",
+ basic:"اطلاعات اصلی",price:"قیمت",gross:"متراژ ناخالص",net:"متراژ مفید",age:"سن ساختمان",
+ rooms:"تعداد اتاق",floor:"طبقه واحد",buildingFloors:"تعداد طبقات ساختمان",
+ bath:"تعداد حمام",wc:"تعداد سرویس بهداشتی",kitchen:"آشپزخانه",
+ closed:"آشپزخانه بسته",open:"آشپزخانه اپن",features:"ویژگی‌ها",
+ balconyYes:"بالکن دارد",balconyNo:"بالکن ندارد",elevatorYes:"آسانسور دارد",elevatorNo:"آسانسور ندارد",
+ parkingYes:"پارکینگ دارد",furnished:"مبله",villaType:"نوع ویلا",
+ independent:"ویلای مستقل",villaSite:"ویلا داخل شهرک",siteFeatures:"امکانات شهرک",
+ openPool:"استخر روباز",closedPool:"استخر سرپوشیده",sauna:"سونا",fitness:"سالن بدنسازی",
+ football:"سالن فوتبال",security:"نگهبانی ۲۴ ساعته",deed:"وضعیت سند",
+ katMulkiyeti:"سند مالکیت",katIrtifaki:"سند ارتفاقی",other:"سایر",
+ credit:"مناسب دریافت وام",creditYes:"وام می‌خواهم",creditNo:"وام نمی‌خواهم",
+ status:"وضعیت استفاده",tenantYes:"مستأجر دارد",tenantNo:"بدون مستأجر",empty:"خالی",
+ view:"منظره / دسترسی",bosporus:"منظره بسفر",sea:"منظره دریا",forest:"منظره جنگل",city:"منظره شهر",
+ metrobus:"نزدیک متروبوس",marmaray:"نزدیک مارمارای",metro:"نزدیک مترو",public:"نزدیک حمل‌ونقل عمومی",
+ extra:"درخواست‌های ویژه",contact:"اطلاعات تماس",date:"تاریخ مورد نظر",time:"ساعت مورد نظر",
+ submit:"ارسال درخواست",back:"← بازگشت",
+ sellTitle:"آیا می‌خواهید ملک خود را بفروشید؟",
+ sellDesc:"اطلاعات خانه، ویلا، زمین یا ملک تجاری خود را برای فروش ارسال کنید.",
+ sellSubmit:"ارسال درخواست فروش",
+ adTitle:"درخواست تبلیغات",
+ adDesc:"در این پلتفرم فقط تبلیغات مرتبط با ساختمان و صنعت ساخت‌وساز پذیرفته می‌شود.",
+ adSubmit:"ارسال درخواست تبلیغات",
+ success:"درخواست شما ثبت شد",
+ successText:"درخواست شما با موفقیت دریافت شد. اگر در سایت ثبت‌نام کرده باشید می‌توانید درخواست خود را در پروفایل مشاهده کنید. در غیر این صورت درخواست شما جداگانه بررسی خواهد شد و متخصصین ما در اسرع وقت با شما تماس خواهند گرفت. با تشکر از شما. NM GROUP"
 },
 
 en:{
-brand:"REAL ESTATE",
-tag:"A new generation way to find the right property in Istanbul.",
-advertisement:"Project and real estate advertisements will appear here.",
-welcome:"Welcome",
-welcomeDesc:"Let's find the right property for you.",
-register:"Register",
-registerSmall:"Create your profile",
-login:"Enter Site",
-loginSmall:"Continue with your account",
-guest:"Continue Without Registration",
-guestSmall:"Create your request without registering",
-requests:"My Requests",
-requestsSmall:"View your saved requests",
-sell:"Sell My Property",
-sellSmall:"House, villa, land, shop or factory",
-registerTitle:"Create Profile",
-registerDesc:"Save your name, phone, e-mail, photo and Tapu status.",
-loginTitle:"Sign In",
-profile:"My Profile",
-historyDescription:"All your purchase requests appear here with separate numbers.",
-newRequest:"New Request",
-firstName:"First name",
-lastName:"Last name",
-phone:"Phone",
-email:"E-mail",
-password:"Password",
-displayName:"Display name",
-profilePhoto:"Profile photo",
-ownTapu:"Is the Tapu registered in your own name?",
-back:"← Back",
-propertyQuestion:"What type of property are you looking for?",
-propertyQuestionDesc:"Choose the property type first. The next page will show only the features for that type.",
-daire:"APARTMENT",
-villa:"VILLA",
-dukkân:"SHOP",
-fabrika:"FACTORY",
-arsa:"LAND",
-daireDesc:"Apartment, residence or gated-community unit",
-villaDesc:"Detached or gated-community villa",
-dukkânDesc:"Shop or commercial unit",
-fabrikaDesc:"Factory, warehouse or industrial facility",
-arsaDesc:"Residential, commercial or investment land",
-continue:"Continue →",
-detailsTitle:"Location, Site & Features",
-finalTitle:"Your Request",
-finalDescription:"Describe the view, transport access, surroundings and any special requirements in your own words.",
-specialRequests:"Special Requirements",
-specialPlaceholder:"For example: Sea view, high floor, open view and maximum 10 minutes from Metrobus...",
-transport:"Transport / Proximity",
-contactInformation:"Contact Information",
-contactDate:"Preferred contact day",
-contactTime:"Preferred time",
-sendRequest:"Send Request",
-propertyType:"Property Type",
-sellerName:"Full Name",
-propertyAddress:"Property Address",
-expectedPrice:"Expected Sale Price",
-area:"Area / m²",
-description:"Description",
-propertyPhotos:"Property Photos",
-sendSeller:"Send Sale Request",
-sellTitle:"I Want to Sell My Property",
-sellDescription:"Leave your details to sell your house, villa, land, shop or factory.",
-successTitle:"Request Received",
-home:"Back to Home",
-footer:"Istanbul Real Estate & Investment",
-budget:"Budget",
-minimumBudget:"Minimum Budget",
-maximumBudget:"Maximum Budget",
-gross:"Gross m²",
-net:"Net m²",
-roomCount:"Room Count",
-buildingAge:"Building Age",
-floorCount:"Number of Floors",
-floor:"Floor",
-heating:"Heating",
-bathroom:"Bathrooms",
-wc:"WC",
-kitchen:"Kitchen",
-balcony:"Balcony",
-terrace:"Terrace",
-elevator:"Elevator",
-parking:"Parking",
-furnished:"Furnished",
-usage:"Usage Status",
-credit:"Mortgage Eligible",
-tapu:"Tapu Status",
-facade:"Facade",
-insideFeatures:"Interior Features",
-outsideFeatures:"Exterior Features",
-environment:"Surroundings",
-disabled:"Suitable for elderly & disabled",
-site:"Inside a Site",
-siteName:"Site Name",
-allSites:"All Sites",
-normalBuilding:"Normal Apartment",
-insideSite:"Inside a Site",
-noPreference:"No Preference",
-siteFacilities:"Site Facilities",
-pool:"Swimming Pool",
-indoorPool:"Indoor Pool",
-gym:"Fitness / Gym",
-security:"24-Hour Security",
-garden:"Landscaped Green Area",
-playground:"Children's Playground",
-sauna:"Sauna",
-spa:"SPA",
-visitorParking:"Visitor Parking",
-generator:"Generator",
-sportsArea:"Sports Area",
-bosporus:"Bosphorus View",
-sea:"Sea View",
-forest:"Forest View",
-city:"City View",
-gardenView:"Garden View",
-openView:"Open View",
-noImportant:"View Not Important",
-metrobus:"Near Metrobus",
-marmaray:"Near Marmaray",
-metro:"Near Metro",
-publicTransport:"Near Public Transport",
-e5:"Near E-5 / D100",
-tem:"Near TEM",
-school:"Near School",
-hospital:"Near Hospital",
-mall:"Near Mall",
-location:"Location",
-side:"Side",
-district:"District",
-neighborhood:"Neighborhood",
-industrialArea:"Production Area / m²",
-warehouse:"Warehouse Area / m²",
-ceiling:"Ceiling Height",
-crane:"Crane",
-industrialPower:"Industrial Electricity",
-loading:"Loading Area",
-landArea:"Land Area",
-zoning:"Zoning",
-far:"FAR / KAKS",
-taks:"TAKS",
-block:"Block",
-parcel:"Parcel",
-successText:"Your request will be reviewed separately. Our specialists will contact you as soon as possible.<br><br>If you registered, you can see your request under “My Requests”.<br><br>Thank you.<br><br><strong>NM GROUP</strong>"
+ hero:"REAL ESTATE",
+ intro:"A new generation way to find the right property in Istanbul.",
+ welcome:"Welcome",
+ welcomeDesc:"Let's find the right property for you.",
+ register:"Register",
+ registerSmall:"Create your profile",
+ guest:"Enter Site",
+ guestSmall:"Create a property request",
+ sell:"Sell My Property",
+ sellSmall:"Submit your property for sale",
+ adChoice:"Advertise",
+ adSmall:"Advertising request",
+ ad:"Advertising space for construction and real estate services.",
+ type:"Property Type",typeDesc:"Select the type of property you are looking for.",
+ daire:"APARTMENT",villa:"VILLA",dukkan:"SHOP",fabrika:"FACTORY",arsa:"LAND",
+ property:"Property Request",propertyDesc:"Select the features of the property you are looking for.",
+ location:"Location",side:"Side",district:"District",neighborhood:"Neighborhood",
+ building:"Building / Complex",normal:"Normal Apartment",site:"Inside a Complex",
+ siteName:"Complex Name",siteNote:"Choose a specific complex or leave all complexes selected.",
+ basic:"Basic Information",price:"Price",gross:"Gross M²",net:"Net M²",age:"Building Age",
+ rooms:"Number of Rooms",floor:"Apartment Floor",buildingFloors:"Building Floors",
+ bath:"Bathrooms",wc:"WC",kitchen:"Kitchen",closed:"Closed Kitchen",open:"Open / American Kitchen",
+ features:"Features",balconyYes:"Balcony",balconyNo:"No Balcony",elevatorYes:"Elevator",elevatorNo:"No Elevator",
+ parkingYes:"Parking",furnished:"Furnished",villaType:"Villa Type",independent:"Detached Villa",
+ villaSite:"Villa in Complex",siteFeatures:"Complex Facilities",openPool:"Outdoor Pool",
+ closedPool:"Indoor Pool",sauna:"Sauna",fitness:"Fitness Center",football:"Football Hall",
+ security:"24/7 Security",deed:"Title Deed",katMulkiyeti:"Condominium Title",katIrtifaki:"Construction Easement",
+ other:"Other",credit:"Mortgage Eligible",creditYes:"I Will Use Credit",creditNo:"No Credit",
+ status:"Occupancy",tenantYes:"Tenant",tenantNo:"No Tenant",empty:"Vacant",
+ view:"View / Transportation",bosporus:"Bosphorus View",sea:"Sea View",forest:"Forest View",
+ city:"City View",metrobus:"Near Metrobus",marmaray:"Near Marmaray",metro:"Near Metro",
+ public:"Near Public Transport",extra:"Special Requests",contact:"Contact Information",
+ date:"Preferred Date",time:"Preferred Time",submit:"Submit Request",back:"← Back",
+ sellTitle:"Would You Like to Sell Your Property?",
+ sellDesc:"Leave your details to offer your home, villa, land or commercial property for sale.",
+ sellSubmit:"Submit Sales Request",
+ adTitle:"Advertise",adDesc:"Only construction and building-related products and services are accepted.",
+ adSubmit:"Submit Advertising Request",
+ success:"Your Request Has Been Received",
+ successText:"Your request has been received successfully. If you registered on the website, you can view your request in your profile. Otherwise, your request will be reviewed separately and our specialists will contact you as soon as possible. Thank you. NM GROUP"
 },
 
 ar:{
-brand:"العقارات",
-tag:"طريقة جديدة للعثور على العقار المناسب في إسطنبول.",
-advertisement:"ستظهر إعلانات المشاريع والعقارات هنا.",
-welcome:"مرحباً بكم",
-welcomeDesc:"لنجد العقار المناسب لكم معاً.",
-register:"تسجيل",
-registerSmall:"إنشاء ملف",
-login:"دخول الموقع",
-loginSmall:"المتابعة بالحساب",
-guest:"المتابعة بدون تسجيل",
-guestSmall:"إنشاء الطلب بدون تسجيل",
-requests:"طلباتي",
-requestsSmall:"عرض الطلبات",
-sell:"أريد بيع عقاري",
-sellSmall:"منزل أو فيلا أو أرض أو محل أو مصنع",
-registerTitle:"إنشاء ملف",
-registerDesc:"احفظ الاسم والهاتف والبريد والصورة وحالة Tapu.",
-loginTitle:"دخول",
-profile:"ملفي",
-historyDescription:"جميع طلبات الشراء الخاصة بكم تظهر بأرقام مستقلة.",
-newRequest:"طلب جديد",
-firstName:"الاسم",
-lastName:"اسم العائلة",
-phone:"الهاتف",
-email:"البريد الإلكتروني",
-password:"كلمة المرور",
-displayName:"الاسم الظاهر",
-profilePhoto:"صورة الملف",
-ownTapu:"هل Tapu باسمك؟",
-back:"← رجوع",
-propertyQuestion:"ما نوع العقار الذي تبحث عنه؟",
-propertyQuestionDesc:"اختر نوع العقار أولاً، ثم ستظهر فقط المواصفات الخاصة به.",
-daire:"شقة",
-villa:"فيلا",
-dukkân:"محل",
-fabrika:"مصنع",
-arsa:"أرض",
-daireDesc:"شقة أو ريزيدنس أو مجمع",
-villaDesc:"فيلا مستقلة أو داخل مجمع",
-dukkânDesc:"محل أو وحدة تجارية",
-fabrikaDesc:"مصنع أو مستودع أو منشأة صناعية",
-arsaDesc:"أرض سكنية أو تجارية أو استثمارية",
-continue:"متابعة →",
-detailsTitle:"الموقع والمجمع والمواصفات",
-finalTitle:"طلبكم",
-finalDescription:"اكتبوا الإطلالة والمواصلات والمحيط وأي شروط خاصة.",
-specialRequests:"الطلبات الخاصة",
-specialPlaceholder:"مثلاً: إطلالة بحرية، طابق مرتفع، منظر مفتوح وقريب من المتروبوس...",
-transport:"المواصلات / القرب",
-contactInformation:"معلومات الاتصال",
-contactDate:"يوم الاتصال",
-contactTime:"وقت الاتصال",
-sendRequest:"إرسال الطلب",
-propertyType:"نوع العقار",
-sellerName:"الاسم الكامل",
-propertyAddress:"عنوان العقار",
-expectedPrice:"السعر المتوقع",
-area:"المساحة / م²",
-description:"الوصف",
-propertyPhotos:"صور العقار",
-sendSeller:"إرسال طلب البيع",
-sellTitle:"أريد بيع عقاري",
-sellDescription:"اتركوا بياناتكم لبيع المنزل أو الفيلا أو الأرض أو المحل أو المصنع.",
-successTitle:"تم استلام الطلب",
-home:"الرئيسية",
-footer:"العقارات والاستثمار في إسطنبول",
-budget:"الميزانية",
-minimumBudget:"الحد الأدنى",
-maximumBudget:"الحد الأقصى",
-gross:"م² إجمالي",
-net:"م² صافي",
-roomCount:"عدد الغرف",
-buildingAge:"عمر البناء",
-floorCount:"عدد الطوابق",
-floor:"الطابق",
-heating:"التدفئة",
-bathroom:"الحمامات",
-wc:"WC",
-kitchen:"المطبخ",
-balcony:"الشرفة",
-terrace:"التراس",
-elevator:"المصعد",
-parking:"الموقف",
-furnished:"مفروش",
-usage:"حالة الاستخدام",
-credit:"مناسب للتمويل",
-tapu:"حالة Tapu",
-facade:"الواجهة",
-insideFeatures:"المواصفات الداخلية",
-outsideFeatures:"المواصفات الخارجية",
-environment:"المحيط",
-disabled:"مناسب لكبار السن وذوي الإعاقة",
-site:"داخل مجمع",
-siteName:"اسم المجمع",
-allSites:"كل المجمعات",
-normalBuilding:"مبنى عادي",
-insideSite:"داخل مجمع",
-noPreference:"لا يهم",
-siteFacilities:"مرافق المجمع",
-pool:"مسبح",
-indoorPool:"مسبح داخلي",
-gym:"صالة رياضية",
-security:"أمن 24 ساعة",
-garden:"مساحات خضراء",
-playground:"ملعب أطفال",
-sauna:"ساونا",
-spa:"سبا",
-visitorParking:"مواقف للزوار",
-generator:"مولد كهرباء",
-sportsArea:"ملعب رياضي",
-bosporus:"إطلالة البوسفور",
-sea:"إطلالة البحر",
-forest:"إطلالة الغابة",
-city:"إطلالة المدينة",
-gardenView:"إطلالة الحديقة",
-openView:"منظر مفتوح",
-noImportant:"الإطلالة غير مهمة",
-metrobus:"قريب من المتروبوس",
-marmaray:"قريب من مرمراي",
-metro:"قريب من المترو",
-publicTransport:"قريب من المواصلات العامة",
-e5:"قريب من E-5 / D100",
-tem:"قريب من TEM",
-school:"قريب من المدرسة",
-hospital:"قريب من المستشفى",
-mall:"قريب من مركز التسوق",
-location:"الموقع",
-side:"الجهة",
-district:"المنطقة",
-neighborhood:"الحي",
-industrialArea:"مساحة الإنتاج / م²",
-warehouse:"مساحة المستودع / م²",
-ceiling:"ارتفاع السقف",
-crane:"رافعة",
-industrialPower:"كهرباء صناعية",
-loading:"منطقة تحميل",
-landArea:"مساحة الأرض",
-zoning:"حالة البناء",
-far:"FAR / KAKS",
-taks:"TAKS",
-block:"القطعة",
-parcel:"القسيمة",
-successText:"سيتم فحص طلبكم بشكل منفصل وسيتصل بكم متخصصونا في أقرب وقت.<br><br>إذا كنتم مسجلين، يمكنكم رؤية طلبكم في «طلباتي».<br><br>شكراً لكم<br><br><strong>NM GROUP</strong>"
+ hero:"العقارات",
+ intro:"طريقة جديدة للعثور على العقار المناسب في إسطنبول.",
+ welcome:"مرحباً بكم",
+ welcomeDesc:"دعونا نعثر معاً على العقار المناسب لكم.",
+ register:"التسجيل",registerSmall:"إنشاء ملفك الشخصي",
+ guest:"دخول الموقع",guestSmall:"إنشاء طلب عقار",
+ sell:"بيع عقاري",sellSmall:"عرض عقارك للبيع",
+ adChoice:"الإعلان",adSmall:"طلب إعلان",
+ ad:"مساحة إعلانية لقطاع البناء والعقارات.",
+ type:"نوع العقار",typeDesc:"اختر نوع العقار الذي تبحث عنه.",
+ daire:"شقة",villa:"فيلا",dukkan:"محل",fabrika:"مصنع",arsa:"أرض",
+ property:"طلب عقار",propertyDesc:"اختر مواصفات العقار الذي تبحث عنه.",
+ location:"الموقع",side:"الجهة",district:"المنطقة",neighborhood:"الحي",
+ building:"المبنى / المجمع",normal:"مبنى عادي",site:"داخل مجمع",
+ siteName:"اسم المجمع",siteNote:"يمكنك اختيار مجمع محدد أو ترك جميع المجمعات.",
+ basic:"المعلومات الأساسية",price:"السعر",gross:"المساحة الإجمالية",net:"المساحة الصافية",age:"عمر المبنى",
+ rooms:"عدد الغرف",floor:"طابق الوحدة",buildingFloors:"عدد طوابق المبنى",
+ bath:"عدد الحمامات",wc:"عدد دورات المياه",kitchen:"المطبخ",
+ closed:"مطبخ مغلق",open:"مطبخ أمريكي مفتوح",features:"المميزات",
+ balconyYes:"يوجد شرفة",balconyNo:"لا توجد شرفة",elevatorYes:"مصعد",elevatorNo:"بدون مصعد",
+ parkingYes:"موقف سيارات",furnished:"مفروش",villaType:"نوع الفيلا",independent:"فيلا مستقلة",
+ villaSite:"فيلا داخل مجمع",siteFeatures:"مرافق المجمع",openPool:"مسبح خارجي",closedPool:"مسبح داخلي",
+ sauna:"ساونا",fitness:"صالة رياضية",football:"صالة كرة قدم",security:"أمن 24 ساعة",
+ deed:"حالة سند الملكية",katMulkiyeti:"ملكية طابقية",katIrtifaki:"ارتفاق إنشائي",other:"أخرى",
+ credit:"مناسب للقرض",creditYes:"سأستخدم قرضاً",creditNo:"لن أستخدم قرضاً",
+ status:"حالة الاستخدام",tenantYes:"يوجد مستأجر",tenantNo:"بدون مستأجر",empty:"فارغ",
+ view:"الإطلالة / المواصلات",bosporus:"إطلالة البوسفور",sea:"إطلالة البحر",forest:"إطلالة الغابة",
+ city:"إطلالة المدينة",metrobus:"قريب من المتروبوس",marmaray:"قريب من مرمراي",metro:"قريب من المترو",
+ public:"قريب من المواصلات العامة",extra:"طلبات خاصة",contact:"معلومات الاتصال",
+ date:"التاريخ المفضل",time:"الوقت المفضل",submit:"إرسال الطلب",back:"← رجوع",
+ sellTitle:"هل تريد بيع عقارك؟",sellDesc:"أرسل معلومات منزلك أو فيلتك أو أرضك أو عقارك التجاري للبيع.",
+ sellSubmit:"إرسال طلب البيع",adTitle:"الإعلان",adDesc:"يتم قبول الإعلانات المرتبطة بقطاع البناء والتشييد فقط.",
+ adSubmit:"إرسال طلب الإعلان",
+ success:"تم استلام طلبكم",
+ successText:"تم استلام طلبكم بنجاح. إذا كنتم مسجلين في الموقع يمكنكم متابعة طلبكم من الملف الشخصي، وإلا فسيتم التعامل مع الطلب بشكل منفصل وسيتواصل معكم متخصصونا في أقرب وقت. شكراً لكم. NM GROUP"
 },
 
 ru:{
-brand:"НЕДВИЖИМОСТЬ",
-tag:"Новый способ найти подходящую недвижимость в Стамбуле.",
-advertisement:"Здесь будут объявления проектов и недвижимости.",
-welcome:"Добро пожаловать",
-welcomeDesc:"Давайте вместе найдём подходящую недвижимость.",
-register:"Регистрация",
-registerSmall:"Создать профиль",
-login:"Войти на сайт",
-loginSmall:"Продолжить с аккаунтом",
-guest:"Без регистрации",
-guestSmall:"Создать заявку без регистрации",
-requests:"Мои заявки",
-requestsSmall:"Просмотреть заявки",
-sell:"Продать мою недвижимость",
-sellSmall:"Дом, вилла, земля, магазин или фабрика",
-registerTitle:"Создать профиль",
-registerDesc:"Сохраните имя, телефон, e-mail, фото и статус Tapu.",
-loginTitle:"Вход",
-profile:"Мой профиль",
-historyDescription:"Все заявки на покупку отображаются здесь с отдельными номерами.",
-newRequest:"Новая заявка",
-firstName:"Имя",
-lastName:"Фамилия",
-phone:"Телефон",
-email:"E-mail",
-password:"Пароль",
-displayName:"Отображаемое имя",
-profilePhoto:"Фото профиля",
-ownTapu:"Tapu оформлен на ваше имя?",
-back:"← Назад",
-propertyQuestion:"Какой тип недвижимости вы ищете?",
-propertyQuestionDesc:"Выберите тип, после чего появятся только соответствующие характеристики.",
-daire:"КВАРТИРА",
-villa:"ВИЛЛА",
-dukkân:"МАГАЗИН",
-fabrika:"ФАБРИКА",
-arsa:"ЗЕМЛЯ",
-daireDesc:"Квартира, резиденция или комплекс",
-villaDesc:"Отдельная или комплексная вилла",
-dukkânDesc:"Магазин или коммерческое помещение",
-fabrikaDesc:"Фабрика, склад или промышленный объект",
-arsaDesc:"Жилая, коммерческая или инвестиционная земля",
-continue:"Продолжить →",
-detailsTitle:"Локация, комплекс и характеристики",
-finalTitle:"Ваша заявка",
-finalDescription:"Опишите вид, транспорт, окружение и особые условия.",
-specialRequests:"Особые пожелания",
-specialPlaceholder:"Например: вид на море, высокий этаж и максимум 10 минут до Metrobus...",
-transport:"Транспорт / близость",
-contactInformation:"Контакты",
-contactDate:"Удобный день",
-contactTime:"Удобное время",
-sendRequest:"Отправить заявку",
-propertyType:"Тип недвижимости",
-sellerName:"Имя и фамилия",
-propertyAddress:"Адрес объекта",
-expectedPrice:"Ожидаемая цена",
-area:"Площадь / м²",
-description:"Описание",
-propertyPhotos:"Фотографии объекта",
-sendSeller:"Отправить заявку на продажу",
-sellTitle:"Я хочу продать недвижимость",
-sellDescription:"Оставьте данные для продажи дома, виллы, земли, магазина или фабрики.",
-successTitle:"Заявка получена",
-home:"На главную",
-footer:"Недвижимость и инвестиции в Стамбуле",
-budget:"Бюджет",
-minimumBudget:"Минимальный бюджет",
-maximumBudget:"Максимальный бюджет",
-gross:"Общая площадь м²",
-net:"Чистая площадь м²",
-roomCount:"Количество комнат",
-buildingAge:"Возраст здания",
-floorCount:"Количество этажей",
-floor:"Этаж",
-heating:"Отопление",
-bathroom:"Ванные комнаты",
-wc:"WC",
-kitchen:"Кухня",
-balcony:"Балкон",
-terrace:"Терраса",
-elevator:"Лифт",
-parking:"Парковка",
-furnished:"Мебель",
-usage:"Статус использования",
-credit:"Подходит для ипотеки",
-tapu:"Статус Tapu",
-facade:"Фасад",
-insideFeatures:"Внутренние особенности",
-outsideFeatures:"Внешние особенности",
-environment:"Окружение",
-disabled:"Для пожилых и инвалидов",
-site:"В комплексе",
-siteName:"Название комплекса",
-allSites:"Все комплексы",
-normalBuilding:"Обычный дом",
-insideSite:"В комплексе",
-noPreference:"Неважно",
-siteFacilities:"Инфраструктура комплекса",
-pool:"Бассейн",
-indoorPool:"Крытый бассейн",
-gym:"Фитнес",
-security:"Охрана 24/7",
-garden:"Зелёная зона",
-playground:"Детская площадка",
-sauna:"Сауна",
-spa:"SPA",
-visitorParking:"Гостевая парковка",
-generator:"Генератор",
-sportsArea:"Спортивная площадка",
-bosporus:"Вид на Босфор",
-sea:"Вид на море",
-forest:"Вид на лес",
-city:"Вид на город",
-gardenView:"Вид на сад",
-openView:"Открытый вид",
-noImportant:"Вид не важен",
-metrobus:"Рядом Metrobus",
-marmaray:"Рядом Marmaray",
-metro:"Рядом Metro",
-publicTransport:"Рядом общественный транспорт",
-e5:"Рядом E-5 / D100",
-tem:"Рядом TEM",
-school:"Рядом школа",
-hospital:"Рядом больница",
-mall:"Рядом торговый центр",
-location:"Локация",
-side:"Сторона",
-district:"Район",
-neighborhood:"Махалле",
-industrialArea:"Производственная площадь / м²",
-warehouse:"Площадь склада / м²",
-ceiling:"Высота потолка",
-crane:"Кран",
-industrialPower:"Промышленное электричество",
-loading:"Зона погрузки",
-landArea:"Площадь земли",
-zoning:"Назначение",
-far:"FAR / KAKS",
-taks:"TAKS",
-block:"Блок",
-parcel:"Участок",
-successText:"Заявка будет рассмотрена отдельно. Наши специалисты свяжутся с вами как можно скорее.<br><br>Если вы зарегистрированы, заявка будет доступна в «Мои заявки».<br><br>Спасибо.<br><br><strong>NM GROUP</strong>"
+ hero:"НЕДВИЖИМОСТЬ",
+ intro:"Новый способ найти подходящую недвижимость в Стамбуле.",
+ welcome:"Добро пожаловать",
+ welcomeDesc:"Давайте вместе найдём подходящую недвижимость.",
+ register:"Регистрация",registerSmall:"Создать профиль",
+ guest:"Войти на сайт",guestSmall:"Создать запрос",
+ sell:"Продать недвижимость",sellSmall:"Предложить объект на продажу",
+ adChoice:"Реклама",adSmall:"Заявка на рекламу",
+ ad:"Рекламное пространство для строительного сектора.",
+ type:"Тип недвижимости",typeDesc:"Выберите тип недвижимости.",
+ daire:"КВАРТИРА",villa:"ВИЛЛА",dukkan:"МАГАЗИН",fabrika:"ФАБРИКА",arsa:"ЗЕМЛЯ",
+ property:"Запрос недвижимости",propertyDesc:"Выберите характеристики недвижимости.",
+ location:"Расположение",side:"Часть города",district:"Район",neighborhood:"Квартал",
+ building:"Здание / Комплекс",normal:"Обычный дом",site:"В жилом комплексе",
+ siteName:"Название комплекса",siteNote:"Можно выбрать конкретный комплекс или оставить все.",
+ basic:"Основная информация",price:"Цена",gross:"Общая площадь",net:"Полезная площадь",age:"Возраст здания",
+ rooms:"Количество комнат",floor:"Этаж квартиры",buildingFloors:"Количество этажей",
+ bath:"Ванные комнаты",wc:"Туалет",kitchen:"Кухня",closed:"Закрытая кухня",open:"Открытая американская кухня",
+ features:"Характеристики",balconyYes:"Есть балкон",balconyNo:"Нет балкона",elevatorYes:"Лифт",elevatorNo:"Без лифта",
+ parkingYes:"Парковка",furnished:"Меблированная",villaType:"Тип виллы",independent:"Отдельная вилла",
+ villaSite:"Вилла в комплексе",siteFeatures:"Удобства комплекса",openPool:"Открытый бассейн",
+ closedPool:"Крытый бассейн",sauna:"Сауна",fitness:"Фитнес-зал",football:"Футбольный зал",
+ security:"Охрана 24/7",deed:"Статус документа",katMulkiyeti:"Право собственности",
+ katIrtifaki:"Строительный сервитут",other:"Другое",credit:"Подходит для кредита",
+ creditYes:"Буду использовать кредит",creditNo:"Без кредита",status:"Статус проживания",
+ tenantYes:"Есть арендатор",tenantNo:"Без арендатора",empty:"Пусто",view:"Вид / Транспорт",
+ bosporus:"Вид на Босфор",sea:"Вид на море",forest:"Вид на лес",city:"Вид на город",
+ metrobus:"Рядом с Metrobus",marmaray:"Рядом с Marmaray",metro:"Рядом с метро",
+ public:"Рядом с общественным транспортом",extra:"Особые пожелания",contact:"Контактная информация",
+ date:"Предпочтительная дата",time:"Предпочтительное время",submit:"Отправить запрос",back:"← Назад",
+ sellTitle:"Хотите продать недвижимость?",sellDesc:"Оставьте информацию о доме, вилле, земле или коммерческом объекте.",
+ sellSubmit:"Отправить заявку на продажу",adTitle:"Реклама",adDesc:"Принимается реклама только товаров и услуг строительного сектора.",
+ adSubmit:"Отправить рекламную заявку",
+ success:"Ваш запрос получен",
+ successText:"Ваш запрос успешно получен. Если вы зарегистрированы на сайте, вы сможете увидеть его в профиле. В противном случае запрос будет рассмотрен отдельно, и наши специалисты свяжутся с вами как можно скорее. Спасибо. NM GROUP"
 },
 
 uk:{
-brand:"НЕРУХОМІСТЬ",
-tag:"Новий спосіб знайти потрібну нерухомість у Стамбулі.",
-advertisement:"Тут будуть оголошення про проєкти та нерухомість.",
-welcome:"Ласкаво просимо",
-welcomeDesc:"Разом знайдемо нерухомість, яка вам підходить.",
-register:"Реєстрація",
-registerSmall:"Створіть профіль",
-login:"Увійти на сайт",
-loginSmall:"Продовжити з акаунтом",
-guest:"Без реєстрації",
-guestSmall:"Створити запит без реєстрації",
-requests:"Мої запити",
-requestsSmall:"Переглянути запити",
-sell:"Продати мою нерухомість",
-sellSmall:"Будинок, вілла, земля, магазин або фабрика",
-registerTitle:"Створити профіль",
-registerDesc:"Збережіть ім’я, телефон, e-mail, фото та статус Tapu.",
-loginTitle:"Вхід",
-profile:"Мій профіль",
-historyDescription:"Усі запити на купівлю відображаються тут з окремими номерами.",
-newRequest:"Новий запит",
-firstName:"Ім’я",
-lastName:"Прізвище",
-phone:"Телефон",
-email:"E-mail",
-password:"Пароль",
-displayName:"Ім’я для відображення",
-profilePhoto:"Фото профілю",
-ownTapu:"Tapu оформлений на ваше ім’я?",
-back:"← Назад",
-propertyQuestion:"Який тип нерухомості ви шукаєте?",
-propertyQuestionDesc:"Оберіть тип, і з’являться лише відповідні характеристики.",
-daire:"КВАРТИРА",
-villa:"ВІЛЛА",
-dukkân:"МАГАЗИН",
-fabrika:"ФАБРИКА",
-arsa:"ЗЕМЛЯ",
-daireDesc:"Квартира, резиденція або комплекс",
-villaDesc:"Окрема або комплексна вілла",
-dukkânDesc:"Магазин або комерційне приміщення",
-fabrikaDesc:"Фабрика, склад або промисловий об’єкт",
-arsaDesc:"Житлова, комерційна або інвестиційна земля",
-continue:"Далі →",
-detailsTitle:"Локація, комплекс і характеристики",
-finalTitle:"Ваш запит",
-finalDescription:"Опишіть краєвид, транспорт, оточення та особливі умови.",
-specialRequests:"Особливі побажання",
-specialPlaceholder:"Наприклад: вид на море, високий поверх і максимум 10 хвилин до Metrobus...",
-transport:"Транспорт / близькість",
-contactInformation:"Контакти",
-contactDate:"Зручний день",
-contactTime:"Зручний час",
-sendRequest:"Надіслати запит",
-propertyType:"Тип нерухомості",
-sellerName:"Ім’я та прізвище",
-propertyAddress:"Адреса об’єкта",
-expectedPrice:"Очікувана ціна",
-area:"Площа / м²",
-description:"Опис",
-propertyPhotos:"Фотографії об’єкта",
-sendSeller:"Надіслати запит на продаж",
-sellTitle:"Я хочу продати нерухомість",
-sellDescription:"Залиште дані для продажу будинку, вілли, землі, магазину або фабрики.",
-successTitle:"Запит отримано",
-home:"На головну",
-footer:"Нерухомість та інвестиції у Стамбулі",
-budget:"Бюджет",
-minimumBudget:"Мінімальний бюджет",
-maximumBudget:"Максимальний бюджет",
-gross:"Загальна площа м²",
-net:"Чиста площа м²",
-roomCount:"Кількість кімнат",
-buildingAge:"Вік будинку",
-floorCount:"Кількість поверхів",
-floor:"Поверх",
-heating:"Опалення",
-bathroom:"Ванні кімнати",
-wc:"WC",
-kitchen:"Кухня",
-balcony:"Балкон",
-terrace:"Тераса",
-elevator:"Ліфт",
-parking:"Паркінг",
-furnished:"Мебльована",
-usage:"Статус використання",
-credit:"Підходить для іпотеки",
-tapu:"Статус Tapu",
-facade:"Фасад",
-insideFeatures:"Внутрішні особливості",
-outsideFeatures:"Зовнішні особливості",
-environment:"Оточення",
-disabled:"Для літніх та людей з інвалідністю",
-site:"У комплексі",
-siteName:"Назва комплексу",
-allSites:"Усі комплекси",
-normalBuilding:"Звичайний будинок",
-insideSite:"У комплексі",
-noPreference:"Неважливо",
-siteFacilities:"Інфраструктура комплексу",
-pool:"Басейн",
-indoorPool:"Критий басейн",
-gym:"Фітнес-зал",
-security:"Охорона 24/7",
-garden:"Зелена зона",
-playground:"Дитячий майданчик",
-sauna:"Сауна",
-spa:"SPA",
-visitorParking:"Гостьовий паркінг",
-generator:"Генератор",
-sportsArea:"Спортивний майданчик",
-bosporus:"Вид на Босфор",
-sea:"Вид на море",
-forest:"Вид на ліс",
-city:"Вид на місто",
-gardenView:"Вид на сад",
-openView:"Відкритий вид",
-noImportant:"Вид не важливий",
-metrobus:"Поруч Metrobus",
-marmaray:"Поруч Marmaray",
-metro:"Поруч Metro",
-publicTransport:"Поруч громадський транспорт",
-e5:"Поруч E-5 / D100",
-tem:"Поруч TEM",
-school:"Поруч школа",
-hospital:"Поруч лікарня",
-mall:"Поруч торговий центр",
-location:"Локація",
-side:"Частина міста",
-district:"Район",
-neighborhood:"Махалле",
-industrialArea:"Виробнича площа / м²",
-warehouse:"Площа складу / м²",
-ceiling:"Висота стелі",
-crane:"Кран",
-industrialPower:"Промислова електрика",
-loading:"Зона завантаження",
-landArea:"Площа землі",
-zoning:"Призначення",
-far:"FAR / KAKS",
-taks:"TAKS",
-block:"Блок",
-parcel:"Ділянка",
-successText:"Запит буде розглянуто окремо. Наші спеціалісти зв’яжуться з вами якнайшвидше.<br><br>Якщо ви зареєстровані, запит буде у «Мої запити».<br><br>Дякуємо.<br><br><strong>NM GROUP</strong>"
+ hero:"НЕРУХОМІСТЬ",
+ intro:"Новий спосіб знайти потрібну нерухомість у Стамбулі.",
+ welcome:"Ласкаво просимо",
+ welcomeDesc:"Давайте разом знайдемо відповідну нерухомість.",
+ register:"Реєстрація",registerSmall:"Створити профіль",
+ guest:"Увійти на сайт",guestSmall:"Створити запит",
+ sell:"Продати нерухомість",sellSmall:"Запропонувати об'єкт на продаж",
+ adChoice:"Реклама",adSmall:"Заявка на рекламу",
+ ad:"Рекламний простір для будівельного сектору.",
+ type:"Тип нерухомості",typeDesc:"Оберіть тип нерухомості.",
+ daire:"КВАРТИРА",villa:"ВІЛЛА",dukkan:"МАГАЗИН",fabrika:"ФАБРИКА",arsa:"ЗЕМЛЯ",
+ property:"Запит нерухомості",propertyDesc:"Оберіть характеристики нерухомості.",
+ location:"Розташування",side:"Частина міста",district:"Район",neighborhood:"Мікрорайон",
+ building:"Будинок / Комплекс",normal:"Звичайний будинок",site:"У житловому комплексі",
+ siteName:"Назва комплексу",siteNote:"Можна обрати конкретний комплекс або залишити всі.",
+ basic:"Основна інформація",price:"Ціна",gross:"Загальна площа",net:"Корисна площа",age:"Вік будинку",
+ rooms:"Кількість кімнат",floor:"Поверх квартири",buildingFloors:"Кількість поверхів",
+ bath:"Кількість ванних",wc:"Туалет",kitchen:"Кухня",closed:"Закрита кухня",open:"Відкрита американська кухня",
+ features:"Характеристики",balconyYes:"Є балкон",balconyNo:"Немає балкона",elevatorYes:"Ліфт",elevatorNo:"Без ліфта",
+ parkingYes:"Паркування",furnished:"Мебльована",villaType:"Тип вілли",independent:"Окрема вілла",
+ villaSite:"Вілла в комплексі",siteFeatures:"Зручності комплексу",openPool:"Відкритий басейн",
+ closedPool:"Критий басейн",sauna:"Сауна",fitness:"Фітнес-зал",football:"Футбольний зал",
+ security:"Охорона 24/7",deed:"Статус документа",katMulkiyeti:"Право власності",
+ katIrtifaki:"Будівельний сервітут",other:"Інше",credit:"Підходить для кредиту",
+ creditYes:"Використаю кредит",creditNo:"Без кредиту",status:"Статус проживання",
+ tenantYes:"Є орендар",tenantNo:"Без орендаря",empty:"Порожньо",view:"Вид / Транспорт",
+ bosporus:"Вид на Босфор",sea:"Вид на море",forest:"Вид на ліс",city:"Вид на місто",
+ metrobus:"Поруч з Metrobus",marmaray:"Поруч з Marmaray",metro:"Поруч з метро",
+ public:"Поруч з громадським транспортом",extra:"Особливі побажання",contact:"Контактна інформація",
+ date:"Бажана дата",time:"Бажаний час",submit:"Надіслати запит",back:"← Назад",
+ sellTitle:"Бажаєте продати нерухомість?",sellDesc:"Залиште інформацію про будинок, віллу, землю або комерційний об'єкт.",
+ sellSubmit:"Надіслати заявку на продаж",adTitle:"Реклама",adDesc:"Приймається реклама лише товарів і послуг будівельного сектору.",
+ adSubmit:"Надіслати рекламну заявку",
+ success:"Ваш запит отримано",
+ successText:"Ваш запит успішно отримано. Якщо ви зареєстровані на сайті, його можна переглянути у профілі. В іншому випадку запит буде розглянуто окремо, і наші спеціалісти зв'яжуться з вами якнайшвидше. Дякуємо. NM GROUP"
 }
+
 };
 
+let lang=localStorage.getItem("nm_language")||"tr";
+let state={};
 
 /* =========================================================
-   DATA
+ LANGUAGE APPLY
 ========================================================= */
 
-const roomOptions=[
-"1+1",
-"2+1",
-"3+1",
-"4+1",
-"5+1",
-"6+1",
-"+7+1",
-"2+2",
-"3+2",
-"4+2",
-"5+2",
-"6+2",
-"7+2",
-"+7+2",
-"3+3",
-"4+3",
-"5+3",
-"6+3",
-"7+3",
-"+7+3",
-"+4+4+"
-];
+function selectLanguage(l){
+ lang=l;
+ localStorage.setItem("nm_language",l);
+ document.documentElement.lang=l;
+ document.documentElement.dir=(l==="fa"||l==="ar")?"rtl":"ltr";
+
+ const names={
+ tr:"Türkçe",fa:"فارسی",en:"English",ar:"العربية",ru:"Русский",uk:"Українська"
+ };
+
+ document.getElementById("currentLang").textContent=names[l];
+
+ const t=T[l];
+
+ const map={
+ heroTitle:"hero",languageIntro:"intro",
+ welcomeTitle:"welcome",welcomeDesc:"welcomeDesc",
+ registerChoice:"register",registerSmall:"registerSmall",
+ guestChoice:"guest",guestSmall:"guestSmall",
+ sellChoice:"sell",sellSmall:"sellSmall",
+ advertisingChoice:"adChoice",advertisingSmall:"adSmall",
+ adText:"ad",typeTitle:"type",typeDesc:"typeDesc",
+ daireText:"daire",villaText:"villa",dukkanText:"dukkan",
+ fabrikaText:"fabrika",arsaText:"arsa",
+ propertyTitle:"property",propertyDesc:"propertyDesc",
+ locationTitle:"location",sideLabel:"side",districtLabel:"district",
+ neighborhoodLabel:"neighborhood",buildingTypeTitle:"building",
+ normalApartment:"normal",siteInside:"site",siteNameLabel:"siteName",
+ siteNote:"siteNote",basicInfoTitle:"basic",priceLabel:"price",
+ grossLabel:"gross",netLabel:"net",ageLabel:"age",roomsTitle:"rooms",
+ floorTitle:"floor",floorLabel:"floor",buildingFloorsLabel:"buildingFloors",
+ bathTitle:"bath",bathLabel:"bath",wcLabel:"wc",kitchenTitle:"kitchen",
+ closedKitchen:"closed",openKitchen:"open",featuresTitle:"features",
+ balconyYes:"balconyYes",balconyNo:"balconyNo",elevatorYes:"elevatorYes",
+ elevatorNo:"elevatorNo",parkingYes:"parkingYes",furnishedYes:"furnished",
+ villaTypeTitle:"villaType",independentVilla:"independent",villaInSite:"villaSite",
+ siteFacilitiesTitle:"siteFeatures",openPool:"openPool",closedPool:"closedPool",
+ sauna:"sauna",fitness:"fitness",football:"football",security:"security",
+ deedTitle:"deed",katMulkiyeti:"katMulkiyeti",katIrtifaki:"katIrtifaki",
+ otherDeed:"other",creditTitle:"credit",creditYes:"creditYes",creditNo:"creditNo",
+ statusTitle:"status",tenantYes:"tenantYes",tenantNo:"tenantNo",emptyYes:"empty",
+ viewTitle:"view",viewBosporus:"bosporus",viewSea:"sea",viewForest:"forest",
+ viewCity:"city",nearMetrobus:"metrobus",nearMarmaray:"marmaray",
+ nearMetro:"metro",nearTransport:"public",extraTitle:"extra",
+ contactTitle:"contact",contactDateLabel:"date",contactTimeLabel:"time",
+ propertyBack:"back",submitBtn:"submit",backType:"back",
+ sellTitle:"sellTitle",sellDesc:"sellDesc",sellSubmit:"sellSubmit",
+ adTitle:"adTitle",adDesc:"adDesc",adSubmit:"adSubmit",
+ successTitle:"success",successText:"successText",
+ homeBtn:"welcome",sellBack:"back",adBack:"back"
+ };
+
+ Object.keys(map).forEach(id=>{
+   const el=document.getElementById(id);
+   if(el&&t[map[id]])el.textContent=t[map[id]];
+ });
+
+ const placeholders={
+  tr:"Örneğin: Boğaz manzaralı, metroya yakın, sessiz bir bölgede...",
+  fa:"مثلاً: منظره بسفر، نزدیک مترو، در منطقه‌ای آرام...",
+  en:"Example: Bosphorus view, near metro, in a quiet area...",
+  ar:"مثال: إطلالة على البوسفور، قريب من المترو، في منطقة هادئة...",
+  ru:"Например: вид на Босфор, рядом с метро, тихий район...",
+  uk:"Наприклад: вид на Босфор, поруч із метро, тихий район..."
+ };
+
+ document.getElementById("notes").placeholder=placeholders[l];
+
+ updateStaticOptions();
+}
+
+function updateStaticOptions(){
+
+ const t=T[lang];
+
+ document.getElementById("yesText").textContent=lang==="fa"?"بله":lang==="ar"?"نعم":"Evet";
+ document.getElementById("noText").textContent=lang==="fa"?"خیر":lang==="ar"?"لا":"Hayır";
+
+ document.getElementById("sellName").textContent=t.register==="Регистрация"?"Имя":lang==="fa"?"نام":"Ad";
+}
+
+/* =========================================================
+ NAVIGATION
+========================================================= */
+
+function goTo(id){
+
+ document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+
+ const target=document.getElementById(id);
+
+ if(target){
+   target.classList.add("active");
+   window.scrollTo({top:0,behavior:"smooth"});
+ }
+}
+
+function startProperty(type){
+
+ state.propertyType=type;
+
+ document.getElementById("villaSection")
+   .classList.toggle("hidden",type!=="villa");
+
+ goTo("propertyScreen");
+}
+
+/* =========================================================
+ ISTANBUL DATA
+========================================================= */
 
 const districts={
-avrupa:[
-"Arnavutköy",
-"Avcılar",
-"Bağcılar",
-"Bahçelievler",
-"Bakırköy",
-"Başakşehir",
-"Bayrampaşa",
-"Beşiktaş",
-"Beylikdüzü",
-"Beyoğlu",
-"Büyükçekmece",
-"Çatalca",
-"Esenler",
-"Esenyurt",
-"Eyüpsultan",
-"Fatih",
-"Gaziosmanpaşa",
-"Güngören",
-"Kağıthane",
-"Küçükçekmece",
-"Sarıyer",
-"Silivri",
-"Sultangazi",
-"Şişli",
-"Zeytinburnu"
-],
-anadolu:[
-"Adalar",
-"Ataşehir",
-"Beykoz",
-"Çekmeköy",
-"Kadıköy",
-"Kartal",
-"Maltepe",
-"Pendik",
-"Sancaktepe",
-"Sultanbeyli",
-"Şile",
-"Tuzla",
-"Ümraniye",
-"Üsküdar"
-]
+ avrupa:[
+ "Arnavutköy","Avcılar","Bağcılar","Bahçelievler","Bakırköy","Başakşehir",
+ "Bayrampaşa","Beşiktaş","Beylikdüzü","Beyoğlu","Büyükçekmece","Çatalca",
+ "Esenler","Esenyurt","Eyüpsultan","Fatih","Gaziosmanpaşa","Güngören",
+ "Kağıthane","Küçükçekmece","Sarıyer","Silivri","Sultangazi","Şişli",
+ "Zeytinburnu"
+ ],
+ anadolu:[
+ "Adalar","Ataşehir","Beykoz","Çekmeköy","Kadıköy","Kartal","Maltepe",
+ "Pendik","Sancaktepe","Sultanbeyli","Şile","Tuzla","Ümraniye","Üsküdar"
+ ]
 };
-
-
-/*
-  Mahalleler
-*/
 
 const neighborhoods={
-
-"Beylikdüzü":[
-"Adnan Kahveci",
-"Barış",
-"Büyükşehir",
-"Cumhuriyet",
-"Dereağzı",
-"Gürpınar",
-"Kavaklı",
-"Marmara",
-"Yakuplu"
-],
-
-"Esenyurt":[
-"Akçaburgaz",
-"Akevler",
-"Ardıçlı",
-"Bağlarçeşme",
-"Balıkyolu",
-"Barbaros Hayrettin Paşa",
-"Battalgazi",
-"Beylikdüzü OSB",
-"Cumhuriyet",
-"Çınar",
-"Esenkent",
-"Fatih",
-"Gökevler",
-"Hürriyet",
-"İncirtepe",
-"İnönü",
-"Mehterçeşme",
-"Mevlana",
-"Necip Fazıl Kısakürek",
-"Orhangazi",
-"Örnek",
-"Pınar",
-"Saadet",
-"Saadetdere",
-"Sultaniye",
-"Talatpaşa",
-"Turgut Özal",
-"Üçevler",
-"Yenikent",
-"Yeşilkent"
-],
-
-"Büyükçekmece":[
-"Alkent 2000",
-"Atatürk",
-"Bahçelievler",
-"Batıköy",
-"Celaliye",
-"Cumhuriyet",
-"Dizdariye",
-"Fatih",
-"Güzelce",
-"Kamiloba",
-"Kumburgaz",
-"Mimarsinan",
-"Muratçeşme",
-"Sinanoba",
-"Tepecik"
-],
-
-"Başakşehir":[
-"Bahçeşehir 1. Kısım",
-"Bahçeşehir 2. Kısım",
-"Başak",
-"Güvercintepe",
-"İkitelli OSB",
-"Kayabaşı",
-"Şahintepe",
-"Şamlar"
-],
-
-"Beşiktaş":[
-"Abbasağa",
-"Akat",
-"Arnavutköy",
-"Balmumcu",
-"Barbaros",
-"Bebek",
-"Dikilitaş",
-"Etiler",
-"Gayrettepe",
-"Levent",
-"Mecidiye",
-"Ortaköy",
-"Sinanpaşa",
-"Vişnezade"
-],
-
-"Sarıyer":[
-"Bahçeköy Merkez",
-"Baltalimanı",
-"Büyükdere",
-"Çayırbaşı",
-"Darüşşafaka",
-"Emirgan",
-"Ferahevler",
-"İstinye",
-"Kireçburnu",
-"Maslak",
-"Pınar",
-"Rumeli Hisarı",
-"Tarabya",
-"Yeniköy",
-"Zekeriyaköy"
-],
-
-"Kağıthane":[
-"Çağlayan",
-"Çeliktepe",
-"Gültepe",
-"Hamidiye",
-"Merkez",
-"Nurtepe",
-"Seyrantepe",
-"Telsizler",
-"Yahya Kemal"
-]
-
+ "Beylikdüzü":[
+ "Adnan Kahveci","Barış","Büyükşehir","Cumhuriyet","Dereağzı",
+ "Gürpınar","Kavaklı","Marmara","Yakuplu"
+ ],
+ "Esenyurt":[
+ "Akçaburgaz","Akevler","Ardıçlı","Bağlarçeşme","Balıkyolu",
+ "Barbaros Hayrettin Paşa","Battalgazi","Cumhuriyet","Çınar","Esenkent",
+ "Fatih","Gökevler","Hürriyet","İncirtepe","İnönü","Mehterçeşme",
+ "Mevlana","Necip Fazıl Kısakürek","Orhangazi","Örnek","Pınar",
+ "Saadet","Saadetdere","Sultaniye","Talatpaşa","Turgut Özal",
+ "Üçevler","Yenikent","Yeşilkent"
+ ],
+ "Büyükçekmece":[
+ "Alkent 2000","Atatürk","Bahçelievler","Batıköy","Celaliye",
+ "Cumhuriyet","Dizdariye","Fatih","Güzelce","Kamiloba","Kumburgaz",
+ "Mimarsinan","Muratçeşme","Sinanoba","Tepecik"
+ ],
+ "Başakşehir":[
+ "Bahçeşehir 1. Kısım","Bahçeşehir 2. Kısım","Başak","Başakşehir",
+ "Kayabaşı","Kayaşehir","Şahintepe"
+ ],
+ "Kağıthane":[
+ "Çağlayan","Çeliktepe","Gültepe","Hamidiye","Merkez","Nurtepe",
+ "Seyrantepe","Telsizler","Yahya Kemal"
+ ],
+ "Beşiktaş":[
+ "Abbasağa","Akat","Arnavutköy","Balmumcu","Barbaros","Bebek",
+ "Dikilitaş","Etiler","Gayrettepe","Levent","Mecidiye","Ortaköy",
+ "Sinanpaşa","Vişnezade"
+ ],
+ "Sarıyer":[
+ "Bahçeköy Merkez","Baltalimanı","Büyükdere","Çayırbaşı","Darüşşafaka",
+ "Emirgan","Ferahevler","İstinye","Kireçburnu","Maslak","Pınar",
+ "Rumeli Hisarı","Tarabya","Yeniköy","Zekeriyaköy"
+ ],
+ "Kadıköy":[
+ "Acıbadem","Bostancı","Caddebostan","Caferağa","Erenköy","Fenerbahçe",
+ "Göztepe","Koşuyolu","Kozyatağı","Moda","Suadiye"
+ ],
+ "Üsküdar":[
+ "Acıbadem","Altunizade","Beylerbeyi","Çengelköy","Kandilli",
+ "Kısıklı","Kuzguncuk","Salacak","Selimiye","Ünalan"
+ ],
+ "Ataşehir":[
+ "Atatürk","Barbaros","Esatpaşa","İçerenköy","Kayışdağı",
+ "Küçükbakkalköy","Mevlana","Yenişehir"
+ ]
 };
 
-
 /*
-  Site data.
-  ساختار به شکلی است که بعداً می‌توانیم
-  سایت‌های واقعی بیشتری به هر محله اضافه کنیم.
+  City / complex list.
+  This is deliberately expandable.
 */
 
 const sites={
 
-"Adnan Kahveci":[
-"Marmara Evleri",
-"Bizimkent",
-"Westside İstanbul",
-"Paradise Palace"
-],
-
-"Barış":[
-"Beylikdüzü Prestij Park",
-"White City"
-],
-
-"Büyükşehir":[
-"Perlavista",
-"Kristal Şehir",
-"West Marina",
-"Beylikdüzü Migros Residence"
-],
-
-"Kavaklı":[
-"Marina Park",
-"Vira İstanbul",
-"Marmara Mahallesi Siteleri"
-],
-
-"Marmara":[
-"Marmara Mahallesi Siteleri",
-"Marmara Park Residence"
+"Yeşilkent":[
+ "Fi-Tower","Onay Life","Tual Bahçekent","Nlogo İstanbul",
+ "Esenyurt City Center","Innovia","Akkoza","Aqua Dolphin"
 ],
 
 "Yakuplu":[
-"Fi-Tower",
-"Dumankaya Modern Vadi",
-"West Side İstanbul",
-"Marmara Evleri"
+ "Fi-Tower","Marina Park","West Side Istanbul","Marmara Evleri",
+ "Yakuplu Marina Sitesi","Beylikdüzü Marina Konutları"
 ],
 
-"Gökevler":[
-"Aqua Dolphin çevresi siteleri",
-"Esenyurt Prestij Park"
+"Adnan Kahveci":[
+ "West Side","Marmara Evleri","Beylikdüzü Modern",
+ "Adnan Kahveci Konutları"
+],
+
+"Büyükşehir":[
+ "Beylikdüzü Residence","Marmara Park Konutları",
+ "Büyükşehir Evleri"
+],
+
+"Barış":[
+ "Barış Sitesi","Beylikdüzü Park","Marmara Konutları"
+],
+
+"Cumhuriyet":[
+ "Cumhuriyet Evleri","Beylikdüzü Modern","City Center Residence"
 ],
 
 "Esenkent":[
-"Esenkent Siteleri",
-"Akbatı çevresi siteleri"
+ "Örnek Site","Esenkent Konutları","Akkoza","Innovia"
 ],
 
 "Bahçeşehir 1. Kısım":[
-"Bahçeşehir Göleti Siteleri",
-"Spradon Vadi",
-"Mesa Nurol"
+ "Akbatı Residence","Bahçeşehir Konutları","Prestige Residence",
+ "Ispartakule Evleri"
 ],
 
 "Bahçeşehir 2. Kısım":[
-"Vadişehir",
-"Bahçeşehir Park",
-"Boğazköy Siteleri"
+ "Prestige Mall Residence","Bahçeşehir Villa Yaşam",
+ "Spradon Vadi","Vadişehir"
 ],
 
-"Zekeriyaköy":[
-"Zekeriyaköy Villa Siteleri"
+"Kayabaşı":[
+ "Kayaşehir Evleri","Başakşehir Konutları","Emlak Konut Kayaşehir"
 ],
 
-"Etiler":[
-"Etiler Sitesi",
-"Nisbetiye Residence"
+"Kayaşehir":[
+ "Kayaşehir Evleri","Emlak Konut Kayaşehir","Kayaşehir Modern"
 ],
 
 "Levent":[
-"Levent Residence",
-"Kanyon çevresi siteleri"
+ "Levent Residence","Levent Park","Skyland Istanbul"
+],
+
+"Etiler":[
+ "Etiler Residence","Etiler Park","Akmerkez Residence"
 ],
 
 "Maslak":[
-"Maslak 1453",
-"Nurol Life"
+ "Mashattan","Nurol Life","42 Maslak","Skyland Istanbul"
+],
+
+"Zekeriyaköy":[
+ "Zekeriyaköy Konakları","Sinpaş Zekeriyaköy",
+ "Mesa Zekeriyaköy","Köy Zekeriyaköy"
 ],
 
 "İstinye":[
-"İstinyePark Residence"
+ "İstinye Park Residence","İstinye Evleri"
 ],
 
 "Tarabya":[
-"Tarabya Villa Siteleri"
+ "Tarabya Residence","Tarabya Konutları"
+],
+
+"Kozyatağı":[
+ "Kozyatağı Residence","City Residence"
+],
+
+"Altunizade":[
+ "Altunizade Residence","Capitol Residence"
 ]
 
 };
 
+const villaSites={
+
+"Zekeriyaköy":[
+ "Zekeriyaköy Konakları","Mesa Zekeriyaköy","Sinpaş Zekeriyaköy"
+],
+
+"Bahçeşehir 1. Kısım":[
+ "Bahçeşehir Villa Yaşam","Bahçeşehir Villaları"
+],
+
+"Bahçeşehir 2. Kısım":[
+ "Bahçeşehir Villa Yaşam","Vadişehir Villaları"
+],
+
+"Yakuplu":[
+ "Yakuplu Marina Villaları"
+],
+
+"İstinye":[
+ "İstinye Villa Sitesi"
+],
+
+"Tarabya":[
+ "Tarabya Villa Sitesi"
+]
+
+};
 
 /* =========================================================
-   STATE
+ SELECTORS
 ========================================================= */
 
-let currentLanguage=
-  localStorage.getItem("nm_language") || "tr";
+function fillDistricts(){
 
-let selectedPropertyType="";
+ const side=document.getElementById("side").value;
+ const d=document.getElementById("district");
+ const n=document.getElementById("neighborhood");
 
-let selectedProfilePhoto="";
+ d.innerHTML='<option value="">'+T[lang].district+'</option>';
+ n.innerHTML='<option value="">'+T[lang].neighborhood+'</option>';
 
-
-/* =========================================================
-   TRANSLATION
-========================================================= */
-
-function t(key){
-  return LANG[currentLanguage]?.[key] ||
-         LANG.tr[key] ||
-         key;
+ if(districts[side]){
+   districts[side].forEach(x=>{
+     const o=document.createElement("option");
+     o.value=x;o.textContent=x;d.appendChild(o);
+   });
+ }
 }
 
+function fillNeighborhoods(){
 
-/* =========================================================
-   APPLY LANGUAGE
-========================================================= */
+ const district=document.getElementById("district").value;
+ const n=document.getElementById("neighborhood");
 
-function applyLanguage(){
+ n.innerHTML='<option value="">'+T[lang].neighborhood+'</option>';
 
-  document.documentElement.lang=currentLanguage;
+ (neighborhoods[district]||[]).forEach(x=>{
+   const o=document.createElement("option");
+   o.value=x;o.textContent=x;n.appendChild(o);
+ });
 
-  document.body.classList.toggle(
-    "rtl",
-    currentLanguage==="fa" ||
-    currentLanguage==="ar"
-  );
-
-  document.getElementById("brandTitle").textContent=t("brand");
-  document.getElementById("brandTag").textContent=t("tag");
-  document.getElementById("footerText").textContent=t("footer");
-
-  const languageNames={
-    tr:"Türkçe",
-    fa:"فارسی",
-    en:"English",
-    ar:"العربية",
-    ru:"Русский",
-    uk:"Українська"
-  };
-
-  document.getElementById("languageButton").textContent=
-    languageNames[currentLanguage];
-
-  document.querySelectorAll("[data-text]").forEach(el=>{
-    el.innerHTML=t(el.dataset.text);
-  });
-
-  document.querySelectorAll("[data-placeholder]").forEach(el=>{
-    el.placeholder=t(el.dataset.placeholder);
-  });
-
-  renderSellerTypes();
-
-  if(selectedPropertyType){
-    renderPropertyFields();
-    renderDetailsFields();
-  }
-
+ loadSites();
 }
-
-
-/* =========================================================
-   SET LANGUAGE
-========================================================= */
-
-function setLanguage(language){
-
-  currentLanguage=language;
-
-  localStorage.setItem(
-    "nm_language",
-    language
-  );
-
-  applyLanguage();
-
-  go("welcome");
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function go(id){
-
-  const old=document.querySelector(".screen.active");
-  const next=document.getElementById(id);
-
-  if(!next || old===next){
-    if(id==="history") renderHistory();
-    if(id==="profile") renderProfile();
-    return;
-  }
-
-  if(old){
-
-    old.classList.remove("active");
-    old.classList.add("leave");
-
-    setTimeout(()=>{
-      old.classList.remove("leave");
-    },430);
-
-  }
-
-  next.classList.add("active");
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-  if(id==="history") renderHistory();
-
-  if(id==="profile") renderProfile();
-
-}
-
-
-/* =========================================================
-   GUEST
-========================================================= */
-
-function startGuest(){
-
-  go("type");
-
-}
-
-
-/* =========================================================
-   PROPERTY TYPE
-========================================================= */
-
-function choosePropertyType(type){
-
-  selectedPropertyType=type;
-
-  renderPropertyFields();
-
-  go("property");
-
-}
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function inputField(label,id,type="text"){
-
-  return `
-    <div class="field">
-      <label>${label}</label>
-      <input id="${id}" type="${type}">
-    </div>
-  `;
-
-}
-
-
-function selectField(label,id,options){
-
-  return `
-    <div class="field">
-      <label>${label}</label>
-
-      <select id="${id}">
-
-        <option value="">${t("noPreference")}</option>
-
-        ${options.map(
-          x=>`<option value="${x}">${x}</option>`
-        ).join("")}
-
-      </select>
-
-    </div>
-  `;
-
-}
-
-
-function optionButtons(id,items){
-
-  return `
-    <div class="options" id="${id}">
-
-      ${items.map(item=>`
-
-        <button
-          type="button"
-          class="option"
-          data-value="${item}"
-          onclick="toggleOption(this)"
-        >
-          ${item}
-        </button>
-
-      `).join("")}
-
-    </div>
-  `;
-
-}
-
-
-function toggleOption(button){
-
-  button.classList.toggle("selected");
-
-}
-
-
-function getSelected(id){
-
-  return [
-    ...document.querySelectorAll(
-      `#${id} .option.selected`
-    )
-  ].map(
-    x=>x.dataset.value
-  );
-
-}
-
-
-/* =========================================================
-   PROPERTY FIELDS
-========================================================= */
-
-function renderPropertyFields(){
-
-  const title=document.getElementById("propertyTitle");
-
-  title.textContent=
-    t(selectedPropertyType);
-
-  let html="";
-
-
-  /* -------------------------
-     BUDGET
-  ------------------------- */
-
-  html+=`
-
-    <div class="sub" style="margin-top:0">
-
-      <h3>${t("budget")}</h3>
-
-      <div class="grid">
-
-        ${inputField(
-          t("minimumBudget"),
-          "minimumBudget",
-          "number"
-        )}
-
-        ${inputField(
-          t("maximumBudget"),
-          "maximumBudget",
-          "number"
-        )}
-
-        ${inputField(
-          t("gross"),
-          "grossArea",
-          "number"
-        )}
-
-        ${inputField(
-          t("net"),
-          "netArea",
-          "number"
-        )}
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  /* =====================================================
-     DAIRE / VILLA
-  ===================================================== */
-
-  if(
-    selectedPropertyType==="daire" ||
-    selectedPropertyType==="villa"
-  ){
-
-    html+=`
-
-      <div class="sub">
-
-        <h3>${t("roomCount")}</h3>
-
-        ${optionButtons(
-          "rooms",
-          roomOptions
-        )}
-
-      </div>
-
-      <div class="sub">
-
-        <h3>${t("insideFeatures")}</h3>
-
-        <div class="grid">
-
-          ${selectField(
-            t("buildingAge"),
-            "buildingAge",
-            [
-              "0",
-              "1-5",
-              "6-10",
-              "11-15",
-              "16-20",
-              "21-30",
-              "31+"
-            ]
-          )}
-
-          ${selectField(
-            t("floorCount"),
-            "floorCount",
-            [
-              "1",
-              "2",
-              "3-5",
-              "6-10",
-              "11-20",
-              "21+"
-            ]
-          )}
-
-          ${inputField(
-            t("floor"),
-            "floor"
-          )}
-
-          ${selectField(
-            t("bathroom"),
-            "bathroom",
-            ["1","2","3","4","5+"]
-          )}
-
-          ${selectField(
-            t("wc"),
-            "wc",
-            ["1","2","3","4+"]
-          )}
-
-          ${selectField(
-            t("heating"),
-            "heating",
-            [
-              "Kombi Doğalgaz",
-              "Merkezi Sistem",
-              "Yerden Isıtma",
-              "Klima",
-              "Isı Pompası"
-            ]
-          )}
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  /* =====================================================
-     DÜKKÂN
-  ===================================================== */
-
-  if(selectedPropertyType==="dukkân"){
-
-    html+=`
-
-      <div class="sub">
-
-        <h3>${t("insideFeatures")}</h3>
-
-        <div class="grid">
-
-          ${inputField(
-            t("gross"),
-            "commercialArea",
-            "number"
-          )}
-
-          ${selectField(
-            t("floor"),
-            "commercialFloor",
-            [
-              "Bodrum",
-              "Zemin",
-              "Giriş",
-              "1",
-              "2",
-              "3",
-              "4",
-              "5+"
-            ]
-          )}
-
-          ${selectField(
-            t("bathroom"),
-            "commercialBath",
-            [
-              "Yok",
-              "1",
-              "2",
-              "3+"
-            ]
-          )}
-
-          ${selectField(
-            t("buildingAge"),
-            "commercialAge",
-            [
-              "0",
-              "1-5",
-              "6-10",
-              "11-20",
-              "21+"
-            ]
-          )}
-
-        </div>
-
-      </div>
-
-      <div class="sub">
-
-        <h3>${t("outsideFeatures")}</h3>
-
-        ${optionButtons(
-          "shopFeatures",
-          [
-            t("parking"),
-            t("facade"),
-            "Cadde Üzeri",
-            "Vitrinli",
-            "Yükleme Alanı",
-            "Depo"
-          ]
-        )}
-
-      </div>
-
-    `;
-
-  }
-
-
-  /* =====================================================
-     FABRİKA
-  ===================================================== */
-
-  if(selectedPropertyType==="fabrika"){
-
-    html+=`
-
-      <div class="sub">
-
-        <h3>${t("insideFeatures")}</h3>
-
-        <div class="grid">
-
-          ${inputField(
-            t("industrialArea"),
-            "industrialArea",
-            "number"
-          )}
-
-          ${inputField(
-            t("warehouse"),
-            "warehouseArea",
-            "number"
-          )}
-
-          ${selectField(
-            t("ceiling"),
-            "ceiling",
-            [
-              "3 m",
-              "5 m",
-              "7 m",
-              "10 m+"
-            ]
-          )}
-
-          ${selectField(
-            t("crane"),
-            "crane",
-            [
-              "Var",
-              "Yok"
-            ]
-          )}
-
-          ${selectField(
-            t("industrialPower"),
-            "industrialPower",
-            [
-              "Var",
-              "Yok"
-            ]
-          )}
-
-          ${selectField(
-            t("loading"),
-            "loading",
-            [
-              "Var",
-              "Yok"
-            ]
-          )}
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  /* =====================================================
-     ARSA
-  ===================================================== */
-
-  if(selectedPropertyType==="arsa"){
-
-    html+=`
-
-      <div class="sub">
-
-        <h3>${t("insideFeatures")}</h3>
-
-        <div class="grid">
-
-          ${inputField(
-            t("landArea"),
-            "landArea",
-            "number"
-          )}
-
-          ${selectField(
-            t("zoning"),
-            "zoning",
-            [
-              "Konut",
-              "Ticari",
-              "Sanayi",
-              "Tarla",
-              "Turizm",
-              "Karma"
-            ]
-          )}
-
-          ${inputField(
-            t("far"),
-            "far"
-          )}
-
-          ${inputField(
-            t("taks"),
-            "taks"
-          )}
-
-          ${inputField(
-            t("block"),
-            "block"
-          )}
-
-          ${inputField(
-            t("parcel"),
-            "parcel"
-          )}
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  document.getElementById(
-    "propertyFields"
-  ).innerHTML=html;
-
-}
-
-
-/* =========================================================
-   DETAILS
-========================================================= */
-
-function goDetails(){
-
-  renderDetailsFields();
-
-  go("details");
-
-}
-
-
-/* =========================================================
-   DETAILS FIELDS
-========================================================= */
-
-function renderDetailsFields(){
-
-  let html="";
-
-
-  /* LOCATION */
-
-  html+=`
-
-    <div class="sub" style="margin-top:0">
-
-      <h3>${t("location")}</h3>
-
-      <div class="grid">
-
-        ${selectField(
-          t("side"),
-          "side",
-          [
-            "Avrupa Yakası",
-            "Anadolu Yakası"
-          ]
-        )}
-
-        ${selectField(
-          t("district"),
-          "district",
-          []
-        )}
-
-        ${selectField(
-          t("neighborhood"),
-          "neighborhood",
-          []
-        )}
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  /* SITE */
-
-  html+=`
-
-    <div class="sub">
-
-      <h3>${t("site")}</h3>
-
-      <div class="options">
-
-        <button
-          class="option"
-          data-building="normal"
-          onclick="chooseBuilding(this,'normal')"
-        >
-          ${t("normalBuilding")}
-        </button>
-
-        <button
-          class="option"
-          data-building="site"
-          onclick="chooseBuilding(this,'site')"
-        >
-          ${t("insideSite")}
-        </button>
-
-        <button
-          class="option"
-          data-building="any"
-          onclick="chooseBuilding(this,'any')"
-        >
-          ${t("noPreference")}
-        </button>
-
-      </div>
-
-      <div
-        id="siteContainer"
-        class="hidden"
-        style="margin-top:18px"
-      >
-
-        <div class="field">
-
-          <label>${t("siteName")}</label>
-
-          <select id="siteName">
-
-            <option value="">
-              ${t("allSites")}
-            </option>
-
-          </select>
-
-        </div>
-
-        <div
-          class="sub hidden"
-          id="siteFacilities"
-        >
-
-          <h3>${t("siteFacilities")}</h3>
-
-          ${optionButtons(
-            "facilities",
-            [
-              t("pool"),
-              t("indoorPool"),
-              t("gym"),
-              t("security"),
-              t("garden"),
-              t("playground"),
-              t("sauna"),
-              t("spa"),
-              t("visitorParking"),
-              t("generator"),
-              t("sportsArea")
-            ]
-          )}
-
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  /* DAIRE / VILLA */
-
-  if(
-    selectedPropertyType==="daire" ||
-    selectedPropertyType==="villa"
-  ){
-
-    html+=`
-
-      <div class="sub">
-
-        <h3>${t("insideFeatures")}</h3>
-
-        ${optionButtons(
-          "homeFeatures",
-          [
-            t("kitchen"),
-            t("balcony"),
-            t("terrace"),
-            t("elevator"),
-            t("parking"),
-            t("furnished")
-          ]
-        )}
-
-      </div>
-
-    `;
-
-  }
-
-
-  /* LEGAL */
-
-  html+=`
-
-    <div class="sub">
-
-      <h3>${t("tapu")}</h3>
-
-      ${optionButtons(
-        "legalFeatures",
-        [
-          t("credit"),
-          "Kat Mülkiyeti",
-          "Kat İrtifakı"
-        ]
-      )}
-
-    </div>
-
-  `;
-
-
-  /* VIEW */
-
-  html+=`
-
-    <div class="sub">
-
-      <h3>${t("environment")}</h3>
-
-      ${optionButtons(
-        "views",
-        [
-          t("bosporus"),
-          t("sea"),
-          t("forest"),
-          t("city"),
-          t("gardenView"),
-          t("openView"),
-          t("noImportant")
-        ]
-      )}
-
-    </div>
-
-  `;
-
-
-  document.getElementById(
-    "detailsFields"
-  ).innerHTML=html;
-
-
-  const side=
-    document.getElementById("side");
-
-  const district=
-    document.getElementById("district");
-
-  const neighborhood=
-    document.getElementById("neighborhood");
-
-
-  side.onchange=loadDistricts;
-
-  district.onchange=loadNeighborhoods;
-
-  neighborhood.onchange=loadSites;
-
-
-  loadDistricts();
-
-}
-
-
-/* =========================================================
-   BUILDING / SITE
-========================================================= */
-
-function chooseBuilding(button,type){
-
-  document
-    .querySelectorAll("[data-building]")
-    .forEach(
-      x=>x.classList.remove("selected")
-    );
-
-  button.classList.add("selected");
-
-  const siteContainer=
-    document.getElementById("siteContainer");
-
-  const facilities=
-    document.getElementById("siteFacilities");
-
-  if(type==="site"){
-
-    siteContainer.classList.remove("hidden");
-
-    loadSites();
-
-  }else{
-
-    siteContainer.classList.add("hidden");
-
-    facilities.classList.add("hidden");
-
-  }
-
-}
-
-
-/* =========================================================
-   DISTRICTS
-========================================================= */
-
-function loadDistricts(){
-
-  const side=
-    document.getElementById("side");
-
-  const district=
-    document.getElementById("district");
-
-  const neighborhood=
-    document.getElementById("neighborhood");
-
-  if(!side || !district)return;
-
-  const list=
-    districts[
-      side.value==="Avrupa Yakası"
-        ? "avrupa"
-        : side.value==="Anadolu Yakası"
-          ? "anadolu"
-          : ""
-    ] || [];
-
-  district.innerHTML=
-    `<option value="">${t("noPreference")}</option>`+
-    list.map(
-      x=>`<option value="${x}">${x}</option>`
-    ).join("");
-
-  neighborhood.innerHTML=
-    `<option value="">${t("noPreference")}</option>`;
-
-}
-
-
-/* =========================================================
-   NEIGHBORHOODS
-========================================================= */
-
-function loadNeighborhoods(){
-
-  const district=
-    document.getElementById("district");
-
-  const neighborhood=
-    document.getElementById("neighborhood");
-
-  const list=
-    neighborhoods[district.value] || [];
-
-  neighborhood.innerHTML=
-    `<option value="">${t("noPreference")}</option>`+
-    list.map(
-      x=>`<option value="${x}">${x}</option>`
-    ).join("");
-
-  loadSites();
-
-}
-
-
-/* =========================================================
-   SITES
-========================================================= */
 
 function loadSites(){
 
-  const neighborhood=
-    document.getElementById("neighborhood");
+ const n=document.getElementById("neighborhood").value;
+ const s=document.getElementById("siteName");
 
-  const siteName=
-    document.getElementById("siteName");
+ s.innerHTML='<option value="">Tüm Siteler</option>';
 
-  if(!neighborhood || !siteName)return;
+ (sites[n]||[]).forEach(x=>{
+   const o=document.createElement("option");
+   o.value=x;o.textContent=x;s.appendChild(o);
+ });
 
-  const list=
-    sites[neighborhood.value] || [];
+ const v=document.getElementById("villaSite");
+ v.innerHTML='<option value="">Tüm Siteler</option>';
 
-  siteName.innerHTML=
-    `<option value="">${t("allSites")}</option>`+
-    list.map(
-      x=>`<option value="${x}">${x}</option>`
-    ).join("")+
-    `<option value="other">
-      ${currentLanguage==="fa"
-        ?"سایت دیگر / نام سایت را می‌نویسم"
-        :"Diğer / site adını yazacağım"}
-    </option>`;
+ (villaSites[n]||[]).forEach(x=>{
+   const o=document.createElement("option");
+   o.value=x;o.textContent=x;v.appendChild(o);
+ });
+}
 
-  siteName.onchange=()=>{
+/* =========================================================
+ BUILDING
+========================================================= */
 
-    const facilities=
-      document.getElementById("siteFacilities");
+function chooseBuilding(type,el){
 
-    if(siteName.value){
+ document.querySelectorAll('[onclick^="chooseBuilding"]').forEach(x=>x.classList.remove("selected"));
+ el.classList.add("selected");
 
-      facilities.classList.remove("hidden");
+ state.buildingType=type;
 
-    }else{
+ document.getElementById("siteBox").classList.toggle("hidden",type!=="site");
+ document.getElementById("siteFacilities").classList.toggle("hidden",type!=="site");
+}
 
-      facilities.classList.add("hidden");
+function chooseVilla(type,el){
 
-    }
+ document.querySelectorAll('[onclick^="chooseVilla"]').forEach(x=>x.classList.remove("selected"));
+ el.classList.add("selected");
 
+ state.villaType=type;
+
+ document.getElementById("villaSiteBox").classList.toggle("hidden",type!=="site");
+}
+
+function chooseOption(el,group,value){
+
+ document.querySelectorAll(".option").forEach(x=>{
+   const onclick=x.getAttribute("onclick")||"";
+   if(onclick.includes("'"+group+"'"))x.classList.remove("selected");
+ });
+
+ el.classList.add("selected");
+
+ state[group]=value;
+}
+
+/* =========================================================
+ ROOMS
+========================================================= */
+
+const roomList=[
+"1+1","2+1","3+1","4+1","5+1","6+1","7+1","+7+1",
+"2+2","3+2","4+2","5+2","6+2","7+2","+7+2",
+"3+3","4+3","5+3","6+3","7+3","+7+3","+4+4+"
+];
+
+function buildRooms(){
+
+ const box=document.getElementById("rooms");
+ box.innerHTML="";
+
+ roomList.forEach((room,i)=>{
+
+  const x=document.createElement("div");
+  x.className="option";
+  x.textContent=room;
+
+  x.onclick=()=>{
+   x.classList.toggle("selected");
+
+   state.rooms=[...box.querySelectorAll(".selected")]
+     .map(a=>a.textContent);
   };
 
+  box.appendChild(x);
+ });
 }
-
 
 /* =========================================================
-   FINAL
+ FLOORS
 ========================================================= */
 
-function goFinal(){
+function buildFloors(){
 
-  renderTransport();
+ const f=document.getElementById("floor");
+ const b=document.getElementById("buildingFloors");
 
-  const user=
-    JSON.parse(
-      localStorage.getItem("nm_user") || "null"
-    );
+ f.innerHTML="";
+ b.innerHTML="";
 
-  if(user){
+ ["Kot -3","Kot -2","Kot -1","Giriş"].forEach(x=>{
+   let o=document.createElement("option");
+   o.value=x;o.textContent=x;f.appendChild(o);
+ });
 
-    document.getElementById("requestFirst").value=
-      user.first || "";
+ for(let i=1;i<=30;i++){
+   let o=document.createElement("option");
+   o.value=i;o.textContent=i;
+   f.appendChild(o);
+ }
 
-    document.getElementById("requestLast").value=
-      user.last || "";
+ let plus=document.createElement("option");
+ plus.value="+30";plus.textContent="+30";f.appendChild(plus);
 
-    document.getElementById("requestPhone").value=
-      user.phone || "";
+ for(let i=1;i<=30;i++){
+   let o=document.createElement("option");
+   o.value=i;o.textContent=i;b.appendChild(o);
+ }
 
-    document.getElementById("requestEmail").value=
-      user.email || "";
-
-  }
-
-  go("final");
-
+ let bp=document.createElement("option");
+ bp.value="+30";bp.textContent="+30";b.appendChild(bp);
 }
 
+function updateBuildingFloors(){
+
+ const floor=document.getElementById("floor").value;
+ const b=document.getElementById("buildingFloors");
+
+ let n=parseInt(floor);
+
+ if(!isNaN(n) && n>0){
+
+   b.innerHTML="";
+
+   for(let i=n;i<=30;i++){
+     let o=document.createElement("option");
+     o.value=i;o.textContent=i;b.appendChild(o);
+   }
+
+   let p=document.createElement("option");
+   p.value="+30";p.textContent="+30";b.appendChild(p);
+
+ }else{
+
+   b.innerHTML="";
+
+   for(let i=1;i<=30;i++){
+     let o=document.createElement("option");
+     o.value=i;o.textContent=i;b.appendChild(o);
+   }
+
+   let p=document.createElement("option");
+   p.value="+30";p.textContent="+30";b.appendChild(p);
+ }
+}
 
 /* =========================================================
-   TRANSPORT
+ NUMERIC OPTIONS
 ========================================================= */
 
-function renderTransport(){
+function buildNumbers(){
 
-  const container=
-    document.getElementById(
-      "transportOptions"
-    );
+ const b=document.getElementById("bathrooms");
+ const w=document.getElementById("wc");
 
-  const items=[
-    t("metrobus"),
-    t("marmaray"),
-    t("metro"),
-    t("publicTransport"),
-    t("e5"),
-    t("tem"),
-    t("school"),
-    t("hospital"),
-    t("mall")
-  ];
+ [1,2,3,4,"5+"].forEach(x=>{
+   let o=document.createElement("option");
+   o.value=x;o.textContent=x;b.appendChild(o);
 
-  container.innerHTML=
-    items.map(
-      item=>`
-        <label class="check">
-          <input
-            type="checkbox"
-            value="${item}"
-          >
-          <span>${item}</span>
-        </label>
-      `
-    ).join("");
-
+   let p=document.createElement("option");
+   p.value=x;p.textContent=x;w.appendChild(p);
+ });
 }
-
 
 /* =========================================================
-   PURCHASE REQUEST
+ SUBMISSIONS
 ========================================================= */
 
-function submitPurchaseRequest(){
-
-  const phone=
-    document.getElementById(
-      "requestPhone"
-    ).value.trim();
-
-  if(!phone){
-
-    alert(
-      currentLanguage==="fa"
-        ?"لطفاً شماره تلفن را وارد کنید."
-        :"Lütfen telefon numaranızı girin."
-    );
-
-    return;
-
-  }
-
-
-  const requests=
-    JSON.parse(
-      localStorage.getItem("nm_requests") || "[]"
-    );
-
-
-  const requestNumber=
-    "NM-"+String(
-      requests.length+1
-    ).padStart(6,"0");
-
-
-  const request={
-
-    id:requestNumber,
-
-    type:selectedPropertyType,
-
-    language:currentLanguage,
-
-    createdAt:new Date().toISOString(),
-
-    property:{
-
-      minimumBudget:
-        valueOf("minimumBudget"),
-
-      maximumBudget:
-        valueOf("maximumBudget"),
-
-      grossArea:
-        valueOf("grossArea"),
-
-      netArea:
-        valueOf("netArea"),
-
-      rooms:
-        getSelected("rooms"),
-
-      buildingAge:
-        valueOf("buildingAge"),
-
-      floorCount:
-        valueOf("floorCount"),
-
-      floor:
-        valueOf("floor"),
-
-      bathroom:
-        valueOf("bathroom"),
-
-      wc:
-        valueOf("wc"),
-
-      heating:
-        valueOf("heating"),
-
-      commercialArea:
-        valueOf("commercialArea"),
-
-      industrialArea:
-        valueOf("industrialArea"),
-
-      warehouseArea:
-        valueOf("warehouseArea"),
-
-      landArea:
-        valueOf("landArea"),
-
-      zoning:
-        valueOf("zoning"),
-
-      far:
-        valueOf("far"),
-
-      taks:
-        valueOf("taks"),
-
-      block:
-        valueOf("block"),
-
-      parcel:
-        valueOf("parcel"),
-
-      side:
-        valueOf("side"),
-
-      district:
-        valueOf("district"),
-
-      neighborhood:
-        valueOf("neighborhood"),
-
-      site:
-        valueOf("siteName"),
-
-      facilities:
-        getSelected("facilities"),
-
-      homeFeatures:
-        getSelected("homeFeatures"),
-
-      shopFeatures:
-        getSelected("shopFeatures"),
-
-      legal:
-        getSelected("legalFeatures"),
-
-      views:
-        getSelected("views")
-
-    },
-
-    specialRequests:
-      document.getElementById(
-        "specialRequests"
-      ).value,
-
-    transport:
-      [
-        ...document.querySelectorAll(
-          "#transportOptions input:checked"
-        )
-      ].map(
-        x=>x.value
-      ),
-
-    contact:{
-
-      first:
-        valueOf("requestFirst"),
-
-      last:
-        valueOf("requestLast"),
-
-      phone:
-        valueOf("requestPhone"),
-
-      email:
-        valueOf("requestEmail"),
-
-      date:
-        valueOf("requestDate"),
-
-      time:
-        valueOf("requestTime")
-
-    }
-
-  };
-
-
-  requests.push(request);
-
-  localStorage.setItem(
-    "nm_requests",
-    JSON.stringify(requests)
-  );
-
-
-  sendTelegram(
-    "NEW PURCHASE REQUEST",
-    request
-  );
-
-
-  document.getElementById(
-    "successMessage"
-  ).innerHTML=t("successText");
-
-
-  go("success");
-
+function collectProperty(){
+
+ return{
+  language:lang,
+  type:state.propertyType,
+  side:document.getElementById("side").value,
+  district:document.getElementById("district").value,
+  neighborhood:document.getElementById("neighborhood").value,
+  site:document.getElementById("siteName").value,
+  price:document.getElementById("price").value,
+  gross:document.getElementById("gross").value,
+  net:document.getElementById("net").value,
+  buildingAge:document.getElementById("buildingAge").value,
+  rooms:state.rooms||[],
+  floor:document.getElementById("floor").value,
+  buildingFloors:document.getElementById("buildingFloors").value,
+  bathrooms:document.getElementById("bathrooms").value,
+  wc:document.getElementById("wc").value,
+  kitchen:state.kitchen||"",
+  buildingType:state.buildingType||"",
+  villaType:state.villaType||"",
+  villaSite:document.getElementById("villaSite").value,
+  tapu:state.tapu||"",
+  credit:state.credit||"",
+  notes:document.getElementById("notes").value,
+  firstName:document.getElementById("firstName").value,
+  lastName:document.getElementById("lastName").value,
+  phone:document.getElementById("phone").value,
+  email:document.getElementById("email").value,
+  date:document.getElementById("contactDate").value,
+  time:document.getElementById("contactTime").value,
+  createdAt:new Date().toLocaleString("tr-TR")
+ };
 }
 
+function submitRequest(){
 
-/* =========================================================
-   VALUE
-========================================================= */
+ const data=collectProperty();
 
-function valueOf(id){
+ let requests=JSON.parse(localStorage.getItem("nm_requests")||"[]");
 
-  const el=
-    document.getElementById(id);
+ data.number=requests.length+1;
 
-  return el ? el.value : "";
+ requests.push(data);
 
+ localStorage.setItem("nm_requests",JSON.stringify(requests));
+
+ goTo("successScreen");
 }
-
-
-/* =========================================================
-   REGISTER
-========================================================= */
-
-function previewProfilePhoto(input){
-
-  const file=input.files[0];
-
-  if(!file)return;
-
-  const reader=
-    new FileReader();
-
-  reader.onload=function(){
-
-    selectedProfilePhoto=
-      reader.result;
-
-    document.getElementById(
-      "profilePreview"
-    ).src=reader.result;
-
-  };
-
-  reader.readAsDataURL(file);
-
-}
-
 
 function registerUser(){
 
-  const user={
+ const user={
+  language:lang,
+  first:document.getElementById("regFirst").value,
+  last:document.getElementById("regLast").value,
+  phone:document.getElementById("regPhone").value,
+  email:document.getElementById("regEmail").value,
+  deed:state.registeredDeed||"",
+  registeredAt:new Date().toLocaleString("tr-TR")
+ };
 
-    first:valueOf("registerFirst"),
+ localStorage.setItem("nm_user",JSON.stringify(user));
 
-    last:valueOf("registerLast"),
-
-    phone:valueOf("registerPhone"),
-
-    email:valueOf("registerEmail"),
-
-    password:valueOf("registerPassword"),
-
-    display:valueOf("registerDisplay"),
-
-    tapu:document.getElementById(
-      "registerTapu"
-    ).checked,
-
-    photo:selectedProfilePhoto,
-
-    createdAt:new Date().toISOString()
-
-  };
-
-
-  if(
-    !user.first ||
-    !user.phone ||
-    !user.email ||
-    !user.password
-  ){
-
-    alert(
-      currentLanguage==="fa"
-        ?"نام، تلفن، ایمیل و رمز عبور الزامی است."
-        :"Ad, telefon, e-posta ve şifre zorunludur."
-    );
-
-    return;
-
-  }
-
-
-  localStorage.setItem(
-    "nm_user",
-    JSON.stringify(user)
-  );
-
-
-  sendTelegram(
-    "NEW USER REGISTRATION",
-    user
-  );
-
-
-  if(user.photo){
-
-    sendTelegramPhoto(
-      user.photo,
-      "NM GROUP — NEW USER PROFILE PHOTO"
-    );
-
-  }
-
-
-  go("type");
-
+ goTo("propertyTypeScreen");
 }
 
+function submitSell(){
 
-/* =========================================================
-   LOGIN
-========================================================= */
+ const data={
+  language:lang,
+  type:document.getElementById("sellType").value,
+  first:document.getElementById("sellFirst").value,
+  last:document.getElementById("sellLast").value,
+  phone:document.getElementById("sellPhoneInput").value,
+  email:document.getElementById("sellEmailInput").value,
+  price:document.getElementById("sellPriceInput").value,
+  address:document.getElementById("sellAddressInput").value,
+  details:document.getElementById("sellDetailsInput").value,
+  createdAt:new Date().toLocaleString("tr-TR")
+ };
 
-function loginUser(){
+ localStorage.setItem(
+  "nm_sell_"+Date.now(),
+  JSON.stringify(data)
+ );
 
-  const user=
-    JSON.parse(
-      localStorage.getItem("nm_user") || "null"
-    );
-
-  if(
-    !user ||
-    user.email!==valueOf("loginEmail") ||
-    user.password!==valueOf("loginPassword")
-  ){
-
-    alert(
-      currentLanguage==="fa"
-        ?"اطلاعات ورود صحیح نیست."
-        :"Giriş bilgileri eşleşmedi."
-    );
-
-    return;
-
-  }
-
-
-  go("profile");
-
+ goTo("successScreen");
 }
 
+function submitAdvertising(){
 
-/* =========================================================
-   PROFILE
-========================================================= */
+ const data={
+  language:lang,
+  first:document.getElementById("adFirst").value,
+  last:document.getElementById("adLast").value,
+  company:document.getElementById("adCompany").value,
+  business:document.getElementById("adBusiness").value,
+  phone:document.getElementById("adPhone").value,
+  country:document.getElementById("adCountry").value,
+  city:document.getElementById("adCity").value,
+  duration:document.getElementById("adDuration").value,
+  notes:document.getElementById("adNotes").value,
+  createdAt:new Date().toLocaleString("tr-TR")
+ };
 
-function renderProfile(){
+ localStorage.setItem(
+  "nm_ad_"+Date.now(),
+  JSON.stringify(data)
+ );
 
-  const box=
-    document.getElementById(
-      "profileContent"
-    );
-
-  const user=
-    JSON.parse(
-      localStorage.getItem("nm_user") || "null"
-    );
-
-  if(!user){
-
-    box.innerHTML=
-      `<p class="desc">Kayıt bulunamadı.</p>`;
-
-    return;
-
-  }
-
-
-  box.innerHTML=`
-
-    <div class="photo-row">
-
-      ${
-        user.photo
-        ? `<img
-             class="avatar"
-             src="${user.photo}"
-           >`
-        : `<div class="avatar"></div>`
-      }
-
-      <div>
-
-        <strong>
-          ${user.display ||
-            `${user.first} ${user.last}`}
-        </strong>
-
-        <div class="desc">
-
-          ${user.email}<br>
-
-          ${user.phone}<br>
-
-          Tapu:
-          ${user.tapu
-            ? "EVET"
-            : "HAYIR"}
-
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
+ goTo("successScreen");
 }
 
-
 /* =========================================================
-   HISTORY
+ CLICK SOUND
 ========================================================= */
 
-function renderHistory(){
+let audioCtx;
 
-  const box=
-    document.getElementById(
-      "historyContent"
-    );
+function clickSound(){
 
-  const requests=
-    JSON.parse(
-      localStorage.getItem("nm_requests") || "[]"
-    );
+ try{
 
-  const user=
-    JSON.parse(
-      localStorage.getItem("nm_user") || "null"
-    );
+  if(!audioCtx)
+   audioCtx=new(window.AudioContext||window.webkitAudioContext)();
 
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
 
-  let list=requests;
+  osc.frequency.value=700;
+  gain.gain.setValueAtTime(.018,audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.06);
 
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
 
-  if(user){
+  osc.start();
+  osc.stop(audioCtx.currentTime+.06);
 
-    list=requests.filter(
-      x=>
-        x.contact &&
-        x.contact.email===user.email
-    );
-
-  }
-
-
-  if(!list.length){
-
-    box.innerHTML=
-      `<div class="desc">
-        ${t("historyDescription")}
-      </div>`;
-
-    return;
-
-  }
-
-
-  box.innerHTML=
-    list.map(
-      request=>`
-
-        <div class="request-card">
-
-          <strong>
-            ${request.id}
-          </strong>
-
-          <div style="margin-top:8px">
-
-            ${t(request.type)}
-
-          </div>
-
-          <div class="desc">
-
-            ${
-              request.property?.district || ""
-            }
-
-            /
-
-            ${
-              request.property?.neighborhood || ""
-            }
-
-            ${
-              request.property?.site
-                ? "/ "+request.property.site
-                : ""
-            }
-
-            <br>
-
-            ${
-              request.specialRequests || ""
-            }
-
-          </div>
-
-        </div>
-
-      `
-    ).join("");
-
+ }catch(e){}
 }
 
+document.addEventListener("click",e=>{
+ if(e.target.closest("button,.choice,.option,select"))
+  clickSound();
+});
 
 /* =========================================================
-   SELLER TYPES
+ INIT
 ========================================================= */
 
-function renderSellerTypes(){
-
-  const select=
-    document.getElementById(
-      "sellerType"
-    );
-
-  if(!select)return;
-
-  select.innerHTML=`
-
-    <option value="daire">
-      ${t("daire")}
-    </option>
-
-    <option value="villa">
-      ${t("villa")}
-    </option>
-
-    <option value="dukkân">
-      ${t("dukkân")}
-    </option>
-
-    <option value="fabrika">
-      ${t("fabrika")}
-    </option>
-
-    <option value="arsa">
-      ${t("arsa")}
-    </option>
-
-  `;
-
-}
-
-
-/* =========================================================
-   SELLER REQUEST
-========================================================= */
-
-function submitSellerRequest(){
-
-  const name=
-    valueOf("sellerName");
-
-  const phone=
-    valueOf("sellerPhone");
-
-
-  if(!name || !phone){
-
-    alert(
-      currentLanguage==="fa"
-        ?"نام و شماره تلفن الزامی است."
-        :"Ad Soyad ve telefon zorunludur."
-    );
-
-    return;
-
-  }
-
-
-  const sellers=
-    JSON.parse(
-      localStorage.getItem("nm_sellers") || "[]"
-    );
-
-
-  const seller={
-
-    id:
-      "SELL-"+
-      String(
-        sellers.length+1
-      ).padStart(6,"0"),
-
-    type:
-      valueOf("sellerType"),
-
-    name:name,
-
-    phone:phone,
-
-    email:
-      valueOf("sellerEmail"),
-
-    address:
-      valueOf("sellerAddress"),
-
-    price:
-      valueOf("sellerPrice"),
-
-    area:
-      valueOf("sellerArea"),
-
-    description:
-      valueOf("sellerDescription"),
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  sellers.push(seller);
-
-
-  localStorage.setItem(
-    "nm_sellers",
-    JSON.stringify(sellers)
-  );
-
-
-  sendTelegram(
-    "NEW PROPERTY SALE REQUEST",
-    seller
-  );
-
-
-  sendSellerPhotos();
-
-
-  document.getElementById(
-    "successMessage"
-  ).innerHTML=t("successText");
-
-
-  go("success");
-
-}
-
-
-/* =========================================================
-   TELEGRAM MESSAGE
-========================================================= */
-
-async function sendTelegram(title,data){
-
-  if(
-    !TELEGRAM.BOT_TOKEN ||
-    !TELEGRAM.CHAT_ID
-  ){
-
-    console.log(
-      "Telegram is not configured yet.",
-      title,
-      data
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    const clean=
-      JSON.parse(
-        JSON.stringify(data)
-      );
-
-
-    if(clean.photo){
-
-      delete clean.photo;
-
-    }
-
-
-    await fetch(
-      `https://api.telegram.org/bot${TELEGRAM.BOT_TOKEN}/sendMessage`,
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-
-        body:JSON.stringify({
-
-          chat_id:
-            TELEGRAM.CHAT_ID,
-
-          text:
-            title+
-            "\n\n"+
-            JSON.stringify(
-              clean,
-              null,
-              2
-            ).slice(0,3900)
-
-        })
-
-      }
-    );
-
-  }catch(error){
-
-    console.error(
-      "Telegram error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   TELEGRAM PHOTO
-========================================================= */
-
-async function sendTelegramPhoto(
-  dataUrl,
-  caption
-){
-
-  if(
-    !TELEGRAM.BOT_TOKEN ||
-    !TELEGRAM.CHAT_ID ||
-    !dataUrl
-  ){
-
-    return;
-
-  }
-
-
-  try{
-
-    const blob=
-      await(
-        await fetch(dataUrl)
-      ).blob();
-
-
-    const form=
-      new FormData();
-
-    form.append(
-      "chat_id",
-      TELEGRAM.CHAT_ID
-    );
-
-    form.append(
-      "caption",
-      caption
-    );
-
-    form.append(
-      "photo",
-      blob,
-      "profile.jpg"
-    );
-
-
-    await fetch(
-      `https://api.telegram.org/bot${TELEGRAM.BOT_TOKEN}/sendPhoto`,
-      {
-        method:"POST",
-        body:form
-      }
-    );
-
-  }catch(error){
-
-    console.error(
-      "Telegram photo error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SELLER PHOTOS
-========================================================= */
-
-async function sendSellerPhotos(){
-
-  if(
-    !TELEGRAM.BOT_TOKEN ||
-    !TELEGRAM.CHAT_ID
-  ){
-
-    return;
-
-  }
-
-
-  const files=
-    document.getElementById(
-      "sellerPhotos"
-    ).files;
-
-
-  for(
-    const file of files
-  ){
-
-    try{
-
-      const form=
-        new FormData();
-
-      form.append(
-        "chat_id",
-        TELEGRAM.CHAT_ID
-      );
-
-      form.append(
-        "caption",
-        "NM GROUP — PROPERTY SALE PHOTO"
-      );
-
-      form.append(
-        "photo",
-        file
-      );
-
-
-      await fetch(
-        `https://api.telegram.org/bot${TELEGRAM.BOT_TOKEN}/sendPhoto`,
-        {
-          method:"POST",
-          body:form
-        }
-      );
-
-    }catch(error){
-
-      console.error(
-        error
-      );
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   STAR FIELD
-========================================================= */
-
-for(let i=0;i<130;i++){
-
-  const star=
-    document.createElement("i");
-
-  star.className="star";
-
-  star.style.left=
-    Math.random()*100+"%";
-
-  star.style.top=
-    Math.random()*100+"%";
-
-  star.style.animationDelay=
-    Math.random()*4+"s";
-
-  document
-    .getElementById("stars")
-    .appendChild(star);
-
-}
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-applyLanguage();
-
-renderSellerTypes();
+buildRooms();
+buildFloors();
+buildNumbers();
+selectLanguage(lang);
 
 </script>
 
 </body>
-</html>
+  </html>
