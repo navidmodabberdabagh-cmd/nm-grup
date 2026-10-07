@@ -1,0 +1,35 @@
+{
+  "rewrites": [
+    {
+      "source": "/reklam",
+      "destination": "/reklam.html"
+    },
+    {
+      "source": "/reklam/",
+      "destination": "/reklam.html"
+    },
+    {
+      "source": "/reklam/:slug",
+      "destination": "/reklam.html?ad=:slug"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin-ads.html"
+    },
+    {
+      "source": "/admin/",
+      "destination": "/admin-ads.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/reklam/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "index, follow"
+        }
+      ]
+    }
+  ]
+}
